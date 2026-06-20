@@ -1,4 +1,4 @@
-import type { AgeResult, ValidationResult, ValidationError } from "./types";
+import type { AgeResult, ValidationResult } from "./types";
 
 const DAYS_PER_YEAR = 365.25;
 const PROXIMA_LY = 4.2441;
