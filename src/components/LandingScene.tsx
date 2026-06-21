@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import Footer from './Footer'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { validateBirthdate } from '../lib'
@@ -276,6 +277,18 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
             탐색하기 →
           </button>
         </div>
+      </div>
+
+      {/* 푸터 */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        zIndex: 2,
+        opacity:       showUI ? 1 : 0,
+        pointerEvents: showUI ? 'auto' : 'none',
+        transition:    'opacity 0.35s ease',
+      }}>
+        <Footer />
       </div>
     </div>
   )

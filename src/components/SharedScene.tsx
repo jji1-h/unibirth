@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { MatchResult, Star } from '../lib'
+import Footer from './Footer'
 
 interface Props {
   result: MatchResult
@@ -179,16 +180,11 @@ export default function SharedScene({ result, onTryService }: Props) {
           </svg>
         </button>
 
-        {/* 브랜드 */}
-        <p style={{
-          marginTop: '48px',
-          fontSize: '11px',
-          color: 'rgba(255,255,255,0.18)',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-        }}>
-          Unibirth
-        </p>
+      </div>
+
+      {/* 푸터 */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+        <Footer />
       </div>
     </div>
   )
