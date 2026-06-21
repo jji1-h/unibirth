@@ -305,8 +305,25 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 저장: vanilla JS 모달 (React/Portal 우회 → 모든 WebView 호환) ──
+    // ── 저장: vanilla JS 모달 + 배경 이벤트 차단 (Instagram WebView 대응) ──
     const dataUrl = out.toDataURL('image/png')
+
+    // Three.js 캔버스 + React root의 pointer-events 차단
+    const bgCanvas  = document.querySelector('canvas') as HTMLElement | null
+    const reactRoot = document.getElementById('root')
+    if (bgCanvas)  bgCanvas.style.pointerEvents  = 'none'
+    if (reactRoot) reactRoot.style.pointerEvents = 'none'
+
+    // window 레벨 capture: 모달 외부 이벤트 모두 차단
+    const blockOutside = (e: Event) => {
+      if (!overlay.contains(e.target as Node)) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+    }
+    window.addEventListener('touchstart', blockOutside, { capture: true, passive: false })
+    window.addEventListener('touchend',   blockOutside, { capture: true, passive: false })
+    window.addEventListener('pointerdown',blockOutside, { capture: true })
 
     const overlay = document.createElement('div')
     overlay.style.cssText = [
@@ -323,9 +340,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const img = document.createElement('img')
     img.src = dataUrl
     img.alt = '탄생별 결과 이미지'
-    img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;touch-action:manipulation'
-    img.addEventListener('touchstart', e => e.stopPropagation(), { passive: false })
-    img.addEventListener('click',      e => e.stopPropagation())
+    img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;touch-action:manipulation;-webkit-user-select:none;user-select:none'
 
     const closeBtn = document.createElement('button')
     closeBtn.textContent = '닫기'
@@ -335,7 +350,15 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       'padding:8px 24px;cursor:pointer;touch-action:manipulation',
     ].join(';')
 
-    const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
+    const close = () => {
+      window.removeEventListener('touchstart', blockOutside, { capture: true } as EventListenerOptions)
+      window.removeEventListener('touchend',   blockOutside, { capture: true } as EventListenerOptions)
+      window.removeEventListener('pointerdown',blockOutside, { capture: true } as EventListenerOptions)
+      if (bgCanvas)  bgCanvas.style.pointerEvents  = ''
+      if (reactRoot) reactRoot.style.pointerEvents = ''
+      if (document.body.contains(overlay)) document.body.removeChild(overlay)
+    }
+
     overlay.addEventListener('click', close)
     closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
     closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
