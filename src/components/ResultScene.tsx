@@ -10,36 +10,58 @@ interface Props {
 // ── 스펙트럼 → 시각 특성 파싱 ──────────────────────
 interface SpectVisual { colorHex: number; colorCss: string; hasCorona: boolean }
 
-function parseSpect(spect: string | null): SpectVisual {
+function colorFromCI(ci: number): SpectVisual {
+  if (ci < -0.1) return { colorHex: 0xb0c4ff, colorCss: '#b0c4ff', hasCorona: true  }
+  if (ci <  0.2) return { colorHex: 0xd8e8ff, colorCss: '#d8e8ff', hasCorona: true  }
+  if (ci <  0.5) return { colorHex: 0xfff5e4, colorCss: '#fff5e4', hasCorona: true  }
+  if (ci <  0.8) return { colorHex: 0xffe87a, colorCss: '#ffe87a', hasCorona: false }
+  if (ci <  1.4) return { colorHex: 0xffb347, colorCss: '#ffb347', hasCorona: false }
+  return               { colorHex: 0xff6b35, colorCss: '#ff6b35', hasCorona: false }
+}
+
+function colorFromAbsmag(absmag: number): SpectVisual {
+  if (absmag <  2)   return { colorHex: 0xb0c4ff, colorCss: '#b0c4ff', hasCorona: true  }
+  if (absmag <  4)   return { colorHex: 0xd8e8ff, colorCss: '#d8e8ff', hasCorona: true  }
+  if (absmag <  5.5) return { colorHex: 0xffe87a, colorCss: '#ffe87a', hasCorona: false }
+  if (absmag <  8)   return { colorHex: 0xffb347, colorCss: '#ffb347', hasCorona: false }
+  return                    { colorHex: 0xff6b35, colorCss: '#ff6b35', hasCorona: false }
+}
+
+function parseSpect(
+  spect: string | null,
+  ci?: number | null,
+  absmag?: number | null,
+): SpectVisual {
   const DEFAULT: SpectVisual = { colorHex: 0xfff4e8, colorCss: '#fff4e8', hasCorona: false }
-  if (!spect) return DEFAULT
-  const s = spect.trim()
-
-  if (/^D/i.test(s)) {
-    const m = s.match(/(\d+\.?\d*)/)
-    const t = m ? parseFloat(m[1]) : 6
-    if (t <= 3) return { colorHex: 0x99c0ff, colorCss: '#99c0ff', hasCorona: true  }
-    if (t <= 6) return { colorHex: 0xd0e4ff, colorCss: '#d0e4ff', hasCorona: false }
-    return           { colorHex: 0xf0e8dc, colorCss: '#f0e8dc', hasCorona: false }
+  if (spect) {
+    const s = spect.trim()
+    if (/^D/i.test(s)) {
+      const m = s.match(/(\d+\.?\d*)/)
+      const t = m ? parseFloat(m[1]) : 6
+      if (t <= 3) return { colorHex: 0x99c0ff, colorCss: '#99c0ff', hasCorona: true  }
+      if (t <= 6) return { colorHex: 0xd0e4ff, colorCss: '#d0e4ff', hasCorona: false }
+      return             { colorHex: 0xf0e8dc, colorCss: '#f0e8dc', hasCorona: false }
+    }
+    const m = s.match(/[OBAFGKMobafgkm]/)
+    const letter = m ? m[0].toUpperCase() : null
+    const MAP: Record<string, SpectVisual> = {
+      O: { colorHex: 0x9bb0ff, colorCss: '#9bb0ff', hasCorona: true  },
+      B: { colorHex: 0xb0c4ff, colorCss: '#b0c4ff', hasCorona: true  },
+      A: { colorHex: 0xd8e8ff, colorCss: '#d8e8ff', hasCorona: true  },
+      F: { colorHex: 0xfff5e4, colorCss: '#fff5e4', hasCorona: true  },
+      G: { colorHex: 0xffe87a, colorCss: '#ffe87a', hasCorona: false },
+      K: { colorHex: 0xffb347, colorCss: '#ffb347', hasCorona: false },
+      M: { colorHex: 0xff6b35, colorCss: '#ff6b35', hasCorona: false },
+    }
+    return MAP[letter ?? ''] ?? DEFAULT
   }
-
-  const m = s.match(/[OBAFGKMobafgkm]/)
-  const letter = m ? m[0].toUpperCase() : null
-
-  const MAP: Record<string, SpectVisual> = {
-    O: { colorHex: 0x9bb0ff, colorCss: '#9bb0ff', hasCorona: true  },
-    B: { colorHex: 0xb0c4ff, colorCss: '#b0c4ff', hasCorona: true  },
-    A: { colorHex: 0xd8e8ff, colorCss: '#d8e8ff', hasCorona: true  },
-    F: { colorHex: 0xfff5e4, colorCss: '#fff5e4', hasCorona: true  },
-    G: { colorHex: 0xffe87a, colorCss: '#ffe87a', hasCorona: false },
-    K: { colorHex: 0xffb347, colorCss: '#ffb347', hasCorona: false },
-    M: { colorHex: 0xff6b35, colorCss: '#ff6b35', hasCorona: false },
-  }
-  return MAP[letter ?? ''] ?? DEFAULT
+  if (ci != null) return colorFromCI(ci)
+  if (absmag != null) return colorFromAbsmag(absmag)
+  return DEFAULT
 }
 
 function starParams(star: Star | null) {
-  const { colorCss } = parseSpect(star?.spect ?? null)
+  const { colorCss } = parseSpect(star?.spect ?? null, star?.ci, star?.absmag)
   return { colorCss }
 }
 
@@ -800,10 +822,13 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                   <button className="chip-info-btn" onClick={() => setModal('mag')}>i</button>
                 </span>
               )}
-              {star?.spect && (
+              {star != null && (
                 <span className="result-chip">
                   <span className="chip-label">분광형</span>
-                  <span className="chip-value" style={{ color: css }}>{star.spect.slice(0, 4)}</span>
+                  {star.spect
+                    ? <span className="chip-value" style={{ color: css }}>{star.spect.slice(0, 4)}</span>
+                    : <span className="chip-value" style={{ color: 'rgba(255,255,255,0.25)' }}>-</span>
+                  }
                   <button className="chip-info-btn" onClick={() => setModal('spect')}>i</button>
                 </span>
               )}

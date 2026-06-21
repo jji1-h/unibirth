@@ -10,29 +10,54 @@ interface Props {
 // ── helpers (duplicated from ResultScene to keep SharedScene self-contained) ──
 interface SpectVisual { colorCss: string }
 
-function parseSpect(spect: string | null): SpectVisual {
+function colorFromCI(ci: number): SpectVisual {
+  if (ci < -0.1) return { colorCss: '#b0c4ff' }
+  if (ci <  0.2) return { colorCss: '#d8e8ff' }
+  if (ci <  0.5) return { colorCss: '#fff5e4' }
+  if (ci <  0.8) return { colorCss: '#ffe87a' }
+  if (ci <  1.4) return { colorCss: '#ffb347' }
+  return               { colorCss: '#ff6b35' }
+}
+
+function colorFromAbsmag(absmag: number): SpectVisual {
+  if (absmag <  2)   return { colorCss: '#b0c4ff' }
+  if (absmag <  4)   return { colorCss: '#d8e8ff' }
+  if (absmag <  5.5) return { colorCss: '#ffe87a' }
+  if (absmag <  8)   return { colorCss: '#ffb347' }
+  return                    { colorCss: '#ff6b35' }
+}
+
+function parseSpect(
+  spect: string | null,
+  ci?: number | null,
+  absmag?: number | null,
+): SpectVisual {
   const DEFAULT: SpectVisual = { colorCss: '#fff4e8' }
-  if (!spect) return DEFAULT
-  const s = spect.trim()
-  if (/^D/i.test(s)) {
-    const m = s.match(/(\d+\.?\d*)/)
-    const t = m ? parseFloat(m[1]) : 6
-    if (t <= 3) return { colorCss: '#99c0ff' }
-    if (t <= 6) return { colorCss: '#d0e4ff' }
-    return { colorCss: '#f0e8dc' }
+  if (spect) {
+    const s = spect.trim()
+    if (/^D/i.test(s)) {
+      const m = s.match(/(\d+\.?\d*)/)
+      const t = m ? parseFloat(m[1]) : 6
+      if (t <= 3) return { colorCss: '#99c0ff' }
+      if (t <= 6) return { colorCss: '#d0e4ff' }
+      return             { colorCss: '#f0e8dc' }
+    }
+    const m = s.match(/[OBAFGKMobafgkm]/)
+    const letter = m ? m[0].toUpperCase() : null
+    const MAP: Record<string, SpectVisual> = {
+      O: { colorCss: '#9bb0ff' },
+      B: { colorCss: '#b0c4ff' },
+      A: { colorCss: '#d8e8ff' },
+      F: { colorCss: '#fff5e4' },
+      G: { colorCss: '#ffe87a' },
+      K: { colorCss: '#ffb347' },
+      M: { colorCss: '#ff6b35' },
+    }
+    return MAP[letter ?? ''] ?? DEFAULT
   }
-  const m = s.match(/[OBAFGKMobafgkm]/)
-  const letter = m ? m[0].toUpperCase() : null
-  const MAP: Record<string, SpectVisual> = {
-    O: { colorCss: '#9bb0ff' },
-    B: { colorCss: '#b0c4ff' },
-    A: { colorCss: '#d8e8ff' },
-    F: { colorCss: '#fff5e4' },
-    G: { colorCss: '#ffe87a' },
-    K: { colorCss: '#ffb347' },
-    M: { colorCss: '#ff6b35' },
-  }
-  return MAP[letter ?? ''] ?? DEFAULT
+  if (ci != null) return colorFromCI(ci)
+  if (absmag != null) return colorFromAbsmag(absmag)
+  return DEFAULT
 }
 
 const CON_KO: Record<string, string> = {
@@ -83,7 +108,7 @@ export default function SharedScene({ result, onTryService }: Props) {
   const [hovered, setHovered] = useState(false)
 
   const star = result.star
-  const { colorCss } = parseSpect(star?.spect ?? null)
+  const { colorCss } = parseSpect(star?.spect ?? null, star?.ci, star?.absmag)
   const name = starDisplayName(star)
   const copy = typeCopy(result)
 
