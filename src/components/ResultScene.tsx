@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import type { MatchResult, Star } from '../lib'
 
 interface Props {
@@ -493,12 +494,12 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         }
       `}</style>
 
-      {/* 이미지 저장 모달 */}
-      {saveImageUrl && (
+      {/* 이미지 저장 모달 — Portal로 body에 직접 렌더링 (WebView pointerEvents 우회) */}
+      {saveImageUrl && createPortal(
         <div
           onClick={() => setSaveImageUrl(null)}
           style={{
-            position: 'fixed', inset: 0, zIndex: 200,
+            position: 'fixed', inset: 0, zIndex: 9999,
             background: 'rgba(0,0,0,0.88)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
@@ -541,7 +542,8 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           >
             닫기
           </button>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 인포 모달 */}
