@@ -503,6 +503,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
             gap: '16px',
+            pointerEvents: 'auto',
           }}
         >
           <p style={{
