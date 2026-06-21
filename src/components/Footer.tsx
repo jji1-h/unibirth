@@ -3,6 +3,7 @@ export default function Footer() {
     <footer style={{
       width: '100%',
       padding: '20px 24px',
+      paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

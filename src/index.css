@@ -31,6 +31,12 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 모바일 브라우저 크롬(주소창·하단 탭바) 제외한 실제 뷰포트 */
+.scene-wrap {
+  height: 100vh;      /* fallback */
+  height: 100svh;     /* small viewport height: 브라우저 UI 항상 포함 */
+}
+
 .app {
   width: 100%;
   height: 100%;

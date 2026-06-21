@@ -186,7 +186,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   const isReady = digits.length === 8 && !error
 
   return (
-    <div style={styles.wrap}>
+    <div style={styles.wrap} className="scene-wrap">
       <canvas ref={canvasRef} style={styles.canvas} />
 
       {/* 우측 상단 공유 버튼 */}
@@ -295,7 +295,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  wrap:    { position: 'relative', width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  wrap:    { position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   canvas:  { position: 'absolute', top: 0, left: 0 },
   content: { position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' },
   sub:     { fontSize: '24px', fontWeight: 700, color: '#ffffff', textAlign: 'center', lineHeight: 1.5, textShadow: '0 2px 16px rgba(0,0,0,0.85), 0 0 40px rgba(0,0,0,0.6)', letterSpacing: '-0.01em' },
