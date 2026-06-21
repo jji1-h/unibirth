@@ -173,8 +173,8 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const base   = `${window.location.origin}${window.location.pathname}`
     const url    = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
     const text   = result.type !== 'NO_STAR' && result.star
-      ? `당신이 태어난 날 출발한 빛이 오늘 지구에 닿았습니다 — ${starDisplayName(result.star)}`
-      : '당신이 태어난 날 출발한 빛을 찾아보세요'
+      ? '광활한 우주에서 내가 태어난 날의 빛을 찾았어요. 당신의 별은 무엇인가요?'
+      : '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
 
     if (navigator.share) {
       try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }

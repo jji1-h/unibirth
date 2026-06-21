@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { validateBirthdate } from '../lib'
@@ -29,8 +29,9 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   const cameraRef    = useRef<THREE.PerspectiveCamera | null>(null)
   const leavingRef   = useRef(false)
   const earthMatsRef = useRef<THREE.Material[]>([])
-  const [error,  setError]  = useState<ValidationError | null>(null)
-  const [showUI, setShowUI] = useState(true)
+  const [error,        setError]        = useState<ValidationError | null>(null)
+  const [showUI,       setShowUI]       = useState(true)
+  const [landingCopied, setLandingCopied] = useState(false)
 
   // ── Three.js ─────────────────────────────────────────
   useEffect(() => {
@@ -152,6 +153,19 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
     })
   }, [leaving])  // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── 랜딩 공유 ────────────────────────────────────────
+  const handleLandingShare = useCallback(async () => {
+    const url  = window.location.origin + window.location.pathname
+    const text = '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
+    } else {
+      await navigator.clipboard.writeText(url)
+      setLandingCopied(true)
+      setTimeout(() => setLandingCopied(false), 2000)
+    }
+  }, [])
+
   // ── 입력 핸들러 ─────────────────────────────────────
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const raw     = e.target.value.replace(/\D/g, '').slice(0, 8)
@@ -173,6 +187,56 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   return (
     <div style={styles.wrap}>
       <canvas ref={canvasRef} style={styles.canvas} />
+
+      {/* 우측 상단 공유 버튼 */}
+      <button
+        onClick={handleLandingShare}
+        title="공유하기"
+        style={{
+          position: 'absolute',
+          top: '24px',
+          right: '28px',
+          zIndex: 2,
+          background: 'rgba(7,9,15,0.5)',
+          border: `1px solid ${landingCopied ? 'rgba(160,220,160,0.4)' : 'rgba(255,255,255,0.16)'}`,
+          borderRadius: '50%',
+          width: '36px',
+          height: '36px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          color: landingCopied ? 'rgba(160,220,160,0.9)' : 'rgba(255,255,255,0.45)',
+          backdropFilter: 'blur(8px)',
+          transition: 'border-color 0.15s, color 0.15s, opacity 0.35s',
+          opacity: showUI ? 1 : 0,
+          pointerEvents: showUI ? 'auto' : 'none',
+        }}
+        onMouseEnter={e => {
+          if (landingCopied) return
+          const b = e.currentTarget
+          b.style.borderColor = 'rgba(255,255,255,0.38)'
+          b.style.color = 'rgba(255,255,255,0.85)'
+        }}
+        onMouseLeave={e => {
+          if (landingCopied) return
+          const b = e.currentTarget
+          b.style.borderColor = 'rgba(255,255,255,0.16)'
+          b.style.color = 'rgba(255,255,255,0.45)'
+        }}
+      >
+        {landingCopied ? (
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <polyline points="2,7 6,11 12,3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        ) : (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+            <polyline points="15,3 21,3 21,9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+            <line x1="21" y1="3" x2="11" y2="13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+          </svg>
+        )}
+      </button>
 
       {/* 이탈 애니메이션 중 캡션 */}
       <p style={{
