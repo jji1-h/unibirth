@@ -58,6 +58,7 @@ def main():
                 "id":      int(row["id"]),
                 "proper":  row.get("proper","").strip() or None,
                 "bf":      row.get("bf","").strip() or None,
+                "gl":      row.get("gl","").strip() or None,
                 "hip":     pi(row.get("hip","")),
                 "dist_ly": round(dl, 4),
                 "mag":     pf(row.get("mag","")),

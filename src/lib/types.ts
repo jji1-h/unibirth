@@ -2,6 +2,7 @@ export interface Star {
   id: number;
   proper: string | null;
   bf?: string | null;
+  gl?: string | null;
   hip: number | null;
   dist_ly: number;
   mag: number | null;

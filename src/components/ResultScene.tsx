@@ -54,10 +54,38 @@ function coordName(ra: number | null, dec: number | null): string {
   return `J${String(rh).padStart(2,'0')}${String(rm).padStart(2,'0')}${sign}${String(dd).padStart(2,'0')}${String(dm).padStart(2,'0')}`
 }
 
+const CON_KO: Record<string, string> = {
+  And:'안드로메다',   Ant:'펌프',          Aps:'극락조',        Aqr:'물병',
+  Aql:'독수리',       Ara:'제단',          Ari:'양',            Aur:'마차부',
+  Boo:'목자',         Cae:'조각칼',        Cam:'기린',          Cnc:'게',
+  CVn:'사냥개',       CMa:'큰개',          CMi:'작은개',        Cap:'염소',
+  Car:'용골',         Cas:'카시오페이아',  Cen:'센타우루스',    Cep:'케페우스',
+  Cet:'고래',         Cha:'카멜레온',      Cir:'컴퍼스',        Col:'비둘기',
+  Com:'머리털',       CrA:'남쪽왕관',      CrB:'북쪽왕관',      Crv:'까마귀',
+  Crt:'컵',           Cru:'남십자',        Cyg:'백조',          Del:'돌고래',
+  Dor:'황새치',       Dra:'용',            Equ:'조랑말',        Eri:'에리다누스',
+  For:'화로',         Gem:'쌍둥이',        Gru:'두루미',        Her:'헤르쿨레스',
+  Hor:'시계',         Hya:'바다뱀',        Hyi:'물뱀',          Ind:'인디언',
+  Lac:'도마뱀',       Leo:'사자',          LMi:'작은사자',      Lep:'토끼',
+  Lib:'천칭',         Lup:'이리',          Lyn:'살쾡이',        Lyr:'거문고',
+  Men:'테이블산',     Mic:'현미경',        Mon:'외뿔소',        Mus:'파리',
+  Nor:'직각자',       Oct:'팔분의',        Oph:'뱀주인',        Ori:'오리온',
+  Pav:'공작',         Peg:'페가수스',      Per:'페르세우스',    Phe:'불사조',
+  Pic:'화가',         Psc:'물고기',        PsA:'남쪽물고기',    Pup:'고물',
+  Pyx:'나침반',       Ret:'그물',          Sge:'화살',          Sgr:'궁수',
+  Sco:'전갈',         Scl:'조각가',        Sct:'방패',          Ser:'뱀',
+  Sex:'육분의',       Tau:'황소',          Tel:'망원경',        Tri:'삼각형',
+  TrA:'남쪽삼각형',   Tuc:'큰부리새',      UMa:'큰곰',          UMi:'작은곰',
+  Vel:'돛',           Vir:'처녀',          Vol:'날치',          Vul:'여우',
+}
+
 function starDisplayName(star: Star | null) {
   if (!star) return '미분류 천체'
   if (star.proper) return star.proper
-  if (star.hip)   return `HIP ${star.hip}`
+  if (star.bf)     return star.bf.trim()
+  if (star.hip)    return `HIP ${star.hip}`
+  if (star.gl)     return star.gl.trim()
+  if (star.con && CON_KO[star.con]) return `${CON_KO[star.con]}자리의 별`
   return coordName(star.ra, star.dec)
 }
 
