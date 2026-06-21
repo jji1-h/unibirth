@@ -5,13 +5,13 @@ export interface Star {
   gl?: string | null;
   hip: number | null;
   dist_ly: number;
+  dist_src: string | null;
   mag: number | null;
   absmag: number | null;
   con: string | null;
   spect: string | null;
   ra: number | null;
   dec: number | null;
-  lum: number | null;
   ci: number | null;
 }
 
