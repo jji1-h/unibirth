@@ -6,7 +6,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unibirth — 나의 탄생별 탐색</title>
+    <title>Unibirth — 나의 탄생별 찾기 | 생년월일 별빛 탐색</title>
     <link rel="canonical" href="https://unibirth.pages.dev/" />
     <meta name="google-site-verification" content="gZWrYfYNw5nuAjTJ2IGn3i2GfrmZWh2_3tIeF8hAV7A" />
 
@@ -23,14 +23,14 @@
     </script>
 
     <!-- Primary meta -->
-    <meta name="description" content="내 생년월일에 출발한 별빛이 오늘 지구에 닿습니다. 나의 탄생별을 찾아보세요." />
-    <meta name="keywords" content="탄생별, 별, 우주, 생년월일, 광년, 별빛, unibirth" />
+    <meta name="description" content="생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 나의 탄생별을 찾아드립니다. 별빛은 1년에 1광년을 이동합니다. 내 탄생별을 지금 탐색해보세요." />
+    <meta name="keywords" content="탄생별 찾기, 내 탄생별, 나의 탄생별, 생년월일 별 찾기, 별빛 나이 계산, 탄생별 탐색, 별빛, 광년, unibirth" />
 
     <!-- Open Graph -->
     <meta property="og:type"         content="website" />
     <meta property="og:url"          content="https://unibirth.pages.dev/" />
-    <meta property="og:title"        content="Unibirth" />
-    <meta property="og:description"  content="내 생년월일에 출발한 별빛이 오늘 지구에 닿습니다. 나의 탄생별을 찾아보세요." />
+    <meta property="og:title"        content="Unibirth — 나의 탄생별 찾기" />
+    <meta property="og:description"  content="생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 나의 탄생별을 찾아드립니다." />
     <meta property="og:image"        content="https://unibirth.pages.dev/og.png" />
     <meta property="og:image:width"  content="1200" />
     <meta property="og:image:height" content="630" />
@@ -39,8 +39,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card"        content="summary_large_image" />
-    <meta name="twitter:title"       content="Unibirth" />
-    <meta name="twitter:description" content="내 생년월일에 출발한 별빛이 오늘 지구에 닿습니다. 나의 탄생별을 찾아보세요." />
+    <meta name="twitter:title"       content="Unibirth — 나의 탄생별 찾기" />
+    <meta name="twitter:description" content="생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 나의 탄생별을 찾아드립니다." />
     <meta name="twitter:image"       content="https://unibirth.pages.dev/og.png" />
 
     <!-- JSON-LD 구조화 데이터 -->
@@ -49,8 +49,8 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Unibirth",
-      "alternateName": "유니버스 탄생별",
-      "description": "생년월일을 입력하면 그날 출발한 빛이 오늘 지구에 닿는 별을 찾아줍니다. 빛은 1년에 1광년을 이동하므로, 나이와 같은 거리의 별이 나의 탄생별이 됩니다.",
+      "alternateName": ["나의 탄생별 찾기", "탄생별 탐색", "생년월일 별빛 탐색"],
+      "description": "생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 나의 탄생별을 찾아드립니다. 별빛은 1년에 1광년을 이동하므로, 내 나이(년)와 같은 거리(광년)에 있는 별이 탄생별이 됩니다.",
       "url": "https://unibirth.pages.dev",
       "applicationCategory": "EntertainmentApplication",
       "operatingSystem": "Web",
@@ -65,12 +65,51 @@
         "@type": "Person",
         "url": "https://github.com/jji1-h"
       },
-      "keywords": "탄생별, 별, 우주, 생년월일, 광년, 별빛"
+      "keywords": "탄생별 찾기, 내 탄생별, 생년월일 별 찾기, 별빛 나이 계산, 나의 별 탐색"
     }
     </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- 크롤러용 정적 콘텐츠 (JS 미실행 환경에서도 색인 가능) -->
+    <noscript>
+      <style>
+        .noscript-wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px; font-family: sans-serif; color: #111; line-height: 1.7; }
+        .noscript-wrap h1 { font-size: 28px; margin-bottom: 12px; }
+        .noscript-wrap h2 { font-size: 18px; margin: 32px 0 8px; }
+        .noscript-wrap p  { margin-bottom: 12px; font-size: 15px; color: #333; }
+      </style>
+      <div class="noscript-wrap">
+        <h1>Unibirth — 나의 탄생별 찾기</h1>
+        <p>
+          생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 <strong>나의 탄생별</strong>을 찾아드립니다.
+          별빛은 1년에 1광년을 이동합니다. 내 나이(년)와 같은 거리(광년)에 있는 별에서 출발한 빛이
+          오늘 지구에 도달합니다. 그 별이 바로 나의 탄생별입니다.
+        </p>
+
+        <h2>탄생별이란?</h2>
+        <p>
+          당신이 태어난 날, 광활한 우주 어딘가에서 지구를 향해 출발한 빛이 있습니다.
+          <strong>탄생별 찾기</strong> 서비스 Unibirth는 그 빛의 주인공,
+          <strong>내 탄생별</strong>을 찾아드립니다.
+        </p>
+
+        <h2>별빛 나이 계산 원리</h2>
+        <p>
+          빛의 속도로 1년을 이동한 거리를 1광년이라고 합니다.
+          36세라면 지구에서 36광년 거리에 있는 별에서 태어난 날 출발한 빛이 오늘 지구에 닿습니다.
+          <strong>생년월일 별 찾기</strong>는 이 원리를 이용해 HYG 별 카탈로그에서 가장 가까운 별을 탐색합니다.
+        </p>
+
+        <h2>나의 별 탐색하기</h2>
+        <p>
+          Unibirth에서 <strong>나의 탄생별 탐색</strong>을 직접 체험해보세요.
+          별 이름, 거리, 분광형, 별자리 정보와 함께 3D 우주 시각화로 확인할 수 있습니다.
+          이 서비스를 이용하려면 JavaScript를 활성화해주세요.
+        </p>
+      </div>
+    </noscript>
   </body>
 </html>
