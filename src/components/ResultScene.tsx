@@ -156,10 +156,11 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
 
 // ── 컴포넌트 ─────────────────────────────────────────
 export default function ResultScene({ result, onReset, birthdate }: Props) {
-  const [visible,  setVisible]  = useState(false)
-  const [modal,    setModal]    = useState<'mag' | 'spect' | null>(null)
-  const [expanded, setExpanded] = useState(false)
-  const [copied,   setCopied]   = useState(false)
+  const [visible,       setVisible]       = useState(false)
+  const [modal,         setModal]         = useState<'mag' | 'spect' | null>(null)
+  const [expanded,      setExpanded]      = useState(false)
+  const [copied,        setCopied]        = useState(false)
+  const [showShareMenu, setShowShareMenu] = useState(false)
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
   useEffect(() => {
@@ -167,12 +168,12 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     return () => clearTimeout(t)
   }, [])
 
-  async function handleShare() {
-    // 생년월일을 URL 파라미터로 인코딩 (YYYYMMDD)
-    const bdate  = birthdate.replace(/\D/g, '')
-    const base   = `${window.location.origin}${window.location.pathname}`
-    const url    = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
-    const text   = result.type !== 'NO_STAR' && result.star
+  async function handleShareLink() {
+    setShowShareMenu(false)
+    const bdate = birthdate.replace(/\D/g, '')
+    const base  = `${window.location.origin}${window.location.pathname}`
+    const url   = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
+    const text  = result.type !== 'NO_STAR' && result.star
       ? '광활한 우주에서 내가 태어난 날의 빛을 찾았어요. 당신의 별은 무엇인가요?'
       : '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
 
@@ -328,7 +329,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       title.style.cssText = 'color:rgba(255,255,255,0.85);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
 
       const desc = document.createElement('p')
-      desc.innerHTML = '우측 하단 <strong>···</strong> 메뉴 →<br><strong>기본 브라우저로 열기</strong><br>에서 저장할 수 있어요'
+      desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'
       desc.style.cssText = 'color:rgba(255,255,255,0.50);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
 
       const closeBtn = document.createElement('button')
@@ -537,6 +538,41 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           color: rgba(255,255,255,0.85) !important;
           background: rgba(255,255,255,0.06) !important;
         }
+        .share-menu {
+          position: absolute;
+          top: 58px;
+          right: 12px;
+          background: rgba(18,20,36,0.97);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 10px;
+          overflow: hidden;
+          z-index: 10;
+          min-width: 148px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.40);
+        }
+        .share-menu-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+          padding: 13px 16px;
+          background: none;
+          border: none;
+          color: rgba(255,255,255,0.75);
+          font-size: 13px;
+          font-family: 'Inter', sans-serif;
+          cursor: pointer;
+          text-align: left;
+          transition: background 0.12s;
+          white-space: nowrap;
+        }
+        .share-menu-item + .share-menu-item {
+          border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .share-menu-item:hover {
+          background: rgba(255,255,255,0.06);
+          color: rgba(255,255,255,0.95);
+        }
         .expand-section {
           overflow: hidden;
           max-height: 0;
@@ -623,86 +659,73 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         position: 'absolute',
       }}>
 
-        {/* 저장 버튼 */}
-        <button
-          onClick={handleSave}
-          title="이미지 저장"
-          style={{
-            position: 'absolute',
-            top: '18px',
-            right: '62px',
-            background: 'none',
-            border: '1px solid rgba(255,255,255,0.14)',
-            borderRadius: '50%',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            color: 'rgba(255,255,255,0.40)',
-            transition: 'border-color 0.15s, color 0.15s',
-            pointerEvents: 'auto',
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.40)'
-            ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.80)'
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'
-            ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.40)'
-          }}
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M5 20h14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-          </svg>
-        </button>
+        {/* 공유 버튼 + 드롭다운 */}
+        <div style={{ position: 'absolute', top: '18px', right: '18px', pointerEvents: 'auto' }}>
+          <button
+            onClick={() => setShowShareMenu(v => !v)}
+            title="공유하기"
+            style={{
+              background: 'none',
+              border: `1px solid ${copied ? 'rgba(160,220,160,0.40)' : 'rgba(255,255,255,0.14)'}`,
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: copied ? 'rgba(160,220,160,0.85)' : 'rgba(255,255,255,0.40)',
+              transition: 'border-color 0.15s, color 0.15s',
+            }}
+            onMouseEnter={e => { if (!copied) {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.40)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.80)'
+            }}}
+            onMouseLeave={e => { if (!copied) {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.40)'
+            }}}
+          >
+            {copied ? (
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <polyline points="2,7 6,11 12,3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M9 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+                <polyline points="15,3 21,3 21,9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                <line x1="21" y1="3" x2="11" y2="13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+              </svg>
+            )}
+          </button>
 
-        {/* 공유 버튼 */}
-        <button
-          onClick={handleShare}
-          title="공유하기"
-          style={{
-            position: 'absolute',
-            top: '18px',
-            right: '18px',
-            background: 'none',
-            border: '1px solid rgba(255,255,255,0.14)',
-            borderRadius: '50%',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            color: copied ? 'rgba(160,220,160,0.85)' : 'rgba(255,255,255,0.40)',
-            borderColor: copied ? 'rgba(160,220,160,0.40)' : 'rgba(255,255,255,0.14)',
-            fontSize: '14px',
-            transition: 'border-color 0.15s, color 0.15s',
-            pointerEvents: 'auto',
-          }}
-          onMouseEnter={e => { if (!copied) {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.40)'
-            ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.80)'
-          }}}
-          onMouseLeave={e => { if (!copied) {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'
-            ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.40)'
-          }}}
-        >
-          {copied ? (
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="2,7 6,11 12,3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          ) : (
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-              <polyline points="15,3 21,3 21,9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-              <line x1="21" y1="3" x2="11" y2="13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-            </svg>
+          {showShareMenu && (
+            <>
+              {/* 바깥 클릭 시 닫기 */}
+              <div
+                onClick={() => setShowShareMenu(false)}
+                style={{ position: 'fixed', inset: 0, zIndex: 9 }}
+              />
+              <div className="share-menu">
+                <button className="share-menu-item" onClick={handleShareLink}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  링크 공유
+                </button>
+                <button className="share-menu-item" onClick={() => { setShowShareMenu(false); handleSave() }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+                    <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+                    <polyline points="21,15 16,10 5,21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  이미지로 공유
+                </button>
+              </div>
+            </>
           )}
-        </button>
+        </div>
 
         <h1 style={{ ...styles.starName, color: css }}>
           {starDisplayName(star)}
