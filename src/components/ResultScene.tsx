@@ -305,67 +305,81 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 저장: vanilla JS 모달 + 배경 이벤트 차단 (Instagram WebView 대응) ──
+    // ── 저장: Instagram WebView 감지 후 분기 ──
     const dataUrl = out.toDataURL('image/png')
-
-    // Three.js 캔버스 + React root의 pointer-events 차단
-    const bgCanvas  = document.querySelector('canvas') as HTMLElement | null
-    const reactRoot = document.getElementById('root')
-    if (bgCanvas)  bgCanvas.style.pointerEvents  = 'none'
-    if (reactRoot) reactRoot.style.pointerEvents = 'none'
-
-    // window 레벨 capture: 모달 외부 이벤트 모두 차단
-    const blockOutside = (e: Event) => {
-      if (!overlay.contains(e.target as Node)) {
-        e.stopPropagation()
-        e.preventDefault()
-      }
-    }
-    window.addEventListener('touchstart', blockOutside, { capture: true, passive: false })
-    window.addEventListener('touchend',   blockOutside, { capture: true, passive: false })
-    window.addEventListener('pointerdown',blockOutside, { capture: true })
+    const isInstagram = /Instagram/i.test(navigator.userAgent)
 
     const overlay = document.createElement('div')
     overlay.style.cssText = [
       'position:fixed;inset:0;z-index:9999',
-      'background:rgba(0,0,0,0.88)',
-      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px',
-      'touch-action:manipulation',
+      'background:rgba(0,0,0,0.90)',
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px',
+      'touch-action:manipulation;-webkit-tap-highlight-color:transparent',
     ].join(';')
 
-    const hint = document.createElement('p')
-    hint.textContent = '이미지를 꾹 눌러서 저장하세요'
-    hint.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.04em'
+    if (isInstagram) {
+      // Instagram 인앱 브라우저: 이미지 저장 차단됨 → 외부 브라우저 안내
+      const icon = document.createElement('p')
+      icon.textContent = '🔒'
+      icon.style.cssText = 'font-size:36px;margin:0'
 
-    const img = document.createElement('img')
-    img.src = dataUrl
-    img.alt = '탄생별 결과 이미지'
-    img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;touch-action:manipulation;-webkit-user-select:none;user-select:none'
+      const title = document.createElement('p')
+      title.textContent = 'Instagram에서는 이미지 저장이 제한돼요'
+      title.style.cssText = 'color:rgba(255,255,255,0.85);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
 
-    const closeBtn = document.createElement('button')
-    closeBtn.textContent = '닫기'
-    closeBtn.style.cssText = [
-      'background:none;border:1px solid rgba(255,255,255,0.20);border-radius:100px',
-      'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
-      'padding:8px 24px;cursor:pointer;touch-action:manipulation',
-    ].join(';')
+      const desc = document.createElement('p')
+      desc.innerHTML = '우측 하단 <strong>···</strong> 메뉴 →<br><strong>기본 브라우저로 열기</strong><br>에서 저장할 수 있어요'
+      desc.style.cssText = 'color:rgba(255,255,255,0.50);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
 
-    const close = () => {
-      window.removeEventListener('touchstart', blockOutside, { capture: true } as EventListenerOptions)
-      window.removeEventListener('touchend',   blockOutside, { capture: true } as EventListenerOptions)
-      window.removeEventListener('pointerdown',blockOutside, { capture: true } as EventListenerOptions)
-      if (bgCanvas)  bgCanvas.style.pointerEvents  = ''
-      if (reactRoot) reactRoot.style.pointerEvents = ''
-      if (document.body.contains(overlay)) document.body.removeChild(overlay)
+      const closeBtn = document.createElement('button')
+      closeBtn.textContent = '닫기'
+      closeBtn.style.cssText = [
+        'margin-top:8px;background:none',
+        'border:1px solid rgba(255,255,255,0.20);border-radius:100px',
+        'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
+        'padding:10px 28px;cursor:pointer;touch-action:manipulation',
+      ].join(';')
+
+      const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
+      overlay.addEventListener('click', close)
+      closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
+      closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
+
+      overlay.appendChild(icon)
+      overlay.appendChild(title)
+      overlay.appendChild(desc)
+      overlay.appendChild(closeBtn)
+
+    } else {
+      // 일반 브라우저 / 카톡 등: 롱프레스 저장 모달
+      const hint = document.createElement('p')
+      hint.textContent = '이미지를 꾹 눌러서 저장하세요'
+      hint.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.04em'
+
+      const img = document.createElement('img')
+      img.src = dataUrl
+      img.alt = '탄생별 결과 이미지'
+      img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;-webkit-touch-callout:default'
+      img.addEventListener('click', e => e.stopPropagation())
+
+      const closeBtn = document.createElement('button')
+      closeBtn.textContent = '닫기'
+      closeBtn.style.cssText = [
+        'background:none;border:1px solid rgba(255,255,255,0.20);border-radius:100px',
+        'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
+        'padding:10px 28px;cursor:pointer;touch-action:manipulation',
+      ].join(';')
+
+      const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
+      overlay.addEventListener('click', close)
+      closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
+      closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
+
+      overlay.appendChild(hint)
+      overlay.appendChild(img)
+      overlay.appendChild(closeBtn)
     }
 
-    overlay.addEventListener('click', close)
-    closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
-    closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
-
-    overlay.appendChild(hint)
-    overlay.appendChild(img)
-    overlay.appendChild(closeBtn)
     document.body.appendChild(overlay)
   }
 
