@@ -2,8 +2,9 @@ import { useEffect, useState, type ReactNode } from 'react'
 import type { MatchResult, Star } from '../lib'
 
 interface Props {
-  result:  MatchResult
-  onReset: () => void
+  result:    MatchResult
+  onReset:   () => void
+  birthdate: string   // 공유 URL 생성에 사용
 }
 
 // ── 스펙트럼 → 시각 특성 파싱 ──────────────────────
@@ -154,7 +155,7 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
 }
 
 // ── 컴포넌트 ─────────────────────────────────────────
-export default function ResultScene({ result, onReset }: Props) {
+export default function ResultScene({ result, onReset, birthdate }: Props) {
   const [visible,  setVisible]  = useState(false)
   const [modal,    setModal]    = useState<'mag' | 'spect' | null>(null)
   const [expanded, setExpanded] = useState(false)
@@ -167,9 +168,12 @@ export default function ResultScene({ result, onReset }: Props) {
   }, [])
 
   async function handleShare() {
-    const url  = window.location.href
-    const text = result.type !== 'NO_STAR' && result.star
-      ? `당신이 태어난 날 출발한 빛이 오늘 지구에 닿았습니다 — ${starDisplayName(result.star)} (${result.star.dist_ly.toFixed(2)} 광년)`
+    // 생년월일을 URL 파라미터로 인코딩 (YYYYMMDD)
+    const bdate  = birthdate.replace(/\D/g, '')
+    const base   = `${window.location.origin}${window.location.pathname}`
+    const url    = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
+    const text   = result.type !== 'NO_STAR' && result.star
+      ? `당신이 태어난 날 출발한 빛이 오늘 지구에 닿았습니다 — ${starDisplayName(result.star)}`
       : '당신이 태어난 날 출발한 빛을 찾아보세요'
 
     if (navigator.share) {
@@ -184,7 +188,6 @@ export default function ResultScene({ result, onReset }: Props) {
   function handleSave() {
     if (!result.star) return
     const src = document.querySelector('canvas') as HTMLCanvasElement | null
-    if (!src) return
 
     const IW = 1080, IH = 1920
     const out = document.createElement('canvas')
@@ -194,23 +197,55 @@ export default function ResultScene({ result, onReset }: Props) {
     const BAND   = 22
     const cardY  = IH * 0.62
 
-    // ── 배경: 먼저 어두운 색으로 채워 빈 영역 방지 ──
+    // ── 배경 ──
     ctx.fillStyle = '#07090f'
     ctx.fillRect(0, 0, IW, IH)
 
-    // ── WebGL canvas → cover 스케일, 별 중심을 날짜~별이름 사이 정중앙에 배치 ──
+    // ── WebGL canvas 복사 (CORS taint 시 procedural 별 배경으로 폴백) ──
     const dateBottomY = BAND + 72 + 20
     const targetStarY = (dateBottomY + cardY) / 2
 
-    const srcW = src.width, srcH = src.height
-    // cover: 출력 전체를 덮도록 더 큰 배율로 스케일
-    const scale   = Math.max(IW / srcW, IH / srcH)
-    const scaledW = srcW * scale
-    const scaledH = srcH * scale
-    // 별(소스 중심)이 수평 가운데, 수직 targetStarY에 오도록 오프셋
-    const drawX = IW / 2 - scaledW / 2
-    const drawY = targetStarY - scaledH / 2
-    ctx.drawImage(src, 0, 0, srcW, srcH, drawX, drawY, scaledW, scaledH)
+    let canvasCopied = false
+    if (src) {
+      try {
+        const srcW = src.width, srcH = src.height
+        const scale   = Math.max(IW / srcW, IH / srcH)
+        const scaledW = srcW * scale
+        const scaledH = srcH * scale
+        const drawX = IW / 2 - scaledW / 2
+        const drawY = targetStarY - scaledH / 2
+        ctx.drawImage(src, 0, 0, srcW, srcH, drawX, drawY, scaledW, scaledH)
+        // taint 확인: toDataURL 호출 시 에러나면 catch로 이동
+        out.toDataURL('image/png').slice(0, 10)
+        canvasCopied = true
+      } catch {
+        // cross-origin taint → procedural fallback
+        ctx.fillStyle = '#07090f'
+        ctx.fillRect(0, 0, IW, IH)
+      }
+    }
+
+    // procedural 별 배경 (canvas 복사 실패 또는 src 없을 때)
+    if (!canvasCopied) {
+      const rng = (n: number) => Math.random() * n
+      for (let i = 0; i < 320; i++) {
+        const x = rng(IW), y = rng(cardY + 60)
+        const r = Math.random() < 0.05 ? rng(2.2) + 0.8 : rng(1.2) + 0.3
+        const a = Math.random() * 0.7 + 0.3
+        ctx.beginPath()
+        ctx.arc(x, y, r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255,255,255,${a.toFixed(2)})`
+        ctx.fill()
+      }
+      // 별 글로우 (결과 별 중심)
+      const gx = IW / 2, gy = targetStarY
+      const grd = ctx.createRadialGradient(gx, gy, 0, gx, gy, 120)
+      grd.addColorStop(0,   ACCENT.replace(')', ',0.9)').replace('rgb(', 'rgba('))
+      grd.addColorStop(0.3, ACCENT.replace(')', ',0.3)').replace('rgb(', 'rgba('))
+      grd.addColorStop(1,   'rgba(7,9,15,0)')
+      ctx.fillStyle = grd
+      ctx.fillRect(gx - 120, gy - 120, 240, 240)
+    }
 
     // ── 하단 그라디언트 오버레이 ──
     const grad = ctx.createLinearGradient(0, cardY - 80, 0, IH)
@@ -270,14 +305,27 @@ export default function ResultScene({ result, onReset }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 다운로드 ──
-    out.toBlob(blob => {
+    // ── 저장 (카톡/모바일: navigator.share, 그 외: 다운로드) ──
+    out.toBlob(async blob => {
       if (!blob) return
+      const fileName = `unibirth_${dateStr}.png`
+      const file = new File([blob], fileName, { type: 'image/png' })
+      // navigator.share (카카오톡 인앱브라우저, iOS Safari 등)
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: 'Unibirth' })
+          return
+        } catch {
+          // 취소하거나 실패 → 다운로드 폴백
+        }
+      }
       const url = URL.createObjectURL(blob)
       const a   = document.createElement('a')
       a.href     = url
-      a.download = `unibirth_${dateStr}.png`
+      a.download = fileName
+      document.body.appendChild(a)
       a.click()
+      document.body.removeChild(a)
       URL.revokeObjectURL(url)
     }, 'image/png')
   }

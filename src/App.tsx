@@ -1,22 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import LandingScene from './components/LandingScene'
 import TransitScene from './components/TransitScene'
 import ResultScene from './components/ResultScene'
+import SharedScene from './components/SharedScene'
 import { validateBirthdate, calcAgeFromString, findNearestStar } from './lib'
 import type { MatchResult } from './lib'
 import starsData from './data/stars.json'
 import type { Star } from './lib'
 import './index.css'
 
-type Stage = 'landing' | 'transit' | 'result'
+type Stage = 'landing' | 'transit' | 'result' | 'shared'
 
 const stars = starsData as Star[]
 
 export default function App() {
-  const [stage,   setStage]   = useState<Stage>('landing')
-  const [input,   setInput]   = useState('')
-  const [result,  setResult]  = useState<MatchResult | null>(null)
-  const [leaving, setLeaving] = useState(false)
+  const [stage,     setStage]     = useState<Stage>('landing')
+  const [input,     setInput]     = useState('')
+  const [result,    setResult]    = useState<MatchResult | null>(null)
+  const [leaving,   setLeaving]   = useState(false)
+
+  // 공유 링크 처리: ?bdate=YYYYMMDD
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const bdate  = params.get('bdate')
+    if (!bdate) return
+
+    const digits = bdate.replace(/\D/g, '')
+    if (digits.length !== 8) return
+
+    const formatted = `${digits.slice(0,4)}-${digits.slice(4,6)}-${digits.slice(6,8)}`
+    const validation = validateBirthdate(formatted)
+    if (!validation.valid) return
+
+    const age   = calcAgeFromString(formatted)
+    const match = findNearestStar(age.years, stars)
+    setResult(match)
+    setStage('shared')
+  }, [])
 
   function handleSearch() {
     const validation = validateBirthdate(input)
@@ -25,13 +45,11 @@ export default function App() {
     const age   = calcAgeFromString(input)
     const match = findNearestStar(age.years, stars)
     setResult(match)
-    setLeaving(true)  // LandingScene이 이탈 애니메이션 시작
-    // stage는 아직 'landing' — onLeavingDone에서 'transit'으로 전환
+    setLeaving(true)
   }
 
   function handleLeavingDone() {
     setLeaving(false)
-    // NO_STAR(gap >= 180일 또는 데이터 없음)는 transit 생략, 바로 결과
     if (result?.type === 'NO_STAR') {
       setStage('result')
     } else {
@@ -50,8 +68,20 @@ export default function App() {
     setStage('landing')
   }
 
+  function handleTryService() {
+    window.history.replaceState({}, '', window.location.pathname)
+    setResult(null)
+    setInput('')
+    setStage('landing')
+  }
+
   return (
     <div className="app">
+      {/* 공유 링크로 접속한 경우 */}
+      {stage === 'shared' && result && (
+        <SharedScene result={result} onTryService={handleTryService} />
+      )}
+
       {stage === 'landing' && (
         <LandingScene
           input={input}
@@ -62,7 +92,7 @@ export default function App() {
           onLeavingDone={handleLeavingDone}
         />
       )}
-      {/* TransitScene은 result 단계에서도 유지 — ResultScene이 위에 overlay */}
+
       {(stage === 'transit' || stage === 'result') && result && (
         <TransitScene
           result={result}
@@ -70,10 +100,12 @@ export default function App() {
           onComplete={handleTransitComplete}
         />
       )}
+
       {stage === 'result' && result && (
         <ResultScene
           result={result}
           onReset={handleReset}
+          birthdate={input}
         />
       )}
     </div>
