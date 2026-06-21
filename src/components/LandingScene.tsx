@@ -33,6 +33,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   const [error,        setError]        = useState<ValidationError | null>(null)
   const [showUI,       setShowUI]       = useState(true)
   const [landingCopied, setLandingCopied] = useState(false)
+  const [focused,      setFocused]      = useState(false)
 
   // ── Three.js ─────────────────────────────────────────
   useEffect(() => {
@@ -94,7 +95,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
     scene.add(clouds)
     loader.load(`${BASE}/earth_clouds_1024.png`, (t) => { cloudMat.map = t; cloudMat.needsUpdate = true })
 
-    const atmoMat = new THREE.MeshPhongMaterial({ color: 0x4a9eff, transparent: true, opacity: 0.07, side: THREE.FrontSide })
+    const atmoMat = new THREE.MeshPhongMaterial({ color: 0x60c8ff, transparent: true, opacity: 0.07, side: THREE.FrontSide })
     scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.05, 64, 64), atmoMat))
 
     earthMatsRef.current = [earthMat, cloudMat, atmoMat]
@@ -168,76 +169,84 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   }, [])
 
   // ── 입력 핸들러 ─────────────────────────────────────
-  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const raw     = e.target.value.replace(/\D/g, '').slice(0, 8)
+  function updateFromRaw(raw: string) {
     let formatted = raw
-    if (raw.length > 4) formatted = raw.slice(0, 4) + '.' + raw.slice(4)
-    if (raw.length > 6) formatted = raw.slice(0, 4) + '.' + raw.slice(4, 6) + '.' + raw.slice(6)
+    if (raw.length > 4) formatted = raw.slice(0,4) + '.' + raw.slice(4)
+    if (raw.length > 6) formatted = raw.slice(0,4) + '.' + raw.slice(4,6) + '.' + raw.slice(6)
     onInputChange(formatted)
     if (raw.length === 8) {
       const v = validateBirthdate(formatted)
       setError(v.valid ? null : (v.error ?? null))
     } else {
-      setError(null)
+      validatePartial(raw)
     }
   }
 
-  const digits  = input.replace(/\D/g, '')
-  const isReady = digits.length === 8 && !error
+  function validatePartial(raw: string) {
+    setError(null)
+    if (raw.length < 4) return
+    const year = parseInt(raw.slice(0,4), 10)
+    const now   = new Date().getFullYear()
+    if (year > now)        { setError('FUTURE_DATE');  return }
+    if (year < now - 120)  { setError('OUT_OF_RANGE'); return }
+    if (raw.length < 6)    return
+    const month = parseInt(raw.slice(4,6), 10)
+    if (month < 1 || month > 12) { setError('INVALID_DATE'); return }
+  }
+
+  // onChange: 모바일 fallback (자릿수 변화 시에만 반응)
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const newRaw = e.target.value.replace(/\D/g,'').slice(0,8)
+    if (newRaw !== digits) updateFromRaw(newRaw)
+  }
+
+  // onKeyDown: backspace로 마스크 고착 방지 + Enter
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter')     { if (isReady) onSearch(); return }
+    if (e.key === 'Backspace') {
+      e.preventDefault()
+      if (digits.length > 0) updateFromRaw(digits.slice(0,-1))
+    }
+  }
+
+  // digits → "1999년 06월 21일" (0 패딩 없이 입력된 만큼만)
+  function toDisplay(raw: string): string {
+    if (raw.length === 0) return ''
+    if (raw.length <= 4)  return raw
+    if (raw.length <= 6)  return raw.slice(0,4) + '년 ' + raw.slice(4)
+    const d = raw.slice(6)
+    return raw.slice(0,4) + '년 ' + raw.slice(4,6) + '월 ' + (d.length === 2 ? d + '일' : d)
+  }
+
+  const digits       = input.replace(/\D/g, '')
+  const isReady      = digits.length === 8 && !error
+  const displayValue = toDisplay(digits)
+
+  // 마스크 오버레이: 입력된 자리는 흰색, 미입력 자리는 뮤트 색
+  function renderMask(): React.ReactNode {
+    const W = '#ffffff'
+    const M = 'var(--text-muted)'
+    if (digits.length === 0) {
+      const txt = focused ? '0000년 00월 00일' : '생년월일 8자리를 입력해주세요'
+      return <span style={{ color: M }}>{txt}</span>
+    }
+    const s = (i: number) => {
+      const c = digits[i]
+      return <span key={i} style={{ color: c !== undefined ? W : M }}>{c ?? '0'}</span>
+    }
+    return <>
+      {s(0)}{s(1)}{s(2)}{s(3)}
+      <span style={{ color: digits.length >= 4 ? W : M }}>년 </span>
+      {s(4)}{s(5)}
+      <span style={{ color: digits.length >= 6 ? W : M }}>월 </span>
+      {s(6)}{s(7)}
+      <span style={{ color: digits.length >= 8 ? W : M }}>일</span>
+    </>
+  }
 
   return (
     <div style={styles.wrap} className="scene-wrap">
       <canvas ref={canvasRef} style={styles.canvas} />
-
-      {/* 우측 상단 공유 버튼 */}
-      <button
-        onClick={handleLandingShare}
-        title="공유하기"
-        style={{
-          position: 'absolute',
-          top: '24px',
-          right: '28px',
-          zIndex: 2,
-          background: 'rgba(7,9,15,0.5)',
-          border: `1px solid ${landingCopied ? 'rgba(160,220,160,0.4)' : 'rgba(255,255,255,0.16)'}`,
-          borderRadius: '50%',
-          width: '36px',
-          height: '36px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          color: landingCopied ? 'rgba(160,220,160,0.9)' : 'rgba(255,255,255,0.45)',
-          backdropFilter: 'blur(8px)',
-          transition: 'border-color 0.15s, color 0.15s, opacity 0.35s',
-          opacity: showUI ? 1 : 0,
-          pointerEvents: showUI ? 'auto' : 'none',
-        }}
-        onMouseEnter={e => {
-          if (landingCopied) return
-          const b = e.currentTarget
-          b.style.borderColor = 'rgba(255,255,255,0.38)'
-          b.style.color = 'rgba(255,255,255,0.85)'
-        }}
-        onMouseLeave={e => {
-          if (landingCopied) return
-          const b = e.currentTarget
-          b.style.borderColor = 'rgba(255,255,255,0.16)'
-          b.style.color = 'rgba(255,255,255,0.45)'
-        }}
-      >
-        {landingCopied ? (
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <polyline points="2,7 6,11 12,3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        ) : (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <path d="M9 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-            <polyline points="15,3 21,3 21,9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-            <line x1="21" y1="3" x2="11" y2="13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-          </svg>
-        )}
-      </button>
 
       {/* 이탈 애니메이션 중 캡션 */}
       <p style={{
@@ -257,25 +266,36 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         <p style={styles.sub}>당신이 태어난 바로 그날<br />출발한 빛을 찾아보세요</p>
 
         <div style={styles.inputGroup}>
-          <div style={{ ...styles.fieldWrap, ...(digits.length > 0 ? styles.fieldFocused : {}) }}>
-            <span style={styles.fieldLabel}>생년월일</span>
-            <input
-              type="text" inputMode="numeric" placeholder="YYYY . MM . DD"
-              value={input} onChange={handleInput}
-              onKeyDown={(e) => e.key === 'Enter' && isReady && onSearch()}
-              style={styles.dateInput} maxLength={10}
-            />
+          <div style={{ ...styles.fieldWrap, ...(isReady ? styles.fieldFocused : focused ? styles.fieldActive : {}) }}>
+            <div style={styles.inputWrapper}>
+              <input
+                type="text" inputMode="numeric"
+                placeholder=""
+                value={displayValue}
+                onChange={handleInput}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                style={{ ...styles.dateInput, color: 'transparent' }}
+                maxLength={14}
+              />
+              <div style={styles.maskOverlay} aria-hidden="true">
+                {renderMask()}
+              </div>
+            </div>
+            <button
+              onClick={onSearch} disabled={!isReady}
+              style={{ ...(isReady ? styles.ctaActive : styles.ctaDisabled) }}
+              onMouseEnter={e => { if (isReady) (e.currentTarget as HTMLButtonElement).style.opacity = '0.7' }}
+              onMouseLeave={e => { if (isReady) (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
           </div>
 
           {error && <p style={styles.errorMsg}>{ERROR_MSG[error]}</p>}
-
-          <button
-            onClick={onSearch} disabled={!isReady}
-            className={isReady ? 'cta-active' : ''}
-            style={{ ...styles.cta, ...(isReady ? styles.ctaActive : styles.ctaDisabled) }}
-          >
-            탐색하기 →
-          </button>
         </div>
       </div>
 
@@ -299,15 +319,16 @@ const styles: Record<string, React.CSSProperties> = {
   canvas:  { position: 'absolute', top: 0, left: 0 },
   content: { position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' },
   sub:     { fontSize: '24px', fontWeight: 700, color: '#ffffff', textAlign: 'center', lineHeight: 1.5, textShadow: '0 2px 16px rgba(0,0,0,0.85), 0 0 40px rgba(0,0,0,0.6)', letterSpacing: '-0.01em' },
-  inputGroup:   { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' },
-  fieldWrap:    { display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', padding: '14px 20px', background: 'rgba(7,9,15,0.6)', backdropFilter: 'blur(8px)', transition: 'border-color 0.2s, box-shadow 0.2s', minWidth: '280px' },
-  fieldFocused: { borderColor: 'rgba(200,184,240,0.6)', boxShadow: '0 0 0 3px rgba(200,184,240,0.12)' },
-  fieldLabel:   { fontSize: '10px', fontWeight: 400, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: '#9896b0', whiteSpace: 'nowrap' as const },
-  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'DM Serif Display', serif", fontSize: '20px', fontWeight: 400, color: '#ffffff', letterSpacing: '0.04em', width: '160px', caretColor: 'var(--accent)' },
+  inputGroup:   { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' },
+  fieldWrap:    { display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', padding: '10px 10px 10px 20px', background: 'rgba(7,9,15,0.6)', backdropFilter: 'blur(8px)', transition: 'border-color 0.2s, box-shadow 0.2s', minWidth: '300px' },
+  fieldActive:  { borderColor: 'rgba(255,255,255,0.32)' },
+  fieldFocused: { borderColor: 'rgba(43,125,233,0.6)', boxShadow: '0 0 0 3px rgba(43,125,233,0.12)' },
+  inputWrapper: { position: 'relative', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' },
+  maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
+  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },
   errorMsg:     { fontSize: '12px', fontWeight: 400, color: '#ff8080', letterSpacing: '0.03em', textShadow: '0 1px 8px rgba(0,0,0,0.8)' },
-  cta:          { padding: '13px 32px', borderRadius: '8px', fontSize: '14px', fontFamily: "'Inter', sans-serif", fontWeight: 700, letterSpacing: '0.08em', cursor: 'pointer', transition: 'all 0.2s', background: 'transparent' },
-  ctaActive:    { border: '1px solid rgba(200,184,240,0.55)', color: '#ffffff' },
-  ctaDisabled:  { border: '1px solid rgba(255,255,255,0.1)', color: '#6e6c82', cursor: 'not-allowed' },
+  ctaActive:    { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'var(--accent)', cursor: 'pointer', flexShrink: 0, transition: 'opacity 0.2s' },
+  ctaDisabled:  { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.20)', cursor: 'not-allowed', flexShrink: 0 },
   caption: {
     position: 'absolute',
     top: '50%', left: '50%',

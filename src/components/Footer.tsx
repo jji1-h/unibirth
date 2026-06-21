@@ -9,7 +9,7 @@ export default function Footer() {
       justifyContent: 'center',
       gap: '20px',
       fontSize: '11px',
-      color: 'rgba(255,255,255,0.22)',
+      color: 'rgba(255,255,255,0.20)',
       letterSpacing: '0.05em',
       userSelect: 'none',
     }}>
@@ -18,12 +18,12 @@ export default function Footer() {
       <a
         href="/privacy.html"
         style={{
-          color: 'rgba(255,255,255,0.22)',
+          color: 'rgba(255,255,255,0.20)',
           textDecoration: 'none',
           transition: 'color 0.15s',
         }}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.22)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.20)')}
       >
         개인정보처리방침
       </a>
@@ -33,12 +33,12 @@ export default function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         style={{
-          color: 'rgba(255,255,255,0.22)',
+          color: 'rgba(255,255,255,0.20)',
           textDecoration: 'none',
           transition: 'color 0.15s',
         }}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.22)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.20)')}
       >
         GitHub
       </a>

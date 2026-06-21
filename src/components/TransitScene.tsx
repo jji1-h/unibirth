@@ -12,8 +12,19 @@ interface Props {
   onComplete: () => void
 }
 
-function spectToColorHex(spect: string | null): number {
-  if (!spect) return 0xfff4e8
+function spectToColorHex(spect: string | null, ci?: number | null): number {
+  if (!spect) {
+    // spect 없으면 색지수(ci)로 fallback
+    if (ci != null) {
+      if (ci < -0.1) return 0x9bb0ff
+      if (ci <  0.2) return 0xd8e8ff
+      if (ci <  0.5) return 0xfff5e4
+      if (ci <  0.8) return 0xffe87a
+      if (ci <  1.4) return 0xffb347
+      return 0xff6b35
+    }
+    return 0xfff4e8
+  }
   if (/^D/i.test(spect)) {
     const m = spect.match(/(\d+\.?\d*)/)
     const t = m ? parseFloat(m[1]) : 6
@@ -189,12 +200,12 @@ export default function TransitScene({ result, stars, onComplete }: Props) {
     tLoader.load(`${BASE}/earth_clouds_1024.png`, (t) => { cloudMat.map = t; cloudMat.needsUpdate = true })
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.05, 32, 32),
-      new THREE.MeshPhongMaterial({ color: 0x4a9eff, transparent: true, opacity: 0.07, side: THREE.FrontSide })
+      new THREE.MeshPhongMaterial({ color: 0x60c8ff, transparent: true, opacity: 0.07, side: THREE.FrontSide })
     ))
 
     // ── 목적지 별 파라미터 ────────────────────────────
     const destStar   = result.type !== 'NO_STAR' ? result.star : null
-    const colorHex   = spectToColorHex(destStar?.spect ?? null)
+    const colorHex   = spectToColorHex(destStar?.spect ?? null, destStar?.ci)
     const absmag     = destStar?.absmag ?? 5
     const starRadius = Math.min(Math.max((20 - absmag) / 16, 0.22), 1.50)
     const starColor  = new THREE.Color(colorHex)

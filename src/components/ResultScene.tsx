@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { MatchResult, Star } from '../lib'
 
 interface Props {
@@ -60,9 +60,66 @@ function parseSpect(
   return DEFAULT
 }
 
+function contrastColor(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+  const lin = (c: number) => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+  const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+  return L > 0.179 ? '#1a1a2e' : '#ffffff'
+}
+
 function starParams(star: Star | null) {
   const { colorCss } = parseSpect(star?.spect ?? null, star?.ci, star?.absmag)
   return { colorCss }
+}
+
+// ── 별 스토리 자동 생성 ──────────────────────────────
+function starStory(star: Star): string {
+  const spect  = star.spect?.trim() ?? null
+  const mag    = star.mag
+  const con    = star.con
+
+  // 첫 문장: 분광형 기반
+  let line1 = ''
+  if (spect) {
+    if (/^D/i.test(spect)) {
+      line1 = '한때 태양 같은 별이었지만 일생을 마치고 서서히 식어가는 백색왜성입니다.'
+    } else {
+      const letter = spect.match(/[OBAFGKMobafgkm]/)?.[0]?.toUpperCase()
+      if (letter === 'O' || letter === 'B') line1 = '우주에서 가장 뜨거운 부류의 별로, 표면 온도가 태양의 수 배에 달하며 강렬한 파란빛을 냅니다.'
+      else if (letter === 'A') line1 = '베가나 시리우스와 같은 유형의 흰 별로, 태양보다 뜨겁고 밝게 빛납니다.'
+      else if (letter === 'F') line1 = '태양보다 조금 더 뜨겁고 밝은 황백색 별로, 태양과 적색왜성의 중간쯤에 해당합니다.'
+      else if (letter === 'G') line1 = '우리 태양과 같은 유형의 별로, 안정적인 황백색 빛을 내며 비슷한 수명을 가집니다.'
+      else if (letter === 'K') line1 = '태양보다 조금 작고 차가운 주황색 별로, 조용하고 안정적으로 오랫동안 빛납니다.'
+      else if (letter === 'M') line1 = '적색왜성으로, 태양보다 훨씬 작고 붉지만 연료를 천천히 소모해 수천억 년을 살아갑니다.'
+    }
+  }
+  if (!line1) {
+    const ci = star.ci
+    if (ci != null) {
+      if (ci < 0.2)      line1 = '흰빛 혹은 파란빛을 내는 뜨거운 별입니다.'
+      else if (ci < 0.8) line1 = '태양과 비슷한 유형의 별로, 따뜻한 황백색 빛을 냅니다.'
+      else if (ci < 1.4) line1 = '주황빛을 내는 별로, 태양보다 조금 더 붉고 차갑습니다.'
+      else               line1 = '적색왜성으로 추정되는 별로, 붉은빛을 내며 오랜 시간 빛납니다.'
+    } else {
+      line1 = '광활한 우주에서 묵묵히 빛을 보내고 있는 별입니다.'
+    }
+  }
+
+  // 두 번째 문장: 관측 가능 여부 or 별자리 or fallback
+  let line2 = ''
+  if (mag != null && mag <= 6) {
+    line2 = `겉보기 등급 ${mag.toFixed(1)}로, 맑은 날 밤하늘에서 맨눈으로도 찾아볼 수 있어요.`
+  } else if (con && CON_KO[con]) {
+    line2 = `${CON_KO[con]}자리 방향으로 빛나고 있으며, 망원경으로 관측할 수 있어요.`
+  } else if (mag != null) {
+    line2 = `겉보기 등급 ${mag.toFixed(1)}로, 망원경이 있어야 볼 수 있을 만큼 어두운 별이에요.`
+  } else {
+    line2 = '아직 밝기 정보가 충분히 알려지지 않은 별이에요.'
+  }
+
+  return `${line1} ${line2}`
 }
 
 // ── 카피 ─────────────────────────────────────────────
@@ -181,7 +238,7 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: 'rgba(13,16,32,0.96)',
+          background: 'rgba(7,9,15,0.97)',
           border: '1px solid rgba(255,255,255,0.12)',
           borderRadius: '14px',
           padding: '28px 32px',
@@ -195,7 +252,7 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
           onClick={onClose}
           style={{
             position: 'absolute', top: '14px', right: '16px',
-            background: 'none', border: 'none', color: 'rgba(255,255,255,0.35)',
+            background: 'none', border: 'none', color: 'rgba(255,255,255,0.40)',
             fontSize: '18px', cursor: 'pointer', lineHeight: 1,
           }}
         >×</button>
@@ -211,12 +268,25 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
   const [expanded,      setExpanded]      = useState(false)
   const [copied,        setCopied]        = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
+  const [isClamped,     setIsClamped]     = useState(false)
+  const textRef = useRef<HTMLParagraphElement>(null)
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 500)
     return () => clearTimeout(t)
   }, [])
+
+  // 텍스트 잘림 여부 측정 (해상도/폰트 크기 기반)
+  useEffect(() => {
+    const el = textRef.current
+    if (!el) return
+    const check = () => setIsClamped(el.scrollHeight > el.clientHeight + 1)
+    check()
+    const ro = new ResizeObserver(check)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [result, expanded])
 
   async function handleShareLink() {
     setShowShareMenu(false)
@@ -376,18 +446,18 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
       const title = document.createElement('p')
       title.textContent = 'Instagram에서는 이미지 저장이 제한돼요'
-      title.style.cssText = 'color:rgba(255,255,255,0.85);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
+      title.style.cssText = 'color:rgba(255,255,255,0.90);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
 
       const desc = document.createElement('p')
       desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'
-      desc.style.cssText = 'color:rgba(255,255,255,0.50);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
+      desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
 
       const closeBtn = document.createElement('button')
       closeBtn.textContent = '닫기'
       closeBtn.style.cssText = [
         'margin-top:8px;background:none',
         'border:1px solid rgba(255,255,255,0.20);border-radius:100px',
-        'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
+        'color:rgba(255,255,255,0.40);font-size:13px;font-family:sans-serif',
         'padding:10px 28px;cursor:pointer;touch-action:manipulation',
       ].join(';')
 
@@ -417,7 +487,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       closeBtn.textContent = '닫기'
       closeBtn.style.cssText = [
         'background:none;border:1px solid rgba(255,255,255,0.20);border-radius:100px',
-        'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
+        'color:rgba(255,255,255,0.40);font-size:13px;font-family:sans-serif',
         'padding:10px 28px;cursor:pointer;touch-action:manipulation',
       ].join(';')
 
@@ -463,7 +533,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
               <strong style={{ color: 'var(--accent)' }}>{nearestName}</strong>입니다.
             </p>
           )}
-          <button onClick={onReset} style={styles.resetBtn}>← 돌아가기</button>
+          <button onClick={onReset} className="reset-btn-hover" style={styles.resetBtn}>← 돌아가기</button>
         </div>
       </div>
     )
@@ -494,7 +564,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           font-size: 10px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.38);
+          color: rgba(255,255,255,0.40);
           font-family: 'Inter', sans-serif;
           font-weight: 400;
         }
@@ -511,9 +581,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           width: 15px;
           height: 15px;
           border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.22);
+          border: 1px solid rgba(255,255,255,0.20);
           background: none;
-          color: rgba(255,255,255,0.35);
+          color: rgba(255,255,255,0.40);
           font-size: 9px;
           font-family: 'Inter', sans-serif;
           font-weight: 600;
@@ -524,12 +594,12 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           pointer-events: auto;
         }
         .chip-info-btn:hover {
-          border-color: rgba(255,255,255,0.55);
+          border-color: rgba(255,255,255,0.40);
           color: rgba(255,255,255,0.75);
         }
         .modal-body {
           font-size: 13px;
-          color: rgba(255,255,255,0.60);
+          color: rgba(255,255,255,0.55);
           line-height: 1.75;
           font-family: 'Inter', sans-serif;
           white-space: pre-line;
@@ -548,10 +618,10 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           font-family: 'Inter', sans-serif;
         }
         .modal-table-label {
-          color: rgba(255,255,255,0.35);
+          color: rgba(255,255,255,0.40);
         }
         .modal-table-value {
-          color: rgba(255,255,255,0.72);
+          color: rgba(255,255,255,0.75);
           font-weight: 500;
           font-variant-numeric: tabular-nums;
         }
@@ -564,19 +634,19 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         .modal-row-label {
           font-size: 12px;
           font-weight: 600;
-          color: rgba(255,255,255,0.65);
+          color: rgba(255,255,255,0.75);
           font-family: 'Inter', sans-serif;
           min-width: 72px;
         }
         .modal-row-value {
           font-size: 12px;
-          color: rgba(255,255,255,0.42);
+          color: rgba(255,255,255,0.55);
           font-family: 'Inter', sans-serif;
         }
         .modal-note {
           margin-top: 14px;
           font-size: 11px;
-          color: rgba(255,255,255,0.28);
+          color: rgba(255,255,255,0.25);
           font-family: 'Inter', sans-serif;
           line-height: 1.6;
         }
@@ -592,7 +662,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           position: absolute;
           top: 58px;
           right: 12px;
-          background: rgba(18,20,36,0.97);
+          background: rgba(7,9,15,0.97);
           border: 1px solid rgba(255,255,255,0.12);
           border-radius: 10px;
           overflow: hidden;
@@ -608,7 +678,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           padding: 13px 16px;
           background: none;
           border: none;
-          color: rgba(255,255,255,0.75);
+          color: rgba(255,255,255,0.70);
           font-size: 13px;
           font-family: 'Inter', sans-serif;
           cursor: pointer;
@@ -621,7 +691,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         }
         .share-menu-item:hover {
           background: rgba(255,255,255,0.06);
-          color: rgba(255,255,255,0.95);
+          color: rgba(255,255,255,0.90);
         }
         .expand-section {
           overflow: hidden;
@@ -634,20 +704,24 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           opacity: 1;
         }
         .more-btn {
+          display: inline;
           background: none;
           border: none;
           padding: 0;
-          color: rgba(255,255,255,0.30);
-          font-size: 11px;
+          color: var(--text-dim);
+          font-size: 12px;
           font-family: 'Inter', sans-serif;
-          letter-spacing: 0.08em;
+          font-weight: 400;
+          line-height: 1.8;
           cursor: pointer;
-          transition: color 0.15s;
-          align-self: center;
           pointer-events: auto;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-color: var(--text-dim);
         }
         .more-btn:hover {
-          color: rgba(255,255,255,0.65);
+          color: var(--text-muted);
+          text-decoration-color: var(--text-muted);
         }
       `}</style>
 
@@ -707,113 +781,82 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         transition: 'opacity 0.9s ease, transform 0.9s ease',
         pointerEvents: 'auto',
         position: 'absolute',
+        border: `1px solid ${css}55`,
       }}>
 
-        {/* 공유 버튼 + 드롭다운 */}
-        <div style={{ position: 'absolute', top: '18px', right: '18px', pointerEvents: 'auto' }}>
-          <button
-            onClick={() => setShowShareMenu(v => !v)}
-            title="공유하기"
-            style={{
-              background: 'none',
-              border: `1px solid ${copied ? 'rgba(160,220,160,0.40)' : 'rgba(255,255,255,0.14)'}`,
-              borderRadius: '50%',
-              width: '32px',
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: copied ? 'rgba(160,220,160,0.85)' : 'rgba(255,255,255,0.40)',
-              transition: 'border-color 0.15s, color 0.15s',
-            }}
-            onMouseEnter={e => { if (!copied) {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.40)'
-              ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.80)'
-            }}}
-            onMouseLeave={e => { if (!copied) {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.14)'
-              ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.40)'
-            }}}
-          >
-            {copied ? (
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <polyline points="2,7 6,11 12,3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            ) : (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                <path d="M9 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-                <polyline points="15,3 21,3 21,9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                <line x1="21" y1="3" x2="11" y2="13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-              </svg>
-            )}
-          </button>
-
-          {showShareMenu && (
-            <>
-              {/* 바깥 클릭 시 닫기 */}
-              <div
-                onClick={() => setShowShareMenu(false)}
-                style={{ position: 'fixed', inset: 0, zIndex: 9 }}
-              />
-              <div className="share-menu">
-                <button className="share-menu-item" onClick={handleShareLink}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  링크 공유
-                </button>
-                <button className="share-menu-item" onClick={() => { setShowShareMenu(false); handleSave() }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
-                    <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-                    <polyline points="21,15 16,10 5,21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  이미지로 공유
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        <h1 style={{ ...styles.starName, color: css }}>
-          {starDisplayName(star)}
-        </h1>
-
-        <p style={styles.distLine}>
-          지구로부터&nbsp;
-          <span style={{ color: css, fontWeight: 600 }}>
+        {/* 발견 문장 */}
+        <p style={{
+          fontSize: '13px',
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 300,
+          color: 'rgba(255,255,255,0.50)',
+          margin: 0,
+          lineHeight: 1.6,
+        }}>
+          지구로부터{' '}
+          <span style={{ color: css, fontWeight: 500 }}>
             {(star?.dist_ly ?? 0).toFixed(2)} 광년
+          </span>{' '}
+          떨어진{' '}
+          <span style={{ color: css, fontWeight: 500 }}>
+            {starDisplayName(star)}
           </span>
+          을(를) 찾았습니다.
         </p>
 
-        <button className="more-btn" onClick={() => setExpanded(v => !v)}>
-          {expanded ? '접기 ↑' : '더보기 ↓'}
-        </button>
+        {/* 카피 + 스토리 */}
+        {(() => {
+          const copy = type === 'A'
+            ? '당신이 태어난 날 이 별을 출발한 빛이, 오늘 지구에 도달했습니다.'
+            : type === 'B'
+            ? `이 별에서 당신이 태어난 날 출발한 빛은 불과 ${gapText(gapDays ?? 0)} 전에 지구를 지나쳤습니다.`
+            : `당신이 태어난 날 이 별을 출발한 빛은 ${gapText(gapDays ?? 0)} 후 지구에 도착합니다.`
+          const story = star ? starStory(star) : ''
+          const fullText = story ? `${copy} ${story}` : copy
+
+          return (
+            <div style={{ position: 'relative' }}>
+              <p
+                ref={textRef}
+                style={{
+                  fontSize: '16px',
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 300,
+                  color: 'rgba(255,255,255,0.75)',
+                  lineHeight: 1.8,
+                  margin: 0,
+                  ...(!expanded ? {
+                    maxHeight: 'calc(1.8em * 2)',
+                    overflow: 'hidden',
+                  } : {}),
+                }}
+              >
+                {fullText}
+              </p>
+
+              {/* 말줄임 + 더보기 (접힌 상태 & 실제로 잘린 경우) */}
+              {!expanded && isClamped && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  width: '120px',
+                  height: 'calc(1.8em)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  background: 'linear-gradient(to right, transparent, rgba(7,9,15,1) 60%)',
+                }}>
+                  <button className="more-btn" onClick={() => setExpanded(true)}>더보기</button>
+                </div>
+              )}
+
+            </div>
+          )
+        })()}
 
         <div className={`expand-section${expanded ? ' open' : ''}`}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '10px' }}>
-            {type === 'A' ? (
-              <p style={styles.bodyText}>
-                당신이 태어난 날 이 별을 출발한 빛이, 오늘 지구에 도달했습니다.
-              </p>
-            ) : type === 'B' ? (
-              <div style={styles.disclosureBox}>
-                <p style={styles.disclosureText}>
-                  이 별에서 당신이 태어난 날 출발한 빛은 불과{' '}
-                  <strong style={{ color: 'var(--accent)' }}>{gapText(gapDays ?? 0)}</strong> 전에 지구를 지나쳤습니다.
-                </p>
-              </div>
-            ) : type === 'C' ? (
-              <div style={styles.disclosureBox}>
-                <p style={styles.disclosureText}>
-                  당신이 태어난 날 이 별을 출발한 빛은{' '}
-                  <strong style={{ color: 'var(--accent)' }}>{gapText(gapDays ?? 0)}</strong> 후 지구에 도착합니다.
-                </p>
-              </div>
-            ) : null}
-
             <div style={styles.metaRow}>
               {star?.mag != null && (
                 <span className="result-chip">
@@ -841,8 +884,64 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                 </span>
               )}
             </div>
+
+            {/* 접기 버튼 - 칩 아래 오른쪽 정렬 */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button className="more-btn" onClick={() => setExpanded(false)}>접기</button>
+            </div>
           </div>
         </div>
+
+        {/* 공유 버튼 - 하단 중앙 */}
+        <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', pointerEvents: 'auto' }}>
+          <button
+            onClick={() => setShowShareMenu(v => !v)}
+            style={{
+              background: copied ? 'rgba(160,220,160,0.25)' : css,
+              border: 'none',
+              borderRadius: '100px',
+              color: copied ? '#1a1a2e' : contrastColor(css),
+              fontSize: '13px',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 700,
+              letterSpacing: '0.03em',
+              cursor: 'pointer',
+              padding: '10px 24px',
+              transition: 'opacity 0.15s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.82' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
+          >
+            {copied ? '✓ 복사됨' : '결과 공유하기'}
+          </button>
+
+          {showShareMenu && (
+            <>
+              <div
+                onClick={() => setShowShareMenu(false)}
+                style={{ position: 'fixed', inset: 0, zIndex: 9 }}
+              />
+              <div className="share-menu" style={{ top: 'auto', bottom: '44px', right: 'auto' }}>
+                <button className="share-menu-item" onClick={handleShareLink}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  링크 공유
+                </button>
+                <button className="share-menu-item" onClick={() => { setShowShareMenu(false); handleSave() }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+                    <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+                    <polyline points="21,15 16,10 5,21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  이미지로 공유
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
       </div>
     </div>
   )
@@ -866,21 +965,11 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: '10px',
   },
-  typeLabel: {
-    fontSize: '10px',
-    letterSpacing: '0.18em',
-    textTransform: 'uppercase' as const,
-    color: 'var(--text-dim)',
-  },
   starName: {
     fontFamily: "'DM Serif Display', serif",
     fontSize: '30px',
     fontWeight: 400,
     lineHeight: 1.2,
-  },
-  distLine: {
-    fontSize: '14px',
-    color: 'var(--text-secondary)',
   },
   bodyText: {
     fontSize: '13px',
@@ -892,17 +981,6 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: 'wrap' as const,
     gap: '8px',
     marginTop: '6px',
-  },
-  disclosureBox: {
-    background: 'rgba(200,184,240,0.07)',
-    border: '1px solid rgba(200,184,240,0.15)',
-    borderRadius: '8px',
-    padding: '12px 16px',
-  },
-  disclosureText: {
-    fontSize: '12px',
-    color: 'var(--text-secondary)',
-    lineHeight: 1.75,
   },
   resetBtn: {
     background: 'transparent',
