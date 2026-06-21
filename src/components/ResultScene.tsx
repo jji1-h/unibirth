@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { createPortal } from 'react-dom'
 import type { MatchResult, Star } from '../lib'
 
 interface Props {
@@ -157,11 +156,10 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
 
 // ── 컴포넌트 ─────────────────────────────────────────
 export default function ResultScene({ result, onReset, birthdate }: Props) {
-  const [visible,      setVisible]      = useState(false)
-  const [modal,        setModal]        = useState<'mag' | 'spect' | null>(null)
-  const [expanded,     setExpanded]     = useState(false)
-  const [copied,       setCopied]       = useState(false)
-  const [saveImageUrl, setSaveImageUrl] = useState<string | null>(null)
+  const [visible,  setVisible]  = useState(false)
+  const [modal,    setModal]    = useState<'mag' | 'spect' | null>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [copied,   setCopied]   = useState(false)
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
   useEffect(() => {
@@ -307,9 +305,45 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 저장: 모달에 이미지 표시 (카톡 WebView 롱프레스 저장 대응) ──
+    // ── 저장: vanilla JS 모달 (React/Portal 우회 → 모든 WebView 호환) ──
     const dataUrl = out.toDataURL('image/png')
-    setSaveImageUrl(dataUrl)
+
+    const overlay = document.createElement('div')
+    overlay.style.cssText = [
+      'position:fixed;inset:0;z-index:9999',
+      'background:rgba(0,0,0,0.88)',
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px',
+      'touch-action:manipulation',
+    ].join(';')
+
+    const hint = document.createElement('p')
+    hint.textContent = '이미지를 꾹 눌러서 저장하세요'
+    hint.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.04em'
+
+    const img = document.createElement('img')
+    img.src = dataUrl
+    img.alt = '탄생별 결과 이미지'
+    img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;touch-action:manipulation'
+    img.addEventListener('touchstart', e => e.stopPropagation(), { passive: false })
+    img.addEventListener('click',      e => e.stopPropagation())
+
+    const closeBtn = document.createElement('button')
+    closeBtn.textContent = '닫기'
+    closeBtn.style.cssText = [
+      'background:none;border:1px solid rgba(255,255,255,0.20);border-radius:100px',
+      'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif',
+      'padding:8px 24px;cursor:pointer;touch-action:manipulation',
+    ].join(';')
+
+    const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
+    overlay.addEventListener('click', close)
+    closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
+    closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
+
+    overlay.appendChild(hint)
+    overlay.appendChild(img)
+    overlay.appendChild(closeBtn)
+    document.body.appendChild(overlay)
   }
 
   if (result.type === 'NO_STAR') {
@@ -494,57 +528,6 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         }
       `}</style>
 
-      {/* 이미지 저장 모달 — Portal로 body에 직접 렌더링 (WebView pointerEvents 우회) */}
-      {saveImageUrl && createPortal(
-        <div
-          onClick={() => setSaveImageUrl(null)}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
-            background: 'rgba(0,0,0,0.88)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            gap: '16px',
-            pointerEvents: 'auto',
-          }}
-        >
-          <p style={{
-            color: 'rgba(255,255,255,0.55)',
-            fontSize: '13px',
-            fontFamily: "'Inter', sans-serif",
-            letterSpacing: '0.04em',
-            margin: 0,
-          }}>
-            이미지를 꾹 눌러서 저장하세요
-          </p>
-          <img
-            src={saveImageUrl}
-            onClick={e => e.stopPropagation()}
-            style={{
-              maxHeight: '72vh',
-              maxWidth: '88vw',
-              borderRadius: '8px',
-              display: 'block',
-            }}
-            alt="탄생별 결과 이미지"
-          />
-          <button
-            onClick={() => setSaveImageUrl(null)}
-            style={{
-              background: 'none',
-              border: '1px solid rgba(255,255,255,0.20)',
-              borderRadius: '100px',
-              color: 'rgba(255,255,255,0.45)',
-              fontSize: '13px',
-              fontFamily: "'Inter', sans-serif",
-              padding: '8px 24px',
-              cursor: 'pointer',
-            }}
-          >
-            닫기
-          </button>
-        </div>,
-        document.body
-      )}
 
       {/* 인포 모달 */}
       {modal === 'mag' && (
