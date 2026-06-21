@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Footer from './Footer'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
@@ -32,7 +32,6 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   const earthMatsRef = useRef<THREE.Material[]>([])
   const [error,        setError]        = useState<ValidationError | null>(null)
   const [showUI,       setShowUI]       = useState(true)
-  const [landingCopied, setLandingCopied] = useState(false)
   const [focused,      setFocused]      = useState(false)
 
   // ── Three.js ─────────────────────────────────────────
@@ -155,18 +154,6 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
     })
   }, [leaving])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── 랜딩 공유 ────────────────────────────────────────
-  const handleLandingShare = useCallback(async () => {
-    const url  = window.location.origin + window.location.pathname
-    const text = '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
-    } else {
-      await navigator.clipboard.writeText(url)
-      setLandingCopied(true)
-      setTimeout(() => setLandingCopied(false), 2000)
-    }
-  }, [])
 
   // ── 입력 핸들러 ─────────────────────────────────────
   function updateFromRaw(raw: string) {
