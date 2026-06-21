@@ -156,10 +156,11 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
 
 // ── 컴포넌트 ─────────────────────────────────────────
 export default function ResultScene({ result, onReset, birthdate }: Props) {
-  const [visible,  setVisible]  = useState(false)
-  const [modal,    setModal]    = useState<'mag' | 'spect' | null>(null)
-  const [expanded, setExpanded] = useState(false)
-  const [copied,   setCopied]   = useState(false)
+  const [visible,      setVisible]      = useState(false)
+  const [modal,        setModal]        = useState<'mag' | 'spect' | null>(null)
+  const [expanded,     setExpanded]     = useState(false)
+  const [copied,       setCopied]       = useState(false)
+  const [saveImageUrl, setSaveImageUrl] = useState<string | null>(null)
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
   useEffect(() => {
@@ -305,29 +306,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 저장 (카톡/모바일: navigator.share, 그 외: 다운로드) ──
-    out.toBlob(async blob => {
-      if (!blob) return
-      const fileName = `unibirth_${dateStr}.png`
-      const file = new File([blob], fileName, { type: 'image/png' })
-      // navigator.share (카카오톡 인앱브라우저, iOS Safari 등)
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title: 'Unibirth' })
-          return
-        } catch {
-          // 취소하거나 실패 → 다운로드 폴백
-        }
-      }
-      const url = URL.createObjectURL(blob)
-      const a   = document.createElement('a')
-      a.href     = url
-      a.download = fileName
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    }, 'image/png')
+    // ── 저장: 모달에 이미지 표시 (카톡 WebView 롱프레스 저장 대응) ──
+    const dataUrl = out.toDataURL('image/png')
+    setSaveImageUrl(dataUrl)
   }
 
   if (result.type === 'NO_STAR') {
@@ -511,6 +492,56 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           color: rgba(255,255,255,0.65);
         }
       `}</style>
+
+      {/* 이미지 저장 모달 */}
+      {saveImageUrl && (
+        <div
+          onClick={() => setSaveImageUrl(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 200,
+            background: 'rgba(0,0,0,0.88)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            gap: '16px',
+          }}
+        >
+          <p style={{
+            color: 'rgba(255,255,255,0.55)',
+            fontSize: '13px',
+            fontFamily: "'Inter', sans-serif",
+            letterSpacing: '0.04em',
+            margin: 0,
+          }}>
+            이미지를 꾹 눌러서 저장하세요
+          </p>
+          <img
+            src={saveImageUrl}
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxHeight: '72vh',
+              maxWidth: '88vw',
+              borderRadius: '8px',
+              display: 'block',
+            }}
+            alt="탄생별 결과 이미지"
+          />
+          <button
+            onClick={() => setSaveImageUrl(null)}
+            style={{
+              background: 'none',
+              border: '1px solid rgba(255,255,255,0.20)',
+              borderRadius: '100px',
+              color: 'rgba(255,255,255,0.45)',
+              fontSize: '13px',
+              fontFamily: "'Inter', sans-serif",
+              padding: '8px 24px',
+              cursor: 'pointer',
+            }}
+          >
+            닫기
+          </button>
+        </div>
+      )}
 
       {/* 인포 모달 */}
       {modal === 'mag' && (
