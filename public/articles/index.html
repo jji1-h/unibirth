@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>아티클 — Unibirth</title>
+  <meta name="description" content="별, 우주, 천문학에 관한 이야기. Unibirth가 전하는 우주 탐구 아티클 모음입니다." />
+  <link rel="canonical" href="https://unibirth.pages.dev/articles/" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://unibirth.pages.dev/articles/" />
+  <meta property="og:title"       content="아티클 — Unibirth" />
+  <meta property="og:description" content="별, 우주, 천문학에 관한 이야기. Unibirth가 전하는 우주 탐구 아티클 모음입니다." />
+  <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
+  <meta property="og:site_name"   content="Unibirth" />
+  <meta property="og:locale"      content="ko_KR" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #07090f;
+      color: rgba(255,255,255,0.78);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── 네비 ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      letter-spacing: 0;
+    }
+    .nav-logo img { width: 20px; height: 20px; display: block; }
+    .nav-logo-text { letter-spacing: 0.01em; }
+    .hamburger {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px;
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: rgba(255,255,255,0.60); border-radius: 2px;
+    }
+    /* 사이드바 */
+    .nav-backdrop {
+      position: fixed; inset: 0; z-index: 49;
+      background: rgba(0,0,0,0.45);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+    .nav-sidebar {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 220px; z-index: 50;
+      background: rgba(10,12,22,0.98);
+      backdrop-filter: blur(16px);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      padding-top: 64px;
+    }
+    .nav-sidebar.open { transform: translateX(0); }
+    .nav-sidebar a {
+      display: block;
+      padding: 15px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-sidebar a:last-child { border-bottom: none; }
+    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
+
+    /* ── 헤더 ── */
+    .page-header {
+      padding: 56px 24px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .page-header h1 {
+      font-size: 30px;
+      font-family: 'Georgia', serif;
+      font-weight: 400;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .page-header p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.38);
+    }
+
+    /* ── 그리드 ── */
+    .grid {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── 카드 ── */
+    .card {
+      display: block;
+      text-decoration: none;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .card:hover {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-3px);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #0d1020;
+      position: relative;
+    }
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .card:hover .card-thumb img {
+      transform: scale(1.04);
+    }
+
+    /* SVG 썸네일 fallback */
+    .card-thumb svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .card-body {
+      padding: 18px 20px 20px;
+    }
+    .card-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      padding: 2px 9px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+    /* 라벨 컬러 variants */
+    .tag-science { color: #c4b5fd; background: rgba(196,181,253,0.10); border-color: rgba(196,181,253,0.18); }
+    .tag-story   { color: #ffd580; background: rgba(255,213,128,0.10); border-color: rgba(255,213,128,0.18); }
+    .tag-tips    { color: #b0c4ff; background: rgba(176,196,255,0.10); border-color: rgba(176,196,255,0.18); }
+    .card-title {
+      font-size: 17px;
+      font-family: 'Georgia', serif;
+      font-weight: 400;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-meta {
+      margin-top: 14px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .page-footer a {
+      color: rgba(255,255,255,0.42);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
+
+    @media (max-width: 600px) {
+      .page-header h1 { font-size: 24px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+  <div class="nav-sidebar" id="navSidebar">
+    <a href="/articles/index.html">아티클</a>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </div>
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/favicon.svg" alt="Unibirth 로고" />
+      <span class="nav-logo-text">Unibirth</span>
+    </a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <script>
+    function toggleMenu() {
+      document.getElementById('navSidebar').classList.toggle('open')
+      document.getElementById('navBackdrop').classList.toggle('open')
+    }
+    function closeMenu() {
+      document.getElementById('navSidebar').classList.remove('open')
+      document.getElementById('navBackdrop').classList.remove('open')
+    }
+  </script>
+
+  <header class="page-header">
+    <h1>아티클</h1>
+    <p>별, 우주, 천문학에 관한 이야기</p>
+  </header>
+
+  <main class="grid">
+
+    <!-- 아티클: 탄생별이란? (최신순) -->
+    <a class="card" href="/articles/what-is-birth-star.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
+          <rect width="480" height="270" fill="#07090f"/>
+          <!-- 배경 별 -->
+          <circle cx="60"  cy="40"  r="1"   fill="white" opacity="0.4"/>
+          <circle cx="180" cy="70"  r="0.8" fill="white" opacity="0.3"/>
+          <circle cx="300" cy="25"  r="1.2" fill="white" opacity="0.5"/>
+          <circle cx="420" cy="55"  r="0.9" fill="white" opacity="0.35"/>
+          <circle cx="100" cy="200" r="1"   fill="white" opacity="0.3"/>
+          <circle cx="370" cy="220" r="0.8" fill="white" opacity="0.25"/>
+          <!-- 빛살 -->
+          <polygon points="90,135 370,118 370,152" fill="rgba(255,213,128,0.12)"/>
+          <!-- 빛 파티클 -->
+          <circle cx="155" cy="135" r="1.5" fill="#ffd580" opacity="0.6"/>
+          <circle cx="210" cy="134" r="1.2" fill="#ede0ff" opacity="0.5"/>
+          <circle cx="265" cy="135" r="1.5" fill="#d0d8ff" opacity="0.5"/>
+          <circle cx="315" cy="135" r="1.2" fill="#b0c4ff" opacity="0.45"/>
+          <!-- 별 (좌) -->
+          <circle cx="85"  cy="135" r="28" fill="rgba(255,213,128,0.15)"/>
+          <circle cx="85"  cy="135" r="10" fill="#fff8cc" opacity="0.95"/>
+          <circle cx="85"  cy="135" r="6"  fill="#ffffff"/>
+          <!-- 지구 (우) -->
+          <circle cx="390" cy="135" r="30" fill="rgba(176,196,255,0.12)"/>
+          <circle cx="390" cy="135" r="13" fill="#1a2a5e" opacity="0.9"/>
+          <circle cx="390" cy="135" r="13" fill="none" stroke="#b0c4ff" stroke-width="1.2" opacity="0.6"/>
+          <ellipse cx="387" cy="132" rx="5" ry="3.5" fill="#2a4a8e" opacity="0.8"/>
+          <!-- 화살표 -->
+          <line x1="370" y1="135" x2="375" y2="135" stroke="#b0c4ff" stroke-width="1" opacity="0.4"/>
+          <polygon points="373,131 380,135 373,139" fill="#b0c4ff" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-tips">Unibirth 사용팁</span>
+        <p class="card-title">탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별</p>
+        <p class="card-desc">탄생별은 내가 태어난 날 빛을 출발시킨 별입니다. 나이와 광년의 관계, 탄생별의 원리와 찾는 법을 알아봅니다.</p>
+        <p class="card-meta">2026년 6월 · 4분 읽기</p>
+      </div>
+    </a>
+
+    <!-- 아티클: 광년이란? -->
+    <a class="card" href="/articles/what-is-light-year.html">
+      <div class="card-thumb">
+        <img
+          src="/articles/milky-way-artemis2.jpg"
+          alt="아르테미스 II 승무원이 촬영한 은하수 사진"
+          loading="lazy"
+          onerror="this.style.display='none'; this.parentElement.querySelector('svg').style.display='block';"
+        />
+        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;inset:0;">
+          <rect width="480" height="270" fill="#0d1020"/>
+          <circle cx="240" cy="135" r="48" fill="none" stroke="rgba(176,196,255,0.15)" stroke-width="1"/>
+          <circle cx="240" cy="135" r="28" fill="rgba(176,196,255,0.08)"/>
+          <circle cx="240" cy="135" r="10" fill="rgba(176,196,255,0.5)"/>
+          <text x="240" y="210" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="13" font-family="Inter,sans-serif">광년이란?</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-science">우주 과학</span>
+        <p class="card-title">광년이란? 빛이 1년 동안 이동하는 거리</p>
+        <p class="card-desc">광년(光年)은 거리 단위입니다. 1광년은 약 9조 4,607억 km. 별까지의 거리와 탄생별의 원리를 알아봅니다.</p>
+        <p class="card-meta">2025년 6월 · 5분 읽기</p>
+      </div>
+    </a>
+
+    <!-- 추후 아티클 추가 자리 -->
+
+  </main>
+
+  <footer class="page-footer">
+    <span>© 2026 Unibirth</span>
+    <span class="page-footer-sep">·</span>
+    <a href="/privacy.html">개인정보처리방침</a>
+    <span class="page-footer-sep">·</span>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </footer>
+
+</body>
+</html>

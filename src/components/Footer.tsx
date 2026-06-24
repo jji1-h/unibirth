@@ -1,4 +1,9 @@
 export default function Footer() {
+  const linkStyle: React.CSSProperties = {
+    color: 'rgba(255,255,255,0.42)',
+    textDecoration: 'none',
+    transition: 'color 0.15s',
+  }
   return (
     <footer style={{
       width: '100%',
@@ -7,40 +12,33 @@ export default function Footer() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '20px',
+      gap: '16px',
       fontSize: '11px',
-      color: 'rgba(255,255,255,0.20)',
-      letterSpacing: '0.05em',
+      color: 'rgba(255,255,255,0.22)',
+      letterSpacing: '0.04em',
       userSelect: 'none',
+      fontFamily: "'Inter', sans-serif",
     }}>
       <span>© 2026 Unibirth</span>
-      <span style={{ opacity: 0.4 }}>·</span>
+      <span style={{ opacity: 0.35 }}>·</span>
       <a
         href="/privacy.html"
-        style={{
-          color: 'rgba(255,255,255,0.20)',
-          textDecoration: 'none',
-          transition: 'color 0.15s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.20)')}
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
       >
         개인정보처리방침
       </a>
-      <span style={{ opacity: 0.4 }}>·</span>
+      <span style={{ opacity: 0.35 }}>·</span>
       <a
         href="https://github.com/jji1-h"
         target="_blank"
         rel="noopener noreferrer"
-        style={{
-          color: 'rgba(255,255,255,0.20)',
-          textDecoration: 'none',
-          transition: 'color 0.15s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.20)')}
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
       >
-        GitHub
+        문의하기
       </a>
     </footer>
   )

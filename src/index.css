@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -11,12 +11,12 @@
   --surface:       #0d1020;
   --surface2:      #131629;
   --border:          rgba(255,255,255,0.08);
-  --border-accent:   rgba(43,125,233,0.35);
+  --border-accent:   rgba(176,196,255,0.35);
   --text-primary:    #e8e6f0;
   --text-secondary:  #9896b0;
   --text-muted:      #6e6c82;
   --text-dim:        #454558;
-  --accent:          #2b7de9;
+  --accent:          #b0c4ff;
 }
 
 html, body, #root {

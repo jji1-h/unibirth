@@ -32,6 +32,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
   const earthMatsRef = useRef<THREE.Material[]>([])
   const [error,        setError]        = useState<ValidationError | null>(null)
   const [showUI,       setShowUI]       = useState(true)
+  const [menuOpen,     setMenuOpen]     = useState(false)
   const [focused,      setFocused]      = useState(false)
 
   // ── Three.js ─────────────────────────────────────────
@@ -235,6 +236,104 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
     <div style={styles.wrap} className="scene-wrap">
       <canvas ref={canvasRef} style={styles.canvas} />
 
+      {/* 상단 헤더 */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        zIndex: 2,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 20px',
+        height: '52px',
+        opacity:       showUI ? 1 : 0,
+        pointerEvents: showUI ? 'auto' : 'none',
+        transition:    'opacity 0.35s ease',
+      }}>
+        {/* 로고 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/favicon.svg" alt="Unibirth" style={{ width: '20px', height: '20px', display: 'block' }} />
+          <span style={{
+            fontSize: '14px', fontWeight: 600,
+            color: 'rgba(255,255,255,0.85)',
+            letterSpacing: '0.01em',
+            fontFamily: "'Inter', sans-serif",
+          }}>Unibirth</span>
+        </div>
+        {/* 햄버거 버튼 */}
+        <button
+          onClick={() => setMenuOpen(v => !v)}
+          style={{
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            alignItems: 'center', gap: '5px',
+            width: '40px', height: '40px',
+            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+          }}
+          aria-label="메뉴"
+        >
+          {[0,1,2].map(i => (
+            <span key={i} style={{
+              display: 'block', width: '18px', height: '1.5px',
+              background: 'rgba(255,255,255,0.60)', borderRadius: '2px',
+            }} />
+          ))}
+        </button>
+      </div>
+
+      {/* 사이드바 backdrop */}
+      <div
+        onClick={() => setMenuOpen(false)}
+        style={{
+          position: 'fixed', inset: 0, zIndex: 49,
+          background: 'rgba(0,0,0,0.45)',
+          opacity: menuOpen ? 1 : 0,
+          pointerEvents: menuOpen ? 'auto' : 'none',
+          transition: 'opacity 0.25s',
+        }}
+      />
+      {/* 사이드바 */}
+      <div style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0,
+        width: '220px', zIndex: 50,
+        background: 'rgba(10,12,22,0.98)',
+        backdropFilter: 'blur(16px)',
+        borderLeft: '1px solid rgba(255,255,255,0.08)',
+        transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
+        transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
+        display: 'flex', flexDirection: 'column',
+        paddingTop: '64px',
+      }}>
+        {[
+          { label: '아티클', href: '/articles/index.html', external: false },
+          { label: '문의하기', href: 'https://github.com/jji1-h', external: true },
+        ].map(({ label, href, external }, i) => (
+          <a
+            key={label}
+            href={href}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            onClick={() => setMenuOpen(false)}
+            style={{
+              display: 'block',
+              padding: '15px 24px',
+              fontSize: '14px',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 500,
+              color: 'rgba(255,255,255,0.72)',
+              textDecoration: 'none',
+              borderBottom: i < 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+              transition: 'background 0.12s, color 0.12s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+              e.currentTarget.style.color = 'rgba(255,255,255,0.95)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = 'rgba(255,255,255,0.72)'
+            }}
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+
       {/* 이탈 애니메이션 중 캡션 */}
       <p style={{
         ...styles.caption,
@@ -309,7 +408,7 @@ const styles: Record<string, React.CSSProperties> = {
   inputGroup:   { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' },
   fieldWrap:    { display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', padding: '10px 10px 10px 20px', background: 'rgba(7,9,15,0.6)', backdropFilter: 'blur(8px)', transition: 'border-color 0.2s, box-shadow 0.2s', minWidth: '300px' },
   fieldActive:  { borderColor: 'rgba(255,255,255,0.32)' },
-  fieldFocused: { borderColor: 'rgba(43,125,233,0.6)', boxShadow: '0 0 0 3px rgba(43,125,233,0.12)' },
+  fieldFocused: { borderColor: 'rgba(176,196,255,0.6)', boxShadow: '0 0 0 3px rgba(176,196,255,0.12)' },
   inputWrapper: { position: 'relative', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' },
   maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
   dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },

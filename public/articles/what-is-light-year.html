@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>광년이란? 1광년 거리와 별까지의 거리 — Unibirth</title>
+  <meta name="description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4600억 km. 광년의 뜻, 계산법, 가까운 별까지의 거리를 알기 쉽게 설명합니다." />
+  <link rel="canonical" href="https://unibirth.pages.dev/articles/what-is-light-year.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article" />
+  <meta property="og:url"         content="https://unibirth.pages.dev/articles/what-is-light-year.html" />
+  <meta property="og:title"       content="광년이란? 1광년 거리와 별까지의 거리" />
+  <meta property="og:description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4600억 km. 광년의 뜻, 계산법, 가까운 별까지의 거리를 알기 쉽게 설명합니다." />
+  <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
+  <meta property="og:site_name"   content="Unibirth" />
+  <meta property="og:locale"      content="ko_KR" />
+  <meta property="article:published_time" content="2025-06-01T00:00:00Z" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "광년이란? 1광년 거리와 별까지의 거리",
+    "description": "광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4600억 km.",
+    "url": "https://unibirth.pages.dev/articles/what-is-light-year.html",
+    "datePublished": "2025-06-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Unibirth",
+      "url": "https://unibirth.pages.dev"
+    },
+    "mainEntityOfPage": "https://unibirth.pages.dev/articles/what-is-light-year.html"
+  }
+  </script>
+
+  <!-- FAQ 구조화 데이터 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "광년이란 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "광년(光年, light-year)은 거리 단위입니다. 빛이 진공 속에서 1년 동안 이동하는 거리로, 약 9조 4,607억 km(9.461 × 10¹² km)에 해당합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "1광년은 몇 km인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1광년은 약 9조 4,607억 km입니다. 빛의 속도(초속 약 299,792km)에 1년(약 3,156만 초)을 곱한 값입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "가장 가까운 별까지 몇 광년인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "태양을 제외하면, 가장 가까운 별은 프록시마 켄타우리(Proxima Centauri)로 약 4.24광년 떨어져 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #07090f;
+      color: rgba(255, 255, 255, 0.78);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    /* ── 네비 ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(7, 9, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      letter-spacing: 0;
+    }
+    .nav-logo img { width: 20px; height: 20px; display: block; }
+    .nav-logo-text { letter-spacing: 0.01em; }
+    .hamburger {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px;
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: rgba(255,255,255,0.60); border-radius: 2px;
+    }
+    .nav-backdrop {
+      position: fixed; inset: 0; z-index: 49;
+      background: rgba(0,0,0,0.45);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+    .nav-sidebar {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 220px; z-index: 50;
+      background: rgba(10,12,22,0.98);
+      backdrop-filter: blur(16px);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      padding-top: 64px;
+    }
+    .nav-sidebar.open { transform: translateX(0); }
+    .nav-sidebar a {
+      display: block;
+      padding: 15px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-sidebar a:last-child { border-bottom: none; }
+    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
+
+    /* ── 히어로 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 340px;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(7,9,15,0.2) 0%, rgba(7,9,15,0.0) 40%, rgba(7,9,15,0.85) 100%);
+    }
+    .hero-credit {
+      position: absolute;
+      bottom: 10px;
+      right: 14px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── 본문 ── */
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+    }
+    /* 라벨 컬러 variants */
+    .tag-science { color: #c4b5fd; background: rgba(196,181,253,0.10); border-color: rgba(196,181,253,0.18); }
+    .tag-story   { color: #ffd580; background: rgba(255,213,128,0.10); border-color: rgba(255,213,128,0.18); }
+    .tag-tips    { color: #b0c4ff; background: rgba(176,196,255,0.10); border-color: rgba(176,196,255,0.18); }
+    .article-date {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    h1 {
+      font-family: 'Georgia', 'DM Serif Display', serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 400;
+      line-height: 1.3;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .lead {
+      font-size: 17px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      margin-bottom: 48px;
+      border-left: 2px solid rgba(176,196,255,0.35);
+      padding-left: 18px;
+    }
+
+    h2 {
+      font-family: 'Georgia', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.92);
+      margin: 48px 0 16px;
+      line-height: 1.4;
+    }
+
+    p { margin-bottom: 18px; }
+
+    strong { color: rgba(255,255,255,0.92); font-weight: 600; }
+
+    /* ── 숫자 강조 박스 ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: #b0c4ff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.40);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── SVG 다이어그램 ── */
+    .diagram-wrap {
+      margin: 32px 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 28px 20px 20px;
+      overflow: hidden;
+    }
+    .diagram-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .diagram-caption {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── 별 거리 테이블 ── */
+    .star-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+    .star-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .star-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.72);
+      vertical-align: middle;
+    }
+    .star-table tr:last-child td { border-bottom: none; }
+    .star-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .star-name { color: rgba(255,255,255,0.92); font-weight: 500; }
+    .star-dist { color: #b0c4ff; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .star-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* ── CTA ── */
+    .cta-box {
+      margin: 48px 0 0;
+      background: rgba(176,196,255,0.04);
+      border: 1px solid rgba(176,196,255,0.12);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .cta-box h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .cta-box p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 22px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: #b0c4ff;
+      border-radius: 100px;
+      color: #07090f;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    /* ── FAQ ── */
+    .faq { margin: 0; }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 20px 0;
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 8px;
+    }
+    .faq-a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .page-footer a { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s; }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
+
+    @media (max-width: 600px) {
+      .hero { height: 220px; }
+      h1 { font-size: 24px; }
+      h2 { font-size: 19px; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 네비게이션 -->
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+  <div class="nav-sidebar" id="navSidebar">
+    <a href="/articles/index.html">아티클</a>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </div>
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/favicon.svg" alt="Unibirth 로고" />
+      <span class="nav-logo-text">Unibirth</span>
+    </a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <script>
+    function toggleMenu() {
+      document.getElementById('navSidebar').classList.toggle('open')
+      document.getElementById('navBackdrop').classList.toggle('open')
+    }
+    function closeMenu() {
+      document.getElementById('navSidebar').classList.remove('open')
+      document.getElementById('navBackdrop').classList.remove('open')
+    }
+  </script>
+
+  <!-- 히어로 이미지 -->
+  <!-- 이미지 파일: /public/articles/milky-way-artemis2.jpg
+       원본: https://images-assets.nasa.gov/image/art002e012588/art002e012588~large.jpg
+       아직 파일이 없다면 위 URL에서 직접 다운로드 후 저장해주세요. -->
+  <div class="hero">
+    <img
+      src="/articles/milky-way-artemis2.jpg"
+      alt="아르테미스 II 승무원이 촬영한 은하수 사진. 수백억 개의 별이 모인 우리 은하의 모습."
+      loading="lazy"
+    />
+    <div class="hero-overlay"></div>
+    <span class="hero-credit">Credit: NASA / Artemis II Crew (2026)</span>
+  </div>
+
+  <!-- 본문 -->
+  <main class="wrap">
+
+    <div class="article-meta">
+      <span class="tag tag-science">우주 과학</span>
+      <span class="article-date">2025년 6월</span>
+    </div>
+
+    <h1>광년이란?<br>빛이 1년 동안 이동하는 거리</h1>
+
+    <p class="lead">
+      밤하늘에 반짝이는 별빛은 수십, 수백 년 전에 출발한 빛입니다.
+      우주의 거리를 이야기할 때 쓰는 단위 <strong>광년(光年, light-year)</strong>이 무엇인지,
+      그리고 우리 주변의 별들은 얼마나 멀리 있는지 알아봅니다.
+    </p>
+
+    <!-- 광년의 정의 -->
+    <h2>광년의 정의</h2>
+
+    <p>
+      <strong>광년(光年)</strong>은 시간 단위가 아니라 <strong>거리 단위</strong>입니다.
+      빛이 진공 속에서 정확히 1년 동안 이동하는 거리를 1광년이라고 합니다.
+    </p>
+
+    <p>
+      빛의 속도는 초속 약 299,792km입니다. 지구 둘레(약 40,075km)를 1초에 7바퀴 반을 도는 속도죠.
+      이 빛이 365.25일 동안 쉬지 않고 달리면 도달하는 거리가 바로 1광년입니다.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">약 9조 4,607억</div>
+        <div class="stat-label">1광년(km)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">63,241 AU</div>
+        <div class="stat-label">1광년(천문단위)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0.3066 pc</div>
+        <div class="stat-label">1광년(파섹)</div>
+      </div>
+    </div>
+
+    <!-- 1광년은 몇 km -->
+    <h2>1광년은 몇 km일까?</h2>
+
+    <p>
+      1광년을 km로 정확히 계산하면 다음과 같습니다.
+    </p>
+
+    <p>
+      빛의 속도(299,792,458 m/s) × 1년(31,557,600초) = <strong>약 9.461 × 10¹⁵ m</strong>,
+      즉 <strong>9조 4,607억 km</strong>입니다.
+    </p>
+
+    <p>
+      이 거리가 얼마나 먼지 감이 잘 안 잡힐 텐데요. 비교해보면 이렇습니다.
+      지구에서 달까지는 약 0.38만 km, 지구에서 태양까지는 약 1억 5,000만 km(1 AU)입니다.
+      1광년은 이 태양까지의 거리보다 약 <strong>63,000배</strong> 더 먼 거리입니다.
+    </p>
+
+    <!-- 거리 비교 다이어그램 -->
+    <div class="diagram-wrap">
+      <p class="diagram-title">거리 비교 — 로그 스케일</p>
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <defs>
+          <linearGradient id="barGrad1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#b0c4ff" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#b0c4ff" stop-opacity="0.5"/>
+          </linearGradient>
+          <linearGradient id="barGrad2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ffe87a" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#ffe87a" stop-opacity="0.5"/>
+          </linearGradient>
+          <linearGradient id="barGrad3" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ffb347" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#ffb347" stop-opacity="0.5"/>
+          </linearGradient>
+          <linearGradient id="barGrad4" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ff6b6b" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#ff6b6b" stop-opacity="0.5"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 배경 그리드 -->
+        <line x1="160" y1="10" x2="160" y2="185" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="290" y1="10" x2="290" y2="185" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="420" y1="10" x2="420" y2="185" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="550" y1="10" x2="550" y2="185" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="640" y1="10" x2="640" y2="185" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+        <!-- 라벨 -->
+        <text x="14" y="42" fill="rgba(255,255,255,0.65)" font-size="12" font-family="Inter,sans-serif">지구→달</text>
+        <text x="14" y="90" fill="rgba(255,255,255,0.65)" font-size="12" font-family="Inter,sans-serif">지구→태양</text>
+        <text x="14" y="138" fill="rgba(255,255,255,0.65)" font-size="12" font-family="Inter,sans-serif">1광년</text>
+        <text x="14" y="178" fill="rgba(255,255,255,0.65)" font-size="12" font-family="Inter,sans-serif">프록시마</text>
+        <text x="14" y="190" fill="rgba(255,255,255,0.40)" font-size="10" font-family="Inter,sans-serif">켄타우리</text>
+
+        <!-- 바 — 달 (0.38만km → 로그 비례 짧게) -->
+        <rect x="155" y="26" width="5" height="22" rx="3" fill="url(#barGrad1)"/>
+        <text x="165" y="41" fill="rgba(255,255,255,0.45)" font-size="11" font-family="Inter,sans-serif">384,400 km</text>
+
+        <!-- 바 — 태양 (1.5억km) -->
+        <rect x="155" y="74" width="65" height="22" rx="3" fill="url(#barGrad2)"/>
+        <text x="225" y="89" fill="rgba(255,255,255,0.45)" font-size="11" font-family="Inter,sans-serif">150,000,000 km</text>
+
+        <!-- 바 — 1광년 -->
+        <rect x="155" y="122" width="390" height="22" rx="3" fill="url(#barGrad3)"/>
+        <text x="550" y="137" fill="rgba(255,255,255,0.45)" font-size="11" font-family="Inter,sans-serif">9조 4천억 km</text>
+
+        <!-- 바 — 프록시마 켄타우리 (4.24광년) -->
+        <rect x="155" y="162" width="470" height="22" rx="3" fill="url(#barGrad4)"/>
+        <text x="630" y="177" fill="rgba(255,255,255,0.45)" font-size="11" font-family="Inter,sans-serif" text-anchor="end">4.24광년</text>
+      </svg>
+      <p class="diagram-caption">우주 거리 단위 비교 (로그 스케일). 1광년은 지구-태양 거리의 약 63,000배입니다.</p>
+    </div>
+
+    <!-- 가까운 별까지의 거리 -->
+    <h2>광년으로 보는 별까지의 거리</h2>
+
+    <p>
+      밤하늘에서 빛나는 별들은 모두 광년 단위로 측정되는 먼 거리에 있습니다.
+      아래는 지구에서 비교적 가까운 별들의 거리입니다.
+    </p>
+
+    <table class="star-table">
+      <thead>
+        <tr>
+          <th>별 이름</th>
+          <th>별자리</th>
+          <th>거리</th>
+          <th>출발 시점 (2025년 기준)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="star-dot" style="background:#ff8c6b;"></span><span class="star-name">프록시마 켄타우리</span></td>
+          <td>센타우루스</td>
+          <td><span class="star-dist">4.24 광년</span></td>
+          <td>2020년 출발</td>
+        </tr>
+        <tr>
+          <td><span class="star-dot" style="background:#d8e8ff;"></span><span class="star-name">시리우스 (큰개자리 α)</span></td>
+          <td>큰개</td>
+          <td><span class="star-dist">8.60 광년</span></td>
+          <td>2016년 출발</td>
+        </tr>
+        <tr>
+          <td><span class="star-dot" style="background:#ffe87a;"></span><span class="star-name">엡실론 에리다니</span></td>
+          <td>에리다누스</td>
+          <td><span class="star-dist">10.47 광년</span></td>
+          <td>2014년 출발</td>
+        </tr>
+        <tr>
+          <td><span class="star-dot" style="background:#fff5e4;"></span><span class="star-name">타우 세티</span></td>
+          <td>고래</td>
+          <td><span class="star-dist">11.89 광년</span></td>
+          <td>2013년 출발</td>
+        </tr>
+        <tr>
+          <td><span class="star-dot" style="background:#d8e8ff;"></span><span class="star-name">베가 (직녀성)</span></td>
+          <td>거문고</td>
+          <td><span class="star-dist">25.04 광년</span></td>
+          <td>2000년 출발</td>
+        </tr>
+        <tr>
+          <td><span class="star-dot" style="background:#b0c4ff;"></span><span class="star-name">알타이르 (독수리)</span></td>
+          <td>독수리</td>
+          <td><span class="star-dist">16.73 광년</span></td>
+          <td>2008년 출발</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      예를 들어 밤하늘에서 빛나는 <strong>베가(직녀성)</strong>를 지금 보고 있다면, 당신이 보는 빛은
+      약 25년 전인 2000년에 베가를 출발한 빛입니다. 별이 지금 어떤 상태인지는 25년 후에야 알 수 있습니다.
+    </p>
+
+    <!-- 광년과 탄생별 -->
+    <h2>광년과 탄생별 — 내 생년월일의 별빛</h2>
+
+    <p>
+      광년의 개념을 활용하면 재미있는 사실을 발견할 수 있습니다.
+      내 나이(년)와 같은 거리(광년)에 있는 별에서 출발한 빛이, 바로 오늘 지구에 도달한다는 것입니다.
+    </p>
+
+    <p>
+      예를 들어 <strong>만 30세</strong>라면, 지구에서 30광년 떨어진 별에서
+      내가 태어난 날 출발한 빛이 오늘 지구에 닿습니다. 그 별이 바로 <strong>나의 탄생별</strong>입니다.
+    </p>
+
+    <p>
+      Unibirth는 이 원리를 이용해 HYG 별 카탈로그(약 119,000개 별 데이터) 중에서
+      당신의 생년월일에 맞는 탄생별을 찾아드립니다.
+    </p>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h2>나의 탄생별 찾기</h2>
+      <p>생년월일을 입력하면 그날 출발한 별빛이 오늘 지구에 닿는 나의 별을 찾아드립니다.</p>
+      <a href="/" class="cta-btn">
+        탄생별 탐색하기
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- FAQ -->
+    <h2>자주 묻는 질문</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <p class="faq-q">Q. 광년은 시간 단위인가요?</p>
+        <p class="faq-a">아닙니다. 광년(光年)은 이름에 '년(年)'이 들어가지만 <strong>거리 단위</strong>입니다. 빛이 1년 동안 이동하는 거리를 나타냅니다. 시간을 나타내는 단위가 아닙니다.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Q. 1광년을 km로 환산하면 얼마인가요?</p>
+        <p class="faq-a">1광년 = 약 <strong>9조 4,607억 km</strong> (9.461 × 10¹² km)입니다. 빛의 속도(약 초속 299,792km) × 1년(31,557,600초)로 계산합니다.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Q. 가장 가까운 별까지 몇 광년인가요?</p>
+        <p class="faq-a">태양을 제외하면 가장 가까운 별은 <strong>프록시마 켄타우리(Proxima Centauri)</strong>로 약 <strong>4.24광년</strong> 거리에 있습니다. 빛의 속도로 4년 이상 걸리는 거리입니다.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Q. 광년 말고 다른 거리 단위는 무엇이 있나요?</p>
+        <p class="faq-a">천문학에서는 <strong>AU(천문단위)</strong>와 <strong>파섹(pc)</strong>도 자주 쓰입니다. 1 AU는 지구-태양 거리(약 1억 5천만 km), 1파섹은 약 3.26광년입니다.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Q. 탄생별이란 무엇인가요?</p>
+        <p class="faq-a">탄생별은 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 내 나이(년)와 같은 광년 거리에 있는 별에서 출발한 빛이 오늘 지구에 도달합니다. <a href="/" style="color:#b0c4ff;">Unibirth</a>에서 직접 찾아볼 수 있습니다.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="page-footer">
+    <span>© 2026 Unibirth</span>
+    <span class="page-footer-sep">·</span>
+    <a href="/privacy.html">개인정보처리방침</a>
+    <span class="page-footer-sep">·</span>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </footer>
+
+</body>
+</html>

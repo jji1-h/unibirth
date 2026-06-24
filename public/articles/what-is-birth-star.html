@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별 — Unibirth</title>
+  <meta name="description" content="탄생별이란 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 나이와 광년의 관계, 탄생별의 원리와 찾는 법을 알기 쉽게 설명합니다." />
+  <link rel="canonical" href="https://unibirth.pages.dev/articles/what-is-birth-star.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article" />
+  <meta property="og:url"         content="https://unibirth.pages.dev/articles/what-is-birth-star.html" />
+  <meta property="og:title"       content="탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별" />
+  <meta property="og:description" content="탄생별이란 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 나이와 광년의 관계, 탄생별의 원리와 찾는 법을 알기 쉽게 설명합니다." />
+  <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
+  <meta property="og:site_name"   content="Unibirth" />
+  <meta property="og:locale"      content="ko_KR" />
+  <meta property="article:published_time" content="2026-06-01T00:00:00Z" />
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별",
+    "description": "탄생별이란 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 나이와 광년의 관계, 탄생별의 원리와 찾는 법을 알기 쉽게 설명합니다.",
+    "url": "https://unibirth.pages.dev/articles/what-is-birth-star.html",
+    "datePublished": "2026-06-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Unibirth",
+      "url": "https://unibirth.pages.dev"
+    },
+    "mainEntityOfPage": "https://unibirth.pages.dev/articles/what-is-birth-star.html"
+  }
+  </script>
+
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "탄생별이란 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "탄생별이란 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 내 나이(년)와 같은 광년 거리에 있는 별에서 출발한 빛이 오늘 지구에 도달하므로, 그 별이 나의 탄생별이 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별은 어떻게 찾나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unibirth에서 생년월일을 입력하면 내 나이에 해당하는 광년 거리의 별 중 가장 가까운 것을 탄생별로 알려줍니다. 별의 이름, 거리, 별자리 정보를 함께 확인할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별과 별자리는 다른 건가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 다릅니다. 별자리(星座)는 태어난 달을 기준으로 정해지는 문화적 개념이고, 탄생별은 태어난 날을 기준으로 빛의 이동 시간을 계산해 결정되는 과학적 개념입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별의 빛은 정말 내가 태어난 날 출발했나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 예를 들어 25광년 떨어진 별은 25년 전 오늘 빛을 출발시켰고, 그 빛이 지금 이 순간 지구에 닿습니다. 내가 태어난 날이 25년 전이라면, 그 별의 빛은 정확히 내 탄생과 함께 여정을 시작한 것입니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #07090f;
+      color: rgba(255,255,255,0.78);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    /* ── 네비 ── */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none; letter-spacing: 0;
+    }
+    .nav-logo img { width: 20px; height: 20px; display: block; }
+    .nav-logo-text { letter-spacing: 0.01em; }
+    .hamburger {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px;
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer; padding: 0; flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: rgba(255,255,255,0.60); border-radius: 2px;
+    }
+    .nav-backdrop {
+      position: fixed; inset: 0; z-index: 49;
+      background: rgba(0,0,0,0.45);
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+    .nav-sidebar {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 220px; z-index: 50;
+      background: rgba(10,12,22,0.98);
+      backdrop-filter: blur(16px);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      padding-top: 64px;
+    }
+    .nav-sidebar.open { transform: translateX(0); }
+    .nav-sidebar a {
+      display: block; padding: 15px 24px;
+      font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.72); text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-sidebar a:last-child { border-bottom: none; }
+    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
+
+    /* ── 히어로 SVG ── */
+    .hero {
+      width: 100%; height: 300px;
+      background: #07090f;
+      overflow: hidden; position: relative;
+    }
+    .hero svg { width: 100%; height: 100%; display: block; }
+
+    /* ── 아티클 본문 ── */
+    .article-wrap {
+      max-width: 720px; margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+    .article-meta {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .tag {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px;
+      border: 1px solid transparent;
+    }
+    .tag-science { color: #c4b5fd; background: rgba(196,181,253,0.10); border-color: rgba(196,181,253,0.18); }
+    .tag-story   { color: #ffd580; background: rgba(255,213,128,0.10); border-color: rgba(255,213,128,0.18); }
+    .tag-tips    { color: #b0c4ff; background: rgba(176,196,255,0.10); border-color: rgba(176,196,255,0.18); }
+    .article-date { font-size: 13px; color: rgba(255,255,255,0.30); }
+
+    h1.article-title {
+      font-size: clamp(26px, 5vw, 38px);
+      font-family: 'Georgia', serif; font-weight: 400;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: -0.02em; line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .article-lead {
+      font-size: 17px; font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75; margin-bottom: 48px;
+      border-left: 2px solid rgba(176,196,255,0.3);
+      padding-left: 16px;
+    }
+
+    h2.section-title {
+      font-size: 22px; font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      letter-spacing: -0.02em; line-height: 1.3;
+      margin: 52px 0 16px;
+    }
+    p { margin-bottom: 20px; color: rgba(255,255,255,0.72); }
+    strong { color: rgba(255,255,255,0.92); font-weight: 600; }
+    a { color: #b0c4ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── 원리 카드 ── */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; margin: 28px 0;
+    }
+    .principle-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 20px;
+    }
+    .principle-num {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; color: #b0c4ff;
+      margin-bottom: 8px;
+    }
+    .principle-card p {
+      font-size: 14px; line-height: 1.65;
+      color: rgba(255,255,255,0.62); margin: 0;
+    }
+    .principle-card strong { font-size: 15px; display: block; margin-bottom: 4px; }
+
+    /* ── 계산 박스 ── */
+    .calc-box {
+      background: rgba(176,196,255,0.05);
+      border: 1px solid rgba(176,196,255,0.15);
+      border-radius: 16px; padding: 28px 24px;
+      margin: 28px 0; text-align: center;
+    }
+    .calc-box .formula {
+      font-size: 20px; font-weight: 600;
+      color: #b0c4ff; letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .calc-box .formula-desc {
+      font-size: 14px; color: rgba(255,255,255,0.45);
+      margin: 0;
+    }
+
+    /* ── 예시 타임라인 ── */
+    .timeline {
+      margin: 32px 0;
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 7px; top: 8px; bottom: 8px;
+      width: 1px; background: rgba(176,196,255,0.2);
+    }
+    .timeline-item {
+      position: relative; margin-bottom: 28px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -24px; top: 5px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: rgba(176,196,255,0.15);
+      border: 1.5px solid #b0c4ff;
+    }
+    .timeline-item.highlight .timeline-dot {
+      background: #b0c4ff;
+      box-shadow: 0 0 10px rgba(176,196,255,0.5);
+    }
+    .timeline-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; color: #b0c4ff;
+      margin-bottom: 4px;
+    }
+    .timeline-text {
+      font-size: 14px; color: rgba(255,255,255,0.65);
+      line-height: 1.6; margin: 0;
+    }
+
+    /* ── 비교표: 탄생별 vs 별자리 ── */
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+      margin: 28px 0; font-size: 14px;
+    }
+    .compare-table th {
+      text-align: left; padding: 12px 16px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .compare-table td {
+      padding: 14px 16px;
+      color: rgba(255,255,255,0.68);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child {
+      color: rgba(255,255,255,0.45); font-size: 12px;
+      font-weight: 500; white-space: nowrap;
+      width: 100px;
+    }
+    .compare-table td:nth-child(2) { color: #b0c4ff; }
+    .compare-table td:nth-child(3) { color: rgba(255,255,255,0.55); }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin: 64px 0 0;
+      background: rgba(176,196,255,0.04);
+      border: 1px solid rgba(176,196,255,0.12);
+      border-radius: 20px; padding: 40px 32px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: 22px; font-family: 'Georgia', serif; font-weight: 400;
+      color: rgba(255,255,255,0.92); margin-bottom: 12px;
+    }
+    .cta-section p {
+      font-size: 15px; color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #b0c4ff; color: #07090f;
+      font-size: 15px; font-weight: 600;
+      padding: 14px 32px; border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); text-decoration: none; }
+
+    /* ── FAQ ── */
+    .faq { margin: 52px 0 0; }
+    .faq h2 {
+      font-size: 20px; font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 20px;
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 0;
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      font-size: 15px; font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 8px;
+    }
+    .faq-a {
+      font-size: 14px; color: rgba(255,255,255,0.55);
+      line-height: 1.75; margin: 0;
+    }
+
+    /* ── 관련 아티클 ── */
+    .related { margin: 52px 0 0; }
+    .related h2 {
+      font-size: 16px; font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em; margin-bottom: 16px;
+    }
+    .related-link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .related-link:hover {
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      text-decoration: none;
+    }
+    .related-tag-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #c4b5fd; flex-shrink: 0;
+    }
+    .related-text { font-size: 14px; color: rgba(255,255,255,0.72); }
+    .related-arrow { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 16px; }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      padding: 20px 24px; text-align: center;
+      font-size: 11px; color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .page-footer a { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s; }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
+
+    @media (max-width: 600px) {
+      h1.article-title { font-size: 24px; }
+      .principle-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+  <div class="nav-sidebar" id="navSidebar">
+    <a href="/articles/index.html">아티클</a>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </div>
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="/favicon.svg" alt="Unibirth 로고" />
+      <span class="nav-logo-text">Unibirth</span>
+    </a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <script>
+    function toggleMenu() {
+      document.getElementById('navSidebar').classList.toggle('open')
+      document.getElementById('navBackdrop').classList.toggle('open')
+    }
+    function closeMenu() {
+      document.getElementById('navSidebar').classList.remove('open')
+      document.getElementById('navBackdrop').classList.remove('open')
+    }
+  </script>
+
+  <!-- 히어로 SVG 일러스트 -->
+  <div class="hero">
+    <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#fffbe0" stop-opacity="1"/>
+          <stop offset="40%"  stop-color="#ffd580" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#ffd580" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="earthGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#b0c4ff" stop-opacity="0.9"/>
+          <stop offset="60%"  stop-color="#6080cc" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#b0c4ff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="lightBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#ffd580" stop-opacity="0.7"/>
+          <stop offset="50%"  stop-color="#e0dcff" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#b0c4ff" stop-opacity="0.0"/>
+        </linearGradient>
+        <filter id="blur4">
+          <feGaussianBlur stdDeviation="4"/>
+        </filter>
+        <filter id="blur2">
+          <feGaussianBlur stdDeviation="2"/>
+        </filter>
+      </defs>
+
+      <!-- 배경 별들 -->
+      <circle cx="80"  cy="40"  r="1"   fill="white" opacity="0.4"/>
+      <circle cx="200" cy="80"  r="0.8" fill="white" opacity="0.3"/>
+      <circle cx="350" cy="30"  r="1.2" fill="white" opacity="0.5"/>
+      <circle cx="500" cy="60"  r="0.7" fill="white" opacity="0.25"/>
+      <circle cx="650" cy="20"  r="1"   fill="white" opacity="0.4"/>
+      <circle cx="780" cy="70"  r="0.9" fill="white" opacity="0.3"/>
+      <circle cx="900" cy="35"  r="1.1" fill="white" opacity="0.45"/>
+      <circle cx="150" cy="200" r="0.8" fill="white" opacity="0.2"/>
+      <circle cx="420" cy="240" r="1"   fill="white" opacity="0.3"/>
+      <circle cx="580" cy="220" r="0.7" fill="white" opacity="0.25"/>
+      <circle cx="720" cy="260" r="1.2" fill="white" opacity="0.35"/>
+      <circle cx="860" cy="210" r="0.8" fill="white" opacity="0.2"/>
+      <circle cx="1050" cy="80" r="1"   fill="white" opacity="0.4"/>
+      <circle cx="1100" cy="200" r="0.9" fill="white" opacity="0.3"/>
+      <circle cx="1150" cy="130" r="1.1" fill="white" opacity="0.35"/>
+      <circle cx="300" cy="130" r="0.6" fill="white" opacity="0.2"/>
+      <circle cx="950" cy="160" r="0.8" fill="white" opacity="0.3"/>
+
+      <!-- 빛살 (별 → 지구) -->
+      <polygon points="170,150 820,126 820,174" fill="url(#lightBeam)" opacity="0.18"/>
+      <!-- 빛살 blur 복사본 -->
+      <polygon points="170,150 820,130 820,170" fill="url(#lightBeam)" opacity="0.10" filter="url(#blur4)"/>
+
+      <!-- 빛 파티클 (점선 형태) -->
+      <g opacity="0.5">
+        <circle cx="280"  cy="150" r="1.5" fill="#ffd580" opacity="0.6"/>
+        <circle cx="380"  cy="148" r="1.2" fill="#ede0ff" opacity="0.5"/>
+        <circle cx="480"  cy="150" r="1.5" fill="#e0dcff" opacity="0.6"/>
+        <circle cx="580"  cy="149" r="1.2" fill="#d0d8ff" opacity="0.5"/>
+        <circle cx="680"  cy="150" r="1.5" fill="#c4c8ff" opacity="0.6"/>
+        <circle cx="730"  cy="150" r="1.2" fill="#b8c0ff" opacity="0.5"/>
+      </g>
+
+      <!-- 별 (좌측) -->
+      <circle cx="155" cy="150" r="38" fill="url(#starGlow)" filter="url(#blur4)"/>
+      <circle cx="155" cy="150" r="14" fill="#fff8cc" opacity="0.95"/>
+      <circle cx="155" cy="150" r="8"  fill="#ffffff"/>
+
+      <!-- 별 레이블 -->
+      <text x="155" y="210" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,213,128,0.7)" letter-spacing="0.05em">당신의 탄생별</text>
+      <text x="155" y="225" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.3)">N 광년 거리</text>
+
+      <!-- 지구 (우측) -->
+      <circle cx="930" cy="150" r="42" fill="url(#earthGlow)" filter="url(#blur4)"/>
+      <circle cx="930" cy="150" r="18" fill="#1a2a5e" opacity="0.9"/>
+      <circle cx="930" cy="150" r="18" fill="none" stroke="#b0c4ff" stroke-width="1.5" opacity="0.6"/>
+      <!-- 지구 대륙 느낌 -->
+      <ellipse cx="926" cy="146" rx="7" ry="5" fill="#2a4a8e" opacity="0.8"/>
+      <ellipse cx="936" cy="155" rx="4" ry="3" fill="#2a4a8e" opacity="0.6"/>
+
+      <!-- 지구 레이블 -->
+      <text x="930" y="210" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(176,196,255,0.7)" letter-spacing="0.05em">지구 · 오늘</text>
+      <text x="930" y="225" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.3)">당신의 생일</text>
+
+      <!-- 화살표 (빛 방향) -->
+      <line x1="820" y1="150" x2="905" y2="150" stroke="#b0c4ff" stroke-width="1" opacity="0.4"/>
+      <polygon points="905,145 915,150 905,155" fill="#b0c4ff" opacity="0.5"/>
+
+      <!-- 중간 레이블: 빛의 여행 N년 -->
+      <text x="542" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="rgba(255,255,255,0.25)" letter-spacing="0.04em">빛의 여행 · N 년</text>
+      <line x1="220" y1="108" x2="440" y2="108" stroke="rgba(255,255,255,0.10)" stroke-width="0.8"/>
+      <line x1="644" y1="108" x2="840" y2="108" stroke="rgba(255,255,255,0.10)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <!-- 본문 -->
+  <article class="article-wrap">
+
+    <div class="article-meta">
+      <span class="tag tag-tips">Unibirth 사용팁</span>
+      <span class="article-date">2026년 6월</span>
+    </div>
+
+    <h1 class="article-title">탄생별이란?<br>내가 태어난 날 지구에 닿은 빛의 별</h1>
+
+    <p class="article-lead">
+      지금 이 순간에도 수십억 개의 별이 지구를 향해 빛을 보내고 있습니다.
+      그 중에는 당신이 태어난 날 여정을 시작한 빛도 있습니다.
+      그 빛의 출발점이 바로 <strong>탄생별</strong>입니다.
+    </p>
+
+    <!-- 섹션 1: 정의 -->
+    <h2 class="section-title">탄생별이란 무엇인가요?</h2>
+    <p>
+      탄생별(誕生星)은 <strong>내가 태어난 날 지구를 향해 빛을 출발시킨 별</strong>입니다.
+      별빛은 아주 빠르지만, 우주는 그보다 훨씬 넓습니다. 빛이 별에서 지구까지 오는 데는
+      수십 년 혹은 수백 년이 걸리기도 합니다.
+    </p>
+    <p>
+      바로 이 시간의 차이가 탄생별의 핵심 원리입니다. 어떤 별이 25광년 거리에 있다면,
+      그 별의 빛이 지구에 닿기까지 정확히 25년이 걸립니다. 당신이 오늘 25살이라면,
+      그 별에서 출발한 빛은 당신이 태어난 날 여정을 시작해 오늘 지구에 도착한 것입니다.
+    </p>
+
+    <!-- 섹션 2: 원리 -->
+    <h2 class="section-title">어떻게 계산하나요?</h2>
+    <p>원리는 간단합니다. 빛의 속도와 거리, 시간의 관계를 이용합니다.</p>
+
+    <div class="calc-box">
+      <div class="formula">내 나이 (년) = 탄생별까지의 거리 (광년)</div>
+      <p class="formula-desc">빛이 1광년을 이동하는 데 1년이 걸리기 때문입니다.</p>
+    </div>
+
+    <p>
+      <a href="/articles/what-is-light-year.html">광년(光年)</a>은 빛이 1년 동안 이동하는 거리입니다.
+      약 9조 4,607억 km에 해당합니다. 내 나이가 곧 탄생별까지의 광년 거리가 되는 이유입니다.
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle-card">
+        <div class="principle-num">STEP 01</div>
+        <p><strong>나이를 확인한다</strong>내 나이(년)가 탄생별까지의 거리(광년)와 같습니다.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">STEP 02</div>
+        <p><strong>별을 찾는다</strong>해당 광년 거리에 위치한 별 중 가장 가까운 것을 탄생별로 정합니다.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">STEP 03</div>
+        <p><strong>빛을 맞이한다</strong>그 별이 보낸 빛은 오늘, 지금 이 순간 지구에 닿아 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- 섹션 3: 예시 타임라인 -->
+    <h2 class="section-title">예시로 이해하기</h2>
+    <p>1998년에 태어난 사람의 탄생별을 찾아봅니다. (기준: 2026년, 만 27세)</p>
+
+    <div class="timeline">
+      <div class="timeline-item highlight">
+        <div class="timeline-dot"></div>
+        <div class="timeline-label">1998년 — 탄생</div>
+        <p class="timeline-text">27광년 거리의 어느 별에서 빛이 출발합니다. 목적지는 지구.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-label">2012년 — 빛의 여정 절반</div>
+        <p class="timeline-text">빛은 약 13.5광년을 날아왔습니다. 아직 절반 남았습니다.</p>
+      </div>
+      <div class="timeline-item highlight">
+        <div class="timeline-dot"></div>
+        <div class="timeline-label">2026년 오늘 — 도착</div>
+        <p class="timeline-text">27년간의 여행 끝에 그 별의 빛이 지구에 닿습니다. 바로 지금.</p>
+      </div>
+    </div>
+
+    <p>
+      이 예시에서 탄생별 후보는 약 27광년 거리의 별이 됩니다.
+      실제로는 <strong>엡실론 에리다니(Epsilon Eridani, 약 10.5광년)</strong>나
+      <strong>포말하우트(Fomalhaut, 약 25광년)</strong> 같은 별이 탄생별이 될 수 있습니다.
+      Unibirth는 생년월일을 정밀하게 계산해 가장 가까운 별을 탄생별로 안내합니다.
+    </p>
+
+    <!-- 섹션 4: 별자리와 비교 -->
+    <h2 class="section-title">탄생별 vs 별자리, 무엇이 다를까요?</h2>
+    <p>
+      많은 분들이 탄생별을 별자리와 혼동하시는데, 둘은 전혀 다른 개념입니다.
+    </p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>탄생별</th>
+          <th>별자리</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>기준</td>
+          <td>태어난 날 (생년월일)</td>
+          <td>태어난 달 (생월)</td>
+        </tr>
+        <tr>
+          <td>근거</td>
+          <td>빛의 속도 · 광년 거리</td>
+          <td>고대 천문 신화 · 문화</td>
+        </tr>
+        <tr>
+          <td>별의 수</td>
+          <td>하나의 특정 별</td>
+          <td>별자리를 이루는 여러 별</td>
+        </tr>
+        <tr>
+          <td>성격</td>
+          <td>과학적 계산</td>
+          <td>문화적 · 상징적</td>
+        </tr>
+        <tr>
+          <td>거리</td>
+          <td>나이(년) = 광년 거리</td>
+          <td>무관</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      별자리가 "당신은 어떤 성격일까"를 이야기한다면,
+      탄생별은 "당신이 태어난 순간 어떤 별이 지구를 바라보고 있었는가"를 이야기합니다.
+    </p>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <h2>내 탄생별은 무엇일까요?</h2>
+      <p>생년월일을 입력하면 지금 이 순간 지구에 닿아 있는 당신의 별을 찾아드립니다.</p>
+      <a href="/" class="cta-btn">
+        탄생별 찾기 →
+      </a>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+
+      <div class="faq-item">
+        <p class="faq-q">Q. 탄생별은 매년 바뀌나요?</p>
+        <p class="faq-a">네. 내 나이가 한 살 늘어나면 탄생별까지의 광년 거리도 1광년 늘어나므로, 매년 새로운 별이 탄생별이 될 수 있습니다. 생일마다 새 탄생별을 확인해 보세요.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q">Q. 같은 날 태어난 사람은 탄생별도 같나요?</p>
+        <p class="faq-a">같은 날 같은 해에 태어났다면 탄생별도 같습니다. 같은 광년 거리에서 출발한 빛이 모두에게 오늘 닿기 때문입니다.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q">Q. 탄생별이 탄생별이 아닐 수도 있나요?</p>
+        <p class="faq-a">별과 지구 사이의 거리는 정밀하게 측정되지만 약간의 오차가 존재합니다. 또한 정확한 나이를 연 단위가 아닌 일 단위로 계산하므로, Unibirth는 생년월일 전체를 입력받아 최대한 정확한 별을 안내합니다.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q">Q. 탄생별을 실제로 눈으로 볼 수 있나요?</p>
+        <p class="faq-a">밝기에 따라 다릅니다. 시리우스나 베가처럼 맨눈으로 잘 보이는 별이 탄생별이 될 수도 있고, 망원경이 있어야 보이는 별이 탄생별일 수도 있습니다. Unibirth 결과에서 별의 밝기(등급) 정보도 함께 확인할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- 관련 아티클 -->
+    <div class="related">
+      <h2>관련 아티클</h2>
+      <a class="related-link" href="/articles/what-is-light-year.html">
+        <div class="related-tag-dot"></div>
+        <span class="related-text">광년이란? 빛이 1년 동안 이동하는 거리</span>
+        <span class="related-arrow">›</span>
+      </a>
+    </div>
+
+  </article>
+
+  <footer class="page-footer">
+    <span>© 2026 Unibirth</span>
+    <span class="page-footer-sep">·</span>
+    <a href="/privacy.html">개인정보처리방침</a>
+    <span class="page-footer-sep">·</span>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </footer>
+
+</body>
+</html>
