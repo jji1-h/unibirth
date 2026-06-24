@@ -14,10 +14,11 @@ type Stage = 'landing' | 'transit' | 'result' | 'shared'
 const stars = starsData as Star[]
 
 export default function App() {
-  const [stage,     setStage]     = useState<Stage>('landing')
-  const [input,     setInput]     = useState('')
-  const [result,    setResult]    = useState<MatchResult | null>(null)
-  const [leaving,   setLeaving]   = useState(false)
+  const [stage,        setStage]        = useState<Stage>('landing')
+  const [input,        setInput]        = useState('')
+  const [result,       setResult]       = useState<MatchResult | null>(null)
+  const [leaving,      setLeaving]      = useState(false)
+  const [sharedBdate,  setSharedBdate]  = useState('')
 
   // 공유 링크 처리: ?bdate=YYYYMMDD
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function App() {
     const age   = calcAgeFromString(formatted)
     const match = findNearestStar(age.years, stars)
     setResult(match)
+    setSharedBdate(formatted)
     setStage('shared')
   }, [])
 
@@ -79,7 +81,7 @@ export default function App() {
     <div className="app">
       {/* 공유 링크로 접속한 경우 */}
       {stage === 'shared' && result && (
-        <SharedScene result={result} onTryService={handleTryService} />
+        <SharedScene result={result} birthdate={sharedBdate} onTryService={handleTryService} />
       )}
 
       {stage === 'landing' && (

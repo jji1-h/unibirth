@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
+import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
 
 interface Props {
   result:    MatchResult
@@ -168,6 +170,16 @@ function starDisplayName(star: Star | null) {
   return coordName(star.ra, star.dec)
 }
 
+function formatDateKo(dateStr: string): string {
+  // YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD 모두 대응
+  const clean = dateStr.replace(/[.\-/]/g, '')
+  if (clean.length !== 8) return dateStr
+  const y = clean.slice(0, 4)
+  const m = parseInt(clean.slice(4, 6))
+  const d = parseInt(clean.slice(6, 8))
+  return `${y}년 ${m}월 ${d}일`
+}
+
 // B타입: 30일 이하 → 일, 초과 → 개월
 // C/D타입: 개월 또는 년
 function gapText(gapDays: number) {
@@ -293,26 +305,36 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const bdate = birthdate.replace(/\D/g, '')
     const base  = `${window.location.origin}${window.location.pathname}`
     const url   = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
+    const dateLabel = birthdate ? formatDateKo(birthdate) : ''
+    const shareTail = result.type === 'A'
+      ? '바로 오늘 지구에 도달했습니다.'
+      : result.type === 'B'
+      ? `불과 ${gapText(result.gapDays ?? 0)} 전에 지구를 지나쳤습니다.`
+      : Math.round(Math.abs(result.gapDays ?? 0)) === 0
+        ? '바로 오늘 지구에 도착합니다.'
+        : `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다.`
     const text  = result.type !== 'NO_STAR' && result.star
-      ? `내 탄생별은 ${starDisplayName(result.star)}, 지구로부터 ${result.star.dist_ly.toFixed(2)}광년! 당신의 별은 무엇인가요?`
+      ? `${dateLabel ? dateLabel + ', ' : ''}이 별에서 출발한 빛은\n${shareTail}\n\n당신의 별은 무엇인가요?`
       : '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
 
     if (navigator.share) {
       try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
     } else {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(`${text}\n${url}`)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!result.star) return
+    await document.fonts.ready   // 폰트 로드 완료 대기
+
     const IW = 1080, IH = 1920
     const out = document.createElement('canvas')
     out.width = IW; out.height = IH
     const ctx = out.getContext('2d')!
-    const { colorCss: ACCENT, hasCorona: STAR_CORONA } = starParams(result.star)
+    const { colorCss: ACCENT } = starParams(result.star)
     const BAND   = 22
     const cardY  = IH * 0.62
 
@@ -322,15 +344,6 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
     const dateBottomY = BAND + 72 + 20
     const targetStarY = (dateBottomY + cardY) / 2
-
-    // ── 헥스 → rgba 헬퍼 ──
-    const toRgba = (hex: string, a: number) => {
-      const h = hex.replace('#', '')
-      const r = parseInt(h.slice(0,2), 16)
-      const g = parseInt(h.slice(2,4), 16)
-      const b = parseInt(h.slice(4,6), 16)
-      return `rgba(${r},${g},${b},${a})`
-    }
 
     // ── 별 필드 ──
     for (let i = 0; i < 300; i++) {
@@ -344,10 +357,24 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       ctx.fill()
     }
 
-    // ── 메인 별 고품질 렌더링 ──
-    const gx = IW / 2, gy = targetStarY, SR = 72
+    const gx = IW / 2, gy = targetStarY
 
-    // 원거리 글로우
+    // TransitScene과 동일한 공식으로 별 반지름 계산 후 시각 스케일 산출
+    const absmag      = result.star.absmag ?? 5
+    const starRadius  = Math.min(Math.max((20 - absmag) / 16, 0.22), 1.50)
+    const visualScale = Math.min(Math.max(starRadius / 0.75, 0.4), 1.6)
+    const SR = Math.round(72 * visualScale)    // 2D 글로우 반지름 (29–115 px)
+
+    // ── hex → rgba 헬퍼 ──
+    const toRgba = (hex: string, a: number) => {
+      const h = hex.replace('#', '')
+      const r = parseInt(h.slice(0,2), 16)
+      const g = parseInt(h.slice(2,4), 16)
+      const b = parseInt(h.slice(4,6), 16)
+      return `rgba(${r},${g},${b},${a})`
+    }
+
+    // ── 2D 글로우 레이어 (메인 캔버스에 직접 → 경계선 없음) ──
     const farGlow = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR * 10)
     farGlow.addColorStop(0,   toRgba(ACCENT, 0.22))
     farGlow.addColorStop(0.3, toRgba(ACCENT, 0.07))
@@ -355,67 +382,77 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.fillStyle = farGlow
     ctx.fillRect(gx - SR*10, gy - SR*10, SR*20, SR*20)
 
-    // 중거리 글로우
     const midGlow = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR * 4)
-    midGlow.addColorStop(0,   toRgba(ACCENT, 0.55))
+    midGlow.addColorStop(0,    toRgba(ACCENT, 0.55))
     midGlow.addColorStop(0.45, toRgba(ACCENT, 0.18))
-    midGlow.addColorStop(1,   toRgba(ACCENT, 0))
+    midGlow.addColorStop(1,    toRgba(ACCENT, 0))
     ctx.fillStyle = midGlow
     ctx.fillRect(gx - SR*4, gy - SR*4, SR*8, SR*8)
 
-    // 대기층
     const atmo = ctx.createRadialGradient(gx, gy, SR * 0.85, gx, gy, SR * 1.7)
     atmo.addColorStop(0, toRgba(ACCENT, 0.65))
     atmo.addColorStop(1, toRgba(ACCENT, 0))
     ctx.fillStyle = atmo
     ctx.beginPath(); ctx.arc(gx, gy, SR * 1.7, 0, Math.PI * 2); ctx.fill()
 
-    // 코로나 (고온 별: O/B/A형)
-    if (STAR_CORONA) {
-      // 4방향 회절 스파이크
-      for (let i = 0; i < 4; i++) {
-        const ang = (i / 4) * Math.PI * 2 + Math.PI / 10
-        const len = SR * 7.5
-        const rg = ctx.createLinearGradient(
-          gx - Math.cos(ang)*len, gy - Math.sin(ang)*len,
-          gx + Math.cos(ang)*len, gy + Math.sin(ang)*len,
-        )
-        rg.addColorStop(0,    toRgba(ACCENT, 0))
-        rg.addColorStop(0.42, toRgba(ACCENT, 0.18))
-        rg.addColorStop(0.5,  toRgba(ACCENT, 0.50))
-        rg.addColorStop(0.58, toRgba(ACCENT, 0.18))
-        rg.addColorStop(1,    toRgba(ACCENT, 0))
-        ctx.save()
-        ctx.translate(gx, gy); ctx.rotate(ang)
-        ctx.fillStyle = rg
-        ctx.fillRect(-len, -SR * 0.055, len * 2, SR * 0.11)
-        ctx.restore()
-      }
-      // 8방향 단거리 광선
-      for (let i = 0; i < 8; i++) {
-        const ang = (i / 8) * Math.PI * 2
-        const len = SR * 3
-        const rg = ctx.createLinearGradient(gx, gy, gx + Math.cos(ang)*len, gy + Math.sin(ang)*len)
-        rg.addColorStop(0,   toRgba(ACCENT, 0.32))
-        rg.addColorStop(0.5, toRgba(ACCENT, 0.09))
-        rg.addColorStop(1,   toRgba(ACCENT, 0))
-        ctx.save()
-        ctx.translate(gx, gy); ctx.rotate(ang)
-        ctx.fillStyle = rg
-        ctx.fillRect(0, -SR * 0.065, len, SR * 0.13)
-        ctx.restore()
-      }
+    // ── Three.js 별 구체 (표면 셰이더 + 채층만, 글로우 스프라이트 없음) ──
+    // 카메라 z=9.6 → 별 구체 반지름이 2D SR(72px)과 일치
+    const SS = 400
+    const starCanvas = document.createElement('canvas')
+    starCanvas.width = starCanvas.height = SS
+    try {
+      const renderer = new THREE.WebGLRenderer({
+        canvas: starCanvas, antialias: true, alpha: true, preserveDrawingBuffer: true,
+      })
+      renderer.setClearColor(0x000000, 0)
+      renderer.toneMapping = THREE.ACESFilmicToneMapping
+      renderer.toneMappingExposure = 1.2
+      renderer.setSize(SS, SS)
+
+      const scene  = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(60, 1, 0.01, 1000)
+      camera.position.set(0, 0, 9.6)   // star radius ≈ 72px in 400px canvas
+
+      const colorHex  = parseInt(ACCENT.replace('#', ''), 16)
+      const starColor = new THREE.Color(colorHex)
+      const R = 2
+
+      // 별 표면 (FBM grain + limb darkening)
+      const starMat = new THREE.ShaderMaterial({
+        uniforms: { uTime: { value: 0 }, uColor: { value: starColor } },
+        vertexShader: STAR_VERT, fragmentShader: STAR_FRAG,
+      })
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(R, 64, 64), starMat))
+
+      // 채층 (rim glow) — 구체 가장자리에만 존재, 외부는 투명
+      const chromoMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uColor:   { value: starColor.clone().lerp(new THREE.Color(0xffffff), 0.3) },
+          uOpacity: { value: 0.9 },
+        },
+        vertexShader: CHROMO_VERT, fragmentShader: CHROMO_FRAG,
+        transparent: true, side: THREE.FrontSide, depthWrite: false,
+      })
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.04, 48, 48), chromoMat))
+
+      renderer.render(scene, camera)
+      renderer.render(scene, camera)
+      renderer.dispose()
+    } catch {
+      // WebGL 실패 시 2D 폴백 코어
+      const g2 = starCanvas.getContext('2d')!
+      const half = SS / 2
+      const core2d = g2.createRadialGradient(half, half, 0, half, half, half * 0.4)
+      core2d.addColorStop(0,   'rgba(255,255,255,1)')
+      core2d.addColorStop(0.4, toRgba(ACCENT, 0.9))
+      core2d.addColorStop(1,   toRgba(ACCENT, 0))
+      g2.fillStyle = core2d
+      g2.beginPath(); g2.arc(half, half, half * 0.4, 0, Math.PI * 2); g2.fill()
     }
 
-    // 별 코어 (흰색 중심 → 별 색)
-    const core = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR)
-    core.addColorStop(0,    'rgba(255,255,255,1)')
-    core.addColorStop(0.18, 'rgba(255,255,255,0.92)')
-    core.addColorStop(0.45,  toRgba(ACCENT, 0.85))
-    core.addColorStop(0.75,  toRgba(ACCENT, 0.40))
-    core.addColorStop(1,     toRgba(ACCENT, 0))
-    ctx.fillStyle = core
-    ctx.beginPath(); ctx.arc(gx, gy, SR, 0, Math.PI * 2); ctx.fill()
+    // 별 구체 합성: visualScale에 따라 그리기 크기 조정 (경계 없음)
+    const SS_draw = Math.round(SS * visualScale)
+    ctx.drawImage(starCanvas, gx - SS_draw / 2, gy - SS_draw / 2, SS_draw, SS_draw)
 
     // ── 하단 그라디언트 오버레이 ──
     const grad = ctx.createLinearGradient(0, cardY - 80, 0, IH)
@@ -446,26 +483,27 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
     // ── 거리 ──
     ctx.font      = '300 44px Inter, Arial, sans-serif'
-    ctx.fillStyle = 'rgba(255,255,255,0.48)'
+    ctx.fillStyle = 'rgba(255,255,255,0.68)'
     ctx.fillText(`지구로부터  ${result.star.dist_ly.toFixed(2)} 광년`, IW / 2, cardY + TOP + 72)
 
-    // ── 구분선 ──
-    ctx.strokeStyle = 'rgba(255,255,255,0.10)'
-    ctx.lineWidth   = 1
-    ctx.beginPath(); ctx.moveTo(IW/2 - 260, cardY + TOP + 112); ctx.lineTo(IW/2 + 260, cardY + TOP + 112); ctx.stroke()
-
     // ── 카피 ──
-    const copyLines: string[] = result.type === 'A'
-      ? ['당신이 태어난 날 이 별을 출발한 빛이,', '오늘 지구에 도달했습니다']
+    const dl = birthdate ? formatDateKo(birthdate) : ''
+    const copyTail: string = result.type === 'A'
+      ? '바로 오늘 지구에 도달했습니다'
       : result.type === 'B'
-      ? [`이 별에서 당신이 태어난 날 출발한 빛은`, `불과 ${gapText(result.gapDays ?? 0)} 전에 지구를 지나쳤습니다`]
+      ? `불과 ${gapText(result.gapDays ?? 0)} 전에 지구를 지나쳤습니다`
       : Math.round(Math.abs(result.gapDays ?? 0)) === 0
-        ? [`당신이 태어난 날 이 별을 출발한 빛은`, `오늘 지구에 도착합니다`]
-        : [`당신이 태어난 날 이 별을 출발한 빛은`, `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다`]
+        ? '바로 오늘 지구에 도착합니다'
+        : `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다`
+    // 줄1: "{생일}, 이 별에서 출발한 빛은"  줄2: 나머지
+    const line1 = `${dl ? dl + ', ' : ''}이 별에서 출발한 빛은`
+    const copyLines = [line1, copyTail]
 
     ctx.font      = '300 40px Inter, Arial, sans-serif'
     ctx.fillStyle = 'rgba(255,255,255,0.62)'
-    copyLines.forEach((line, i) => ctx.fillText(line, IW / 2, cardY + TOP + 178 + i * 56))
+    const lineH  = 58
+    const startY = cardY + TOP + 178
+    copyLines.forEach((line, i) => ctx.fillText(line, IW / 2, startY + i * lineH))
 
     // ── 브랜딩 ──
     ctx.font      = '400 34px Georgia, serif'
@@ -479,7 +517,10 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
     // ── 저장: Instagram WebView 감지 후 분기 ──
     const dataUrl = out.toDataURL('image/png')
-    const isInstagram = /Instagram/i.test(navigator.userAgent)
+    const ua = navigator.userAgent
+    const isInstagram = /Instagram/i.test(ua)
+    const isKakao     = /KAKAOTALK/i.test(ua)
+    const isRestrictedInApp = isInstagram || isKakao
 
     const overlay = document.createElement('div')
     overlay.style.cssText = [
@@ -489,14 +530,15 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       'touch-action:manipulation;-webkit-tap-highlight-color:transparent',
     ].join(';')
 
-    if (isInstagram) {
-      // Instagram 인앱 브라우저: 이미지 저장 차단됨 → 외부 브라우저 안내
+    if (isRestrictedInApp) {
+      // Instagram / 카카오톡 인앱 브라우저: 이미지 저장 차단됨 → 외부 브라우저 안내
+      const appName = isKakao ? '카카오톡' : 'Instagram'
       const icon = document.createElement('p')
       icon.textContent = '🔒'
       icon.style.cssText = 'font-size:36px;margin:0'
 
       const title = document.createElement('p')
-      title.textContent = 'Instagram에서는 이미지 저장이 제한돼요'
+      title.textContent = `${appName}에서는 이미지 저장이 제한돼요`
       title.style.cssText = 'color:rgba(255,255,255,0.90);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
 
       const desc = document.createElement('p')
@@ -504,12 +546,13 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
 
       const closeBtn = document.createElement('button')
-      closeBtn.textContent = '닫기'
+      closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 18 18" fill="none"><line x1="2" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="2" x2="2" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/></svg>'
       closeBtn.style.cssText = [
-        'margin-top:8px;background:none',
-        'border:1px solid rgba(255,255,255,0.20);border-radius:100px',
-        'color:rgba(255,255,255,0.40);font-size:13px;font-family:sans-serif',
-        'padding:10px 28px;cursor:pointer;touch-action:manipulation',
+        'position:absolute;top:20px;right:20px',
+        'width:40px;height:40px;border-radius:50%',
+        'background:none;border:none',
+        'display:flex;align-items:center;justify-content:center',
+        'cursor:pointer;touch-action:manipulation',
       ].join(';')
 
       const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
@@ -517,21 +560,13 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
       closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
 
+      overlay.appendChild(closeBtn)
       overlay.appendChild(icon)
       overlay.appendChild(title)
       overlay.appendChild(desc)
-      overlay.appendChild(closeBtn)
 
     } else {
-      // 일반 브라우저: 저장 버튼 + 이미지 (모바일은 꾹 누르기도 가능)
-      const isTouch = navigator.maxTouchPoints > 0
-
-      const hint = document.createElement('p')
-      hint.textContent = isTouch
-        ? '저장 버튼을 탭하거나, 이미지를 꾹 눌러서 저장하세요'
-        : '저장 버튼을 클릭하거나, 이미지를 우클릭 → 이미지 저장'
-      hint.style.cssText = 'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.03em;text-align:center'
-
+      // 일반 브라우저: 저장 버튼 + 이미지
       const img = document.createElement('img')
       img.src = dataUrl
       img.alt = '탄생별 결과 이미지'
@@ -539,24 +574,62 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       img.addEventListener('click', e => e.stopPropagation())
 
       const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
+
+      // 버튼 행
+      const btnRow = document.createElement('div')
+      btnRow.style.cssText = 'display:flex;gap:10px;align-items:center'
+
       const saveBtn = document.createElement('a')
       saveBtn.href     = dataUrl
       saveBtn.download = `unibirth-${starName}.png`
-      saveBtn.textContent = '이미지 저장하기'
+      saveBtn.textContent = '저장하기'
       saveBtn.style.cssText = [
         'display:block;text-decoration:none;text-align:center',
         'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:100px',
         'color:rgba(255,255,255,0.80);font-size:14px;font-family:sans-serif',
-        'padding:12px 36px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
+        'padding:12px 28px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
       ].join(';')
       saveBtn.addEventListener('click', e => e.stopPropagation())
 
+      // 이미지로 공유하기 (Web Share API Level 2)
+      const canShareFiles = typeof navigator.share === 'function' &&
+        typeof navigator.canShare === 'function'
+      if (canShareFiles) {
+        const shareBtn = document.createElement('button')
+        shareBtn.textContent = '공유하기'
+        shareBtn.style.cssText = [
+          'display:block;text-align:center',
+          'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:100px',
+          'color:rgba(255,255,255,0.80);font-size:14px;font-family:sans-serif',
+          'padding:12px 28px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
+        ].join(';')
+        shareBtn.addEventListener('click', async e => {
+          e.stopPropagation()
+          try {
+            const res  = await fetch(dataUrl)
+            const blob = await res.blob()
+            const file = new File([blob], `unibirth-${starName}.png`, { type: 'image/png' })
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({ files: [file], title: '나의 탄생별' })
+            }
+          } catch (_err) { /* 사용자가 취소한 경우 등 무시 */ }
+        })
+        btnRow.appendChild(saveBtn)
+        btnRow.appendChild(shareBtn)
+      } else {
+        saveBtn.textContent = '이미지 저장하기'
+        saveBtn.style.padding = '12px 36px'
+        btnRow.appendChild(saveBtn)
+      }
+
       const closeBtn = document.createElement('button')
-      closeBtn.textContent = '닫기'
+      closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 18 18" fill="none"><line x1="2" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="2" x2="2" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/></svg>'
       closeBtn.style.cssText = [
-        'background:none;border:1px solid rgba(255,255,255,0.15);border-radius:100px',
-        'color:rgba(255,255,255,0.35);font-size:13px;font-family:sans-serif',
-        'padding:10px 28px;cursor:pointer;touch-action:manipulation',
+        'position:absolute;top:20px;right:20px',
+        'width:40px;height:40px;border-radius:50%',
+        'background:none;border:none',
+        'display:flex;align-items:center;justify-content:center',
+        'cursor:pointer;touch-action:manipulation',
       ].join(';')
 
       const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
@@ -564,10 +637,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
       closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
 
-      overlay.appendChild(hint)
-      overlay.appendChild(img)
-      overlay.appendChild(saveBtn)
       overlay.appendChild(closeBtn)
+      overlay.appendChild(img)
+      overlay.appendChild(btnRow)
     }
 
     document.body.appendChild(overlay)
@@ -1024,7 +1096,6 @@ const styles: Record<string, React.CSSProperties> = {
     bottom: '5vh',
     left: '50%',
     transform: 'translateX(-50%)',
-    zIndex: 1,
     background: 'rgba(7,9,15,0.72)',
     backdropFilter: 'blur(24px)',
     border: '1px solid var(--border-accent)',
@@ -1038,7 +1109,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
   starName: {
     fontFamily: "'DM Serif Display', serif",
-    fontSize: '30px',
     fontWeight: 400,
     lineHeight: 1.2,
   },
