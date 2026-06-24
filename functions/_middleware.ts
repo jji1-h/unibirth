@@ -10,7 +10,9 @@ import starsData from '../src/data/stars.json'
 interface Star {
   dist_ly: number
   proper:  string | null
+  bf:      string | null
   hip:     number | null
+  gl:      string | null
   ra:      number | null
   dec:     number | null
   mag:     number | null
@@ -82,7 +84,9 @@ function findNearestStar(ageLy: number): Star | null {
 
 function starDisplayName(star: Star): string {
   if (star.proper) return star.proper
+  if (star.bf)     return star.bf.trim()
   if (star.hip)    return `HIP ${star.hip}`
+  if (star.gl)     return star.gl.trim()
 
   const ra  = star.ra  ?? 0
   const dec = star.dec ?? 0
@@ -92,6 +96,15 @@ function starDisplayName(star: Star): string {
   const dd  = Math.floor(Math.abs(dec))
   const dm  = Math.floor((Math.abs(dec) - dd) * 60)
   return `J${String(rh).padStart(2,'0')}${String(rm).padStart(2,'0')}${sign}${String(dd).padStart(2,'0')}${String(dm).padStart(2,'0')}`
+}
+
+function formatDateKo(bdate: string): string {
+  const d = bdate.replace(/\D/g, '')
+  if (d.length !== 8) return bdate
+  const y = d.slice(0, 4)
+  const m = parseInt(d.slice(4, 6))
+  const day = parseInt(d.slice(6, 8))
+  return `${y}년 ${m}월 ${day}일`
 }
 
 function escapeHtml(str: string): string {
@@ -127,9 +140,11 @@ export const onRequest = async (context: CFContext): Promise<Response> => {
   const star = findNearestStar(ageLy)
   if (!star) return response
 
-  const name  = escapeHtml(starDisplayName(star))
-  const title = `${name} — 나의 탄생별 | Unibirth`
-  const desc  = `광활한 우주에서 내가 태어난 날의 빛을 찾았어요. 당신의 별은 무엇인가요?`
+  const name    = escapeHtml(starDisplayName(star))
+  const dateKo  = escapeHtml(formatDateKo(bdate))
+  const distStr = star.dist_ly.toFixed(2)
+  const title   = `${name} — ${dateKo} 탄생별 | Unibirth`
+  const desc    = `${dateKo}, 이 별에서 출발한 빛은 오늘 지구에 닿습니다. 지구로부터 ${distStr}광년 떨어진 ${name}이 당신의 탄생별입니다.`
 
   let html = await response.text()
 
