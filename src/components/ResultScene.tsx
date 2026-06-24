@@ -410,7 +410,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       ? ['당신이 태어난 날 이 별을 출발한 빛이,', '오늘 지구에 도달했습니다']
       : result.type === 'B'
       ? [`이 별에서 당신이 태어난 날 출발한 빛은`, `불과 ${gapText(result.gapDays ?? 0)} 전에 지구를 지나쳤습니다`]
-      : [`당신이 태어난 날 이 별을 출발한 빛은`, `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다`]
+      : Math.round(Math.abs(result.gapDays ?? 0)) === 0
+        ? [`당신이 태어난 날 이 별을 출발한 빛은`, `오늘 지구에 도착합니다`]
+        : [`당신이 태어난 날 이 별을 출발한 빛은`, `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다`]
 
     ctx.font      = '300 40px Inter, Arial, sans-serif'
     ctx.fillStyle = 'rgba(255,255,255,0.62)'
@@ -810,7 +812,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
             ? '당신이 태어난 날 이 별을 출발한 빛이, 오늘 지구에 도달했습니다.'
             : type === 'B'
             ? `이 별에서 당신이 태어난 날 출발한 빛은 불과 ${gapText(gapDays ?? 0)} 전에 지구를 지나쳤습니다.`
-            : `당신이 태어난 날 이 별을 출발한 빛은 ${gapText(gapDays ?? 0)} 후 지구에 도착합니다.`
+            : Math.round(Math.abs(gapDays ?? 0)) === 0
+              ? `당신이 태어난 날 이 별을 출발한 빛은 오늘 지구에 도착합니다.`
+              : `당신이 태어난 날 이 별을 출발한 빛은 ${gapText(gapDays ?? 0)} 후 지구에 도착합니다.`
           const story = star ? starStory(star) : ''
           const fullText = story ? `${copy} ${story}` : copy
 
