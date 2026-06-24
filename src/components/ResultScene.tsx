@@ -315,7 +315,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         : `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다.`
     const text  = result.type !== 'NO_STAR' && result.star
       ? `${dateLabel ? dateLabel + ', ' : ''}이 별에서 출발한 빛은\n${shareTail}\n\n당신의 별은 무엇인가요?`
-      : '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
+      : `${dateLabel ? dateLabel + ', ' : ''}출발한 빛을 찾아보세요`
 
     if (navigator.share) {
       try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
@@ -665,7 +665,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           textAlign: 'center' as const,
         }}>
           <h2 style={{ ...styles.starName, fontSize: '22px', lineHeight: 1.5, color: '#fff4e8' }}>
-            당신이 태어난 날 출발한 빛을<br />발견하지 못했습니다
+            {formatDateKo(birthdate)} 출발한 빛을<br />발견하지 못했습니다
           </h2>
           {nearestStar && (
             <p style={styles.bodyText}>
@@ -947,13 +947,14 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
         {/* 카피 + 스토리 */}
         {(() => {
+          const dl   = formatDateKo(birthdate)
           const copy = type === 'A'
-            ? '당신이 태어난 날 이 별을 출발한 빛이, 오늘 지구에 도달했습니다.'
+            ? `${dl}, 이 별을 출발한 빛이 오늘 지구에 도달했습니다.`
             : type === 'B'
-            ? `이 별에서 당신이 태어난 날 출발한 빛은 불과 ${gapText(gapDays ?? 0)} 전에 지구를 지나쳤습니다.`
+            ? `${dl}, 이 별에서 출발한 빛은 불과 ${gapText(gapDays ?? 0)} 전에 지구를 지나쳤습니다.`
             : Math.round(Math.abs(gapDays ?? 0)) === 0
-              ? `당신이 태어난 날 이 별을 출발한 빛은 오늘 지구에 도착합니다.`
-              : `당신이 태어난 날 이 별을 출발한 빛은 ${gapText(gapDays ?? 0)} 후 지구에 도착합니다.`
+              ? `${dl}, 이 별을 출발한 빛은 오늘 지구에 도착합니다.`
+              : `${dl}, 이 별을 출발한 빛은 ${gapText(gapDays ?? 0)} 후 지구에 도착합니다.`
           const story = star ? starStory(star) : ''
           const fullText = story ? `${copy} ${story}` : copy
 
