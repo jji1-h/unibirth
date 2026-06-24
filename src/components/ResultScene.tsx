@@ -308,8 +308,6 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
   function handleSave() {
     if (!result.star) return
-    const src = document.querySelector('canvas') as HTMLCanvasElement | null
-
     const IW = 1080, IH = 1920
     const out = document.createElement('canvas')
     out.width = IW; out.height = IH
