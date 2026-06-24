@@ -70,8 +70,8 @@ function contrastColor(hex: string): string {
 }
 
 function starParams(star: Star | null) {
-  const { colorCss } = parseSpect(star?.spect ?? null, star?.ci, star?.absmag)
-  return { colorCss }
+  const { colorCss, hasCorona } = parseSpect(star?.spect ?? null, star?.ci, star?.absmag)
+  return { colorCss, hasCorona }
 }
 
 // ── 별 스토리 자동 생성 ──────────────────────────────
@@ -294,7 +294,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const base  = `${window.location.origin}${window.location.pathname}`
     const url   = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
     const text  = result.type !== 'NO_STAR' && result.star
-      ? '광활한 우주에서 내가 태어난 날의 빛을 찾았어요. 당신의 별은 무엇인가요?'
+      ? `내 탄생별은 ${starDisplayName(result.star)}, 지구로부터 ${result.star.dist_ly.toFixed(2)}광년! 당신의 별은 무엇인가요?`
       : '당신이 태어난 바로 그날 출발한 빛을 찾아보세요'
 
     if (navigator.share) {
@@ -314,7 +314,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const out = document.createElement('canvas')
     out.width = IW; out.height = IH
     const ctx = out.getContext('2d')!
-    const ACCENT = starParams(result.star).colorCss
+    const { colorCss: ACCENT, hasCorona: STAR_CORONA } = starParams(result.star)
     const BAND   = 22
     const cardY  = IH * 0.62
 
@@ -322,51 +322,102 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.fillStyle = '#07090f'
     ctx.fillRect(0, 0, IW, IH)
 
-    // ── WebGL canvas 복사 (CORS taint 시 procedural 별 배경으로 폴백) ──
     const dateBottomY = BAND + 72 + 20
     const targetStarY = (dateBottomY + cardY) / 2
 
-    let canvasCopied = false
-    if (src) {
-      try {
-        const srcW = src.width, srcH = src.height
-        const scale   = Math.max(IW / srcW, IH / srcH)
-        const scaledW = srcW * scale
-        const scaledH = srcH * scale
-        const drawX = IW / 2 - scaledW / 2
-        const drawY = targetStarY - scaledH / 2
-        ctx.drawImage(src, 0, 0, srcW, srcH, drawX, drawY, scaledW, scaledH)
-        // taint 확인: toDataURL 호출 시 에러나면 catch로 이동
-        out.toDataURL('image/png').slice(0, 10)
-        canvasCopied = true
-      } catch {
-        // cross-origin taint → procedural fallback
-        ctx.fillStyle = '#07090f'
-        ctx.fillRect(0, 0, IW, IH)
+    // ── 헥스 → rgba 헬퍼 ──
+    const toRgba = (hex: string, a: number) => {
+      const h = hex.replace('#', '')
+      const r = parseInt(h.slice(0,2), 16)
+      const g = parseInt(h.slice(2,4), 16)
+      const b = parseInt(h.slice(4,6), 16)
+      return `rgba(${r},${g},${b},${a})`
+    }
+
+    // ── 별 필드 ──
+    for (let i = 0; i < 300; i++) {
+      const sx = Math.random() * IW
+      const sy = Math.random() * (cardY + 80)
+      const sr = Math.random() < 0.06 ? Math.random() * 1.8 + 0.9 : Math.random() * 0.9 + 0.2
+      const sa = Math.random() * 0.55 + 0.25
+      ctx.beginPath()
+      ctx.arc(sx, sy, sr, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(255,255,255,${sa.toFixed(2)})`
+      ctx.fill()
+    }
+
+    // ── 메인 별 고품질 렌더링 ──
+    const gx = IW / 2, gy = targetStarY, SR = 72
+
+    // 원거리 글로우
+    const farGlow = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR * 10)
+    farGlow.addColorStop(0,   toRgba(ACCENT, 0.22))
+    farGlow.addColorStop(0.3, toRgba(ACCENT, 0.07))
+    farGlow.addColorStop(1,   toRgba(ACCENT, 0))
+    ctx.fillStyle = farGlow
+    ctx.fillRect(gx - SR*10, gy - SR*10, SR*20, SR*20)
+
+    // 중거리 글로우
+    const midGlow = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR * 4)
+    midGlow.addColorStop(0,   toRgba(ACCENT, 0.55))
+    midGlow.addColorStop(0.45, toRgba(ACCENT, 0.18))
+    midGlow.addColorStop(1,   toRgba(ACCENT, 0))
+    ctx.fillStyle = midGlow
+    ctx.fillRect(gx - SR*4, gy - SR*4, SR*8, SR*8)
+
+    // 대기층
+    const atmo = ctx.createRadialGradient(gx, gy, SR * 0.85, gx, gy, SR * 1.7)
+    atmo.addColorStop(0, toRgba(ACCENT, 0.65))
+    atmo.addColorStop(1, toRgba(ACCENT, 0))
+    ctx.fillStyle = atmo
+    ctx.beginPath(); ctx.arc(gx, gy, SR * 1.7, 0, Math.PI * 2); ctx.fill()
+
+    // 코로나 (고온 별: O/B/A형)
+    if (STAR_CORONA) {
+      // 4방향 회절 스파이크
+      for (let i = 0; i < 4; i++) {
+        const ang = (i / 4) * Math.PI * 2 + Math.PI / 10
+        const len = SR * 7.5
+        const rg = ctx.createLinearGradient(
+          gx - Math.cos(ang)*len, gy - Math.sin(ang)*len,
+          gx + Math.cos(ang)*len, gy + Math.sin(ang)*len,
+        )
+        rg.addColorStop(0,    toRgba(ACCENT, 0))
+        rg.addColorStop(0.42, toRgba(ACCENT, 0.18))
+        rg.addColorStop(0.5,  toRgba(ACCENT, 0.50))
+        rg.addColorStop(0.58, toRgba(ACCENT, 0.18))
+        rg.addColorStop(1,    toRgba(ACCENT, 0))
+        ctx.save()
+        ctx.translate(gx, gy); ctx.rotate(ang)
+        ctx.fillStyle = rg
+        ctx.fillRect(-len, -SR * 0.055, len * 2, SR * 0.11)
+        ctx.restore()
+      }
+      // 8방향 단거리 광선
+      for (let i = 0; i < 8; i++) {
+        const ang = (i / 8) * Math.PI * 2
+        const len = SR * 3
+        const rg = ctx.createLinearGradient(gx, gy, gx + Math.cos(ang)*len, gy + Math.sin(ang)*len)
+        rg.addColorStop(0,   toRgba(ACCENT, 0.32))
+        rg.addColorStop(0.5, toRgba(ACCENT, 0.09))
+        rg.addColorStop(1,   toRgba(ACCENT, 0))
+        ctx.save()
+        ctx.translate(gx, gy); ctx.rotate(ang)
+        ctx.fillStyle = rg
+        ctx.fillRect(0, -SR * 0.065, len, SR * 0.13)
+        ctx.restore()
       }
     }
 
-    // procedural 별 배경 (canvas 복사 실패 또는 src 없을 때)
-    if (!canvasCopied) {
-      const rng = (n: number) => Math.random() * n
-      for (let i = 0; i < 320; i++) {
-        const x = rng(IW), y = rng(cardY + 60)
-        const r = Math.random() < 0.05 ? rng(2.2) + 0.8 : rng(1.2) + 0.3
-        const a = Math.random() * 0.7 + 0.3
-        ctx.beginPath()
-        ctx.arc(x, y, r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,255,255,${a.toFixed(2)})`
-        ctx.fill()
-      }
-      // 별 글로우 (결과 별 중심)
-      const gx = IW / 2, gy = targetStarY
-      const grd = ctx.createRadialGradient(gx, gy, 0, gx, gy, 120)
-      grd.addColorStop(0,   ACCENT.replace(')', ',0.9)').replace('rgb(', 'rgba('))
-      grd.addColorStop(0.3, ACCENT.replace(')', ',0.3)').replace('rgb(', 'rgba('))
-      grd.addColorStop(1,   'rgba(7,9,15,0)')
-      ctx.fillStyle = grd
-      ctx.fillRect(gx - 120, gy - 120, 240, 240)
-    }
+    // 별 코어 (흰색 중심 → 별 색)
+    const core = ctx.createRadialGradient(gx, gy, 0, gx, gy, SR)
+    core.addColorStop(0,    'rgba(255,255,255,1)')
+    core.addColorStop(0.18, 'rgba(255,255,255,0.92)')
+    core.addColorStop(0.45,  toRgba(ACCENT, 0.85))
+    core.addColorStop(0.75,  toRgba(ACCENT, 0.40))
+    core.addColorStop(1,     toRgba(ACCENT, 0))
+    ctx.fillStyle = core
+    ctx.beginPath(); ctx.arc(gx, gy, SR, 0, Math.PI * 2); ctx.fill()
 
     // ── 하단 그라디언트 오버레이 ──
     const grad = ctx.createLinearGradient(0, cardY - 80, 0, IH)
@@ -474,22 +525,39 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       overlay.appendChild(closeBtn)
 
     } else {
-      // 일반 브라우저 / 카톡 등: 롱프레스 저장 모달
+      // 일반 브라우저: 저장 버튼 + 이미지 (모바일은 꾹 누르기도 가능)
+      const isTouch = navigator.maxTouchPoints > 0
+
       const hint = document.createElement('p')
-      hint.textContent = '이미지를 꾹 눌러서 저장하세요'
-      hint.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.04em'
+      hint.textContent = isTouch
+        ? '저장 버튼을 탭하거나, 이미지를 꾹 눌러서 저장하세요'
+        : '저장 버튼을 클릭하거나, 이미지를 우클릭 → 이미지 저장'
+      hint.style.cssText = 'color:rgba(255,255,255,0.45);font-size:13px;font-family:sans-serif;margin:0;letter-spacing:0.03em;text-align:center'
 
       const img = document.createElement('img')
       img.src = dataUrl
       img.alt = '탄생별 결과 이미지'
-      img.style.cssText = 'max-height:72vh;max-width:88vw;border-radius:8px;display:block;-webkit-touch-callout:default'
+      img.style.cssText = 'max-height:62vh;max-width:82vw;border-radius:8px;display:block;-webkit-touch-callout:default'
       img.addEventListener('click', e => e.stopPropagation())
+
+      const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
+      const saveBtn = document.createElement('a')
+      saveBtn.href     = dataUrl
+      saveBtn.download = `unibirth-${starName}.png`
+      saveBtn.textContent = '이미지 저장하기'
+      saveBtn.style.cssText = [
+        'display:block;text-decoration:none;text-align:center',
+        'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:100px',
+        'color:rgba(255,255,255,0.80);font-size:14px;font-family:sans-serif',
+        'padding:12px 36px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
+      ].join(';')
+      saveBtn.addEventListener('click', e => e.stopPropagation())
 
       const closeBtn = document.createElement('button')
       closeBtn.textContent = '닫기'
       closeBtn.style.cssText = [
-        'background:none;border:1px solid rgba(255,255,255,0.20);border-radius:100px',
-        'color:rgba(255,255,255,0.40);font-size:13px;font-family:sans-serif',
+        'background:none;border:1px solid rgba(255,255,255,0.15);border-radius:100px',
+        'color:rgba(255,255,255,0.35);font-size:13px;font-family:sans-serif',
         'padding:10px 28px;cursor:pointer;touch-action:manipulation',
       ].join(';')
 
@@ -500,6 +568,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
       overlay.appendChild(hint)
       overlay.appendChild(img)
+      overlay.appendChild(saveBtn)
       overlay.appendChild(closeBtn)
     }
 
