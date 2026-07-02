@@ -313,23 +313,18 @@
     <!-- 아티클: 블랙홀이란? (2026.07.02) -->
     <a class="card" href="/articles/what-is-black-hole.html">
       <div class="card-thumb">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
+        <img
+          src="/articles/black-hole-nasa.jpg"
+          alt="블랙홀과 강착원반 시뮬레이션 — NASA Goddard"
+          loading="lazy"
+          onerror="this.style.display='none'; this.parentElement.querySelector('svg').style.display='block';"
+        />
+        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;inset:0;width:100%;height:100%;">
           <rect width="480" height="270" fill="#07090f"/>
-          <circle cx="50"  cy="25"  r="0.9" fill="white" opacity="0.5"/>
-          <circle cx="130" cy="60"  r="0.7" fill="white" opacity="0.4"/>
-          <circle cx="350" cy="20"  r="1.0" fill="white" opacity="0.55"/>
-          <circle cx="440" cy="50"  r="0.8" fill="white" opacity="0.4"/>
-          <circle cx="80"  cy="220" r="0.7" fill="white" opacity="0.35"/>
-          <circle cx="400" cy="240" r="0.9" fill="white" opacity="0.4"/>
-          <!-- 강착원반 -->
           <ellipse cx="240" cy="135" rx="110" ry="32" fill="rgba(196,181,253,0.08)"/>
           <ellipse cx="240" cy="135" rx="75"  ry="22" fill="rgba(255,180,80,0.12)"/>
-          <!-- 광자환 -->
           <circle cx="240" cy="135" r="50" fill="none" stroke="rgba(255,200,80,0.4)" stroke-width="1.5"/>
-          <!-- 블랙홀 -->
           <circle cx="240" cy="135" r="40" fill="#000"/>
-          <circle cx="240" cy="135" r="38" fill="#020206"/>
-          <!-- 제트 -->
           <line x1="240" y1="92"  x2="240" y2="38"  stroke="rgba(196,181,253,0.35)" stroke-width="2" stroke-linecap="round"/>
           <line x1="240" y1="178" x2="240" y2="232" stroke="rgba(196,181,253,0.35)" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -346,25 +341,148 @@
     <a class="card" href="/articles/vega-altair-tanabata.html">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
-          <rect width="480" height="270" fill="#07090f"/>
-          <circle cx="40"  cy="30"  r="0.8" fill="white" opacity="0.45"/>
-          <circle cx="120" cy="65"  r="0.6" fill="white" opacity="0.35"/>
-          <circle cx="360" cy="22"  r="0.9" fill="white" opacity="0.5"/>
-          <circle cx="440" cy="55"  r="0.7" fill="white" opacity="0.4"/>
-          <circle cx="75"  cy="230" r="0.6" fill="white" opacity="0.35"/>
-          <circle cx="410" cy="240" r="0.8" fill="white" opacity="0.4"/>
+          <defs>
+            <radialGradient id="cVega" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#fffdf0" stop-opacity="1"/>
+              <stop offset="28%"  stop-color="#ffd580" stop-opacity="0.50"/>
+              <stop offset="100%" stop-color="#ffd580" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="cAltair" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#fff9e8" stop-opacity="1"/>
+              <stop offset="28%"  stop-color="#ffcc55" stop-opacity="0.42"/>
+              <stop offset="100%" stop-color="#ffcc55" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="cDeneb" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#f2f5ff" stop-opacity="1"/>
+              <stop offset="28%"  stop-color="#c8d8ff" stop-opacity="0.38"/>
+              <stop offset="100%" stop-color="#c8d8ff" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="cMW" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(155,145,215,0)"/>
+              <stop offset="43%"  stop-color="rgba(155,145,215,0)"/>
+              <stop offset="48%"  stop-color="rgba(170,160,230,0.08)"/>
+              <stop offset="50%"  stop-color="rgba(175,165,235,0.13)"/>
+              <stop offset="52%"  stop-color="rgba(170,160,230,0.08)"/>
+              <stop offset="57%"  stop-color="rgba(155,145,215,0)"/>
+              <stop offset="100%" stop-color="rgba(155,145,215,0)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 배경 -->
+          <rect width="480" height="270" fill="#05060e"/>
           <!-- 은하수 -->
-          <rect x="218" y="0" width="44" height="270" fill="rgba(150,140,200,0.07)" rx="22"/>
-          <!-- 직녀성 베가 -->
-          <circle cx="100" cy="135" r="36" fill="rgba(255,213,128,0.12)"/>
-          <circle cx="100" cy="135" r="6"  fill="#fffcf0" opacity="0.95"/>
-          <text x="100" y="185" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,213,128,0.75)">직녀 (베가)</text>
-          <text x="100" y="198" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.30)">25광년</text>
-          <!-- 견우성 알타이르 -->
-          <circle cx="380" cy="135" r="30" fill="rgba(255,200,80,0.10)"/>
-          <circle cx="380" cy="135" r="5"  fill="#fff8e0" opacity="0.95"/>
-          <text x="380" y="178" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,213,128,0.75)">견우 (알타이르)</text>
-          <text x="380" y="191" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.30)">17광년</text>
+          <rect width="480" height="270" fill="url(#cMW)"/>
+          <!-- 은하수 미세 별 -->
+          <circle cx="222" cy="28"  r="0.3" fill="rgba(210,200,255,0.5)"/>
+          <circle cx="232" cy="72"  r="0.3" fill="rgba(210,200,255,0.45)"/>
+          <circle cx="226" cy="118" r="0.3" fill="rgba(210,200,255,0.50)"/>
+          <circle cx="235" cy="162" r="0.3" fill="rgba(210,200,255,0.45)"/>
+          <circle cx="228" cy="208" r="0.3" fill="rgba(210,200,255,0.50)"/>
+          <circle cx="238" cy="248" r="0.3" fill="rgba(210,200,255,0.40)"/>
+          <circle cx="245" cy="45"  r="0.3" fill="rgba(210,200,255,0.45)"/>
+          <circle cx="242" cy="95"  r="0.3" fill="rgba(210,200,255,0.50)"/>
+          <circle cx="248" cy="142" r="0.3" fill="rgba(210,200,255,0.45)"/>
+          <circle cx="244" cy="192" r="0.3" fill="rgba(210,200,255,0.40)"/>
+          <circle cx="250" cy="235" r="0.3" fill="rgba(210,200,255,0.50)"/>
+
+          <!-- 배경 별 -->
+          <circle cx="22"  cy="18"  r="0.6" fill="rgba(255,255,255,0.40)"/>
+          <circle cx="60"  cy="48"  r="0.5" fill="rgba(255,255,255,0.32)"/>
+          <circle cx="38"  cy="88"  r="0.6" fill="rgba(255,255,255,0.36)"/>
+          <circle cx="80"  cy="28"  r="0.7" fill="rgba(255,255,255,0.44)"/>
+          <circle cx="55"  cy="145" r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="28"  cy="195" r="0.6" fill="rgba(255,255,255,0.36)"/>
+          <circle cx="72"  cy="228" r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="158" cy="30"  r="0.6" fill="rgba(255,255,255,0.38)"/>
+          <circle cx="175" cy="85"  r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="185" cy="175" r="0.6" fill="rgba(255,255,255,0.36)"/>
+          <circle cx="162" cy="228" r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="290" cy="22"  r="0.6" fill="rgba(255,255,255,0.38)"/>
+          <circle cx="305" cy="75"  r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="298" cy="155" r="0.6" fill="rgba(255,255,255,0.36)"/>
+          <circle cx="310" cy="235" r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="420" cy="110" r="0.6" fill="rgba(255,255,255,0.38)"/>
+          <circle cx="445" cy="68"  r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="460" cy="155" r="0.6" fill="rgba(255,255,255,0.36)"/>
+          <circle cx="435" cy="215" r="0.5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="472" cy="38"  r="0.6" fill="rgba(255,255,255,0.38)"/>
+
+          <!-- 여름의 대삼각형 (연한 점선) -->
+          <line x1="118" y1="105" x2="388" y2="50"  stroke="rgba(255,230,150,0.09)" stroke-width="0.8" stroke-dasharray="3,7"/>
+          <line x1="118" y1="105" x2="340" y2="168" stroke="rgba(255,230,150,0.09)" stroke-width="0.8" stroke-dasharray="3,7"/>
+          <line x1="340" y1="168" x2="388" y2="50"  stroke="rgba(255,230,150,0.09)" stroke-width="0.8" stroke-dasharray="3,7"/>
+
+          <!-- 거문고자리 (Lyra) 별자리선 -->
+          <g stroke="rgba(255,213,128,0.35)" stroke-width="1" fill="none" stroke-linecap="round">
+            <line x1="118" y1="105" x2="130" y2="95"/>
+            <line x1="130" y1="95"  x2="133" y2="80"/>
+            <line x1="118" y1="105" x2="126" y2="126"/>
+            <line x1="126" y1="126" x2="102" y2="124"/>
+            <line x1="102" y1="124" x2="118" y2="105"/>
+            <line x1="91"  cy="113" x2="102" y2="124"/>
+            <line x1="126" y1="126" x2="91"  y2="113"/>
+          </g>
+          <circle cx="130" cy="95"  r="1.6" fill="rgba(255,255,255,0.62)"/>
+          <circle cx="133" cy="80"  r="1.4" fill="rgba(255,255,255,0.50)"/>
+          <circle cx="126" cy="126" r="1.8" fill="rgba(255,255,255,0.60)"/>
+          <circle cx="102" cy="124" r="2.0" fill="rgba(255,255,255,0.65)"/>
+          <circle cx="91"  cy="113" r="1.4" fill="rgba(255,255,255,0.46)"/>
+
+          <!-- 독수리자리 (Aquila) 별자리선 -->
+          <g stroke="rgba(255,213,128,0.30)" stroke-width="1" fill="none" stroke-linecap="round">
+            <line x1="312" y1="168" x2="322" y2="152"/>
+            <line x1="322" y1="152" x2="330" y2="148"/>
+            <line x1="330" y1="148" x2="340" y2="168"/>
+            <line x1="340" y1="168" x2="352" y2="150"/>
+            <line x1="352" y1="150" x2="368" y2="180"/>
+            <line x1="330" y1="148" x2="330" y2="185"/>
+            <line x1="330" y1="185" x2="352" y2="190"/>
+            <line x1="352" y1="190" x2="368" y2="180"/>
+            <line x1="312" y1="168" x2="330" y2="185"/>
+          </g>
+          <circle cx="312" cy="168" r="1.6" fill="rgba(255,255,255,0.50)"/>
+          <circle cx="322" cy="152" r="1.6" fill="rgba(255,255,255,0.52)"/>
+          <circle cx="330" cy="148" r="2.2" fill="rgba(255,255,255,0.72)"/>
+          <circle cx="352" cy="150" r="2.0" fill="rgba(255,255,255,0.62)"/>
+          <circle cx="330" cy="185" r="1.6" fill="rgba(255,255,255,0.50)"/>
+          <circle cx="352" cy="190" r="1.6" fill="rgba(255,255,255,0.50)"/>
+          <circle cx="368" cy="180" r="1.8" fill="rgba(255,255,255,0.55)"/>
+
+          <!-- 백조자리 (Cygnus) 별자리선 -->
+          <g stroke="rgba(200,215,255,0.25)" stroke-width="1" fill="none" stroke-linecap="round">
+            <line x1="388" y1="50"  x2="378" y2="66"/>
+            <line x1="378" y1="66"  x2="365" y2="90"/>
+            <line x1="362" y1="78"  x2="378" y2="66"/>
+            <line x1="378" y1="66"  x2="396" y2="80"/>
+            <line x1="388" y1="50"  x2="392" y2="66"/>
+            <line x1="392" y1="66"  x2="378" y2="66"/>
+          </g>
+          <circle cx="378" cy="66"  r="2.0" fill="rgba(220,232,255,0.68)"/>
+          <circle cx="365" cy="90"  r="1.8" fill="rgba(255,175,115,0.80)"/>
+          <circle cx="362" cy="78"  r="1.4" fill="rgba(220,232,255,0.52)"/>
+          <circle cx="396" cy="80"  r="1.4" fill="rgba(220,232,255,0.52)"/>
+          <circle cx="392" cy="66"  r="1.6" fill="rgba(220,232,255,0.56)"/>
+
+          <!-- 주성 글로우 -->
+          <circle cx="118" cy="105" r="30" fill="url(#cVega)"/>
+          <circle cx="118" cy="105" r="3.5" fill="#fffdf0"/>
+          <circle cx="118" cy="105" r="1.8" fill="#ffffff"/>
+
+          <circle cx="340" cy="168" r="26" fill="url(#cAltair)"/>
+          <circle cx="340" cy="168" r="3.0" fill="#fff9e8"/>
+          <circle cx="340" cy="168" r="1.5" fill="#ffffff"/>
+
+          <circle cx="388" cy="50"  r="18" fill="url(#cDeneb)"/>
+          <circle cx="388" cy="50"  r="2.5" fill="#f2f5ff"/>
+          <circle cx="388" cy="50"  r="1.2" fill="#ffffff"/>
+
+          <!-- 라벨 -->
+          <text x="118" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,213,128,0.88)">직녀성 (베가)</text>
+          <text x="118" y="163" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,0.34)">25광년</text>
+          <text x="340" y="212" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,213,128,0.88)">견우성 (알타이르)</text>
+          <text x="340" y="225" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,0.34)">17광년</text>
+          <text x="408" y="45"  font-family="Inter,sans-serif" font-size="8.5" fill="rgba(200,215,255,0.55)">데네브</text>
+          <text x="240" y="258" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(255,230,150,0.28)" letter-spacing="0.12em">여름의 대삼각형</text>
         </svg>
       </div>
       <div class="card-body">

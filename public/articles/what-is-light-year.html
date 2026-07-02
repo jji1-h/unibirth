@@ -7,15 +7,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <title>광년이란? 1광년 거리와 별까지의 거리 — Unibirth</title>
-  <meta name="description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4600억 km. 광년의 뜻, 계산법, 가까운 별까지의 거리를 알기 쉽게 설명합니다." />
+  <title>광년이란? 광년 계산법과 별까지의 거리 — Unibirth</title>
+  <meta name="description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4,607억 km. 광년 계산 방법, 가까운 별까지의 거리, 탄생별 원리를 알기 쉽게 설명합니다." />
   <link rel="canonical" href="https://unibirth.pages.dev/articles/what-is-light-year.html" />
+  <meta name="author" content="Unibirth" />
 
   <!-- Open Graph -->
   <meta property="og:type"        content="article" />
   <meta property="og:url"         content="https://unibirth.pages.dev/articles/what-is-light-year.html" />
-  <meta property="og:title"       content="광년이란? 1광년 거리와 별까지의 거리" />
-  <meta property="og:description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4600억 km. 광년의 뜻, 계산법, 가까운 별까지의 거리를 알기 쉽게 설명합니다." />
+  <meta property="og:title"       content="광년이란? 광년 계산법과 별까지의 거리" />
+  <meta property="og:description" content="광년(光年)이란 빛이 1년 동안 이동하는 거리입니다. 1광년은 약 9조 4,607억 km. 광년 계산 방법, 가까운 별까지의 거리, 탄생별 원리를 알기 쉽게 설명합니다." />
   <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
   <meta property="og:site_name"   content="Unibirth" />
   <meta property="og:locale"      content="ko_KR" />
@@ -69,6 +70,19 @@
           "text": "태양을 제외하면, 가장 가까운 별은 프록시마 켄타우리(Proxima Centauri)로 약 4.24광년 떨어져 있습니다."
         }
       }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Unibirth", "item": "https://unibirth.pages.dev/" },
+      { "@type": "ListItem", "position": 2, "name": "아티클", "item": "https://unibirth.pages.dev/articles/" },
+      { "@type": "ListItem", "position": 3, "name": "광년이란?", "item": "https://unibirth.pages.dev/articles/what-is-light-year.html" }
     ]
   }
   </script>
@@ -391,6 +405,19 @@
       margin: 0;
     }
 
+    /* ── 관련 아티클 ── */
+    .related { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .related h2 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .related-list { display: flex; flex-direction: column; gap: 10px; }
+    .related-link { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+    .related-link:hover { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); text-decoration: none; }
+    .related-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-science { background: #c4b5fd; }
+    .dot-story   { background: #ffd580; }
+    .dot-tips    { background: #b0c4ff; }
+    .related-text { font-size: 14px; color: rgba(255,255,255,0.72); }
+    .related-arrow { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 18px; }
+
     /* ── 푸터 ── */
     .page-footer {
       padding: 20px 24px;
@@ -502,7 +529,7 @@
     </div>
 
     <!-- 1광년은 몇 km -->
-    <h2>1광년은 몇 km일까?</h2>
+    <h2>1광년은 몇 km일까? — 광년 계산 방법</h2>
 
     <p>
       1광년을 km로 정확히 계산하면 다음과 같습니다.
@@ -675,34 +702,36 @@
       <div class="faq-item">
         <p class="faq-q">Q. 광년은 시간 단위인가요?</p>
         <p class="faq-a">아닙니다. 광년(光年)은 이름에 '년(年)'이 들어가지만 <strong>거리 단위</strong>입니다. 빛이 1년 동안 이동하는 거리를 나타냅니다. 시간을 나타내는 단위가 아닙니다.</p>
-      </div>
-      <div class="faq-item">
-        <p class="faq-q">Q. 1광년을 km로 환산하면 얼마인가요?</p>
-        <p class="faq-a">1광년 = 약 <strong>9조 4,607억 km</strong> (9.461 × 10¹² km)입니다. 빛의 속도(약 초속 299,792km) × 1년(31,557,600초)로 계산합니다.</p>
-      </div>
-      <div class="faq-item">
-        <p class="faq-q">Q. 가장 가까운 별까지 몇 광년인가요?</p>
-        <p class="faq-a">태양을 제외하면 가장 가까운 별은 <strong>프록시마 켄타우리(Proxima Centauri)</strong>로 약 <strong>4.24광년</strong> 거리에 있습니다. 빛의 속도로 4년 이상 걸리는 거리입니다.</p>
-      </div>
-      <div class="faq-item">
-        <p class="faq-q">Q. 광년 말고 다른 거리 단위는 무엇이 있나요?</p>
-        <p class="faq-a">천문학에서는 <strong>AU(천문단위)</strong>와 <strong>파섹(pc)</strong>도 자주 쓰입니다. 1 AU는 지구-태양 거리(약 1억 5천만 km), 1파섹은 약 3.26광년입니다.</p>
-      </div>
-      <div class="faq-item">
-        <p class="faq-q">Q. 탄생별이란 무엇인가요?</p>
-        <p class="faq-a">탄생별은 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 내 나이(년)와 같은 광년 거리에 있는 별에서 출발한 빛이 오늘 지구에 도달합니다. <a href="/" style="color:#c4b5fd;">Unibirth</a>에서 직접 찾아볼 수 있습니다.</p>
+
+    <!-- 관련 아티클 -->
+    <div class="related">
+      <h2>관련 아티클</h2>
+      <div class="related-list">
+        <a class="related-link" href="/articles/what-is-birth-star.html">
+          <div class="related-dot dot-tips"></div>
+          <span class="related-text">탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별</span>
+          <span class="related-arrow">›</span>
+        </a>
+        <a class="related-link" href="/articles/what-is-black-hole.html">
+          <div class="related-dot dot-science"></div>
+          <span class="related-text">블랙홀이란? 빛조차 탈출할 수 없는 공간</span>
+          <span class="related-arrow">›</span>
+        </a>
+        <a class="related-link" href="/articles/pale-blue-dot.html">
+          <div class="related-dot dot-story"></div>
+          <span class="related-text">창백한 푸른 점 — 60억 km 밖에서 본 지구</span>
+          <span class="related-arrow">›</span>
+        </a>
       </div>
     </div>
 
-  </main>
-
-  <footer class="page-footer">
-    <span>© 2026 Unibirth</span>
-    <span class="page-footer-sep">·</span>
-    <a href="/privacy.html">개인정보처리방침</a>
-    <span class="page-footer-sep">·</span>
-    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
-  </footer>
+    <footer class="page-footer">
+      <span>© 2026 Unibirth</span>
+      <span class="page-footer-sep">·</span>
+      <a href="/privacy.html">개인정보처리방침</a>
+      <span class="page-footer-sep">·</span>
+      <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+    </footer>
 
 </body>
 </html>

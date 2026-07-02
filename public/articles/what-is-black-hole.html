@@ -10,6 +10,7 @@
   <title>블랙홀이란? 빛조차 탈출할 수 없는 공간 — Unibirth</title>
   <meta name="description" content="블랙홀이란 무엇인지 쉽게 설명합니다. 블랙홀의 정의, 종류, 사건의 지평선, 스파게티화 현상, 그리고 실제로 관측된 블랙홀 사진까지 알아봅니다." />
   <link rel="canonical" href="https://unibirth.pages.dev/articles/what-is-black-hole.html" />
+  <meta name="author" content="Unibirth" />
 
   <!-- Open Graph -->
   <meta property="og:type"        content="article" />
@@ -89,6 +90,19 @@
   }
   </script>
 
+  <!-- JSON-LD Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Unibirth", "item": "https://unibirth.pages.dev/" },
+      { "@type": "ListItem", "position": 2, "name": "아티클", "item": "https://unibirth.pages.dev/articles/" },
+      { "@type": "ListItem", "position": 3, "name": "블랙홀이란?", "item": "https://unibirth.pages.dev/articles/what-is-black-hole.html" }
+    ]
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -148,11 +162,23 @@
 
     /* ── 히어로 ── */
     .hero {
-      width: 100%; height: 320px; overflow: hidden;
-      background: #07090f;
-      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      width: 100%; height: 320px;
+      overflow: hidden; background: #020308;
     }
-    .hero svg { width: 100%; height: 100%; }
+    .hero img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center center;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(2,3,8,0.15) 0%, rgba(2,3,8,0.0) 40%, rgba(7,9,15,0.85) 100%);
+    }
+    .hero-credit {
+      position: absolute; bottom: 10px; right: 14px;
+      font-size: 11px; color: rgba(255,255,255,0.30);
+    }
 
     /* ── 아티클 ── */
     .article-wrap {
@@ -292,10 +318,16 @@
 
     /* ── 관련 아티클 ── */
     .related { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07); }
-    .related h2 { font-size: 16px; color: rgba(255,255,255,0.45); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px; }
-    .related-links { display: flex; flex-direction: column; gap: 12px; }
-    .related-links a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 15px; }
-    .related-links a:hover { color: #fff; }
+    .related h2 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .related-list { display: flex; flex-direction: column; gap: 10px; }
+    .related-link { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+    .related-link:hover { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); text-decoration: none; }
+    .related-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-science { background: #c4b5fd; }
+    .dot-story   { background: #ffd580; }
+    .dot-tips    { background: #b0c4ff; }
+    .related-text { font-size: 14px; color: rgba(255,255,255,0.72); }
+    .related-arrow { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 18px; }
 
     /* ── 푸터 ── */
     .page-footer {
@@ -337,82 +369,14 @@
   }
 </script>
 
-<!-- 히어로 SVG: 블랙홀 시각화 -->
-<div class="hero" aria-label="블랙홀과 강착원반 일러스트">
-  <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-    <rect width="800" height="320" fill="#07090f"/>
-
-    <!-- 배경 별 -->
-    <circle cx="50"  cy="30"  r="0.8" fill="rgba(255,255,255,0.5)"/>
-    <circle cx="130" cy="70"  r="0.6" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="220" cy="25"  r="1.0" fill="rgba(255,255,255,0.6)"/>
-    <circle cx="310" cy="55"  r="0.7" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="680" cy="40"  r="0.9" fill="rgba(255,255,255,0.5)"/>
-    <circle cx="740" cy="90"  r="0.6" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="780" cy="20"  r="0.8" fill="rgba(255,255,255,0.5)"/>
-    <circle cx="100" cy="200" r="0.7" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="180" cy="260" r="0.6" fill="rgba(255,255,255,0.35)"/>
-    <circle cx="700" cy="230" r="0.7" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="760" cy="275" r="0.6" fill="rgba(255,255,255,0.4)"/>
-    <circle cx="60"  cy="290" r="0.5" fill="rgba(255,255,255,0.35)"/>
-    <circle cx="630" cy="300" r="0.6" fill="rgba(255,255,255,0.4)"/>
-
-    <defs>
-      <!-- 강착원반 그라디언트 -->
-      <radialGradient id="diskOuter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"   stop-color="rgba(196,181,253,0)"/>
-        <stop offset="40%"  stop-color="rgba(255,200,100,0.25)"/>
-        <stop offset="70%"  stop-color="rgba(255,100,50,0.15)"/>
-        <stop offset="100%" stop-color="rgba(150,50,20,0)"/>
-      </radialGradient>
-      <!-- 블랙홀 중심 -->
-      <radialGradient id="bhCenter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"   stop-color="#000000"/>
-        <stop offset="85%"  stop-color="#000000"/>
-        <stop offset="100%" stop-color="rgba(196,181,253,0.3)"/>
-      </radialGradient>
-      <!-- 광자환 -->
-      <radialGradient id="photonRing" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"   stop-color="rgba(255,220,100,0)"/>
-        <stop offset="60%"  stop-color="rgba(255,220,100,0)"/>
-        <stop offset="80%"  stop-color="rgba(255,220,100,0.5)"/>
-        <stop offset="90%"  stop-color="rgba(255,160,60,0.8)"/>
-        <stop offset="96%"  stop-color="rgba(255,200,80,0.5)"/>
-        <stop offset="100%" stop-color="rgba(255,200,80,0)"/>
-      </radialGradient>
-    </defs>
-
-    <!-- 강착원반 (타원형) -->
-    <ellipse cx="400" cy="160" rx="180" ry="50" fill="url(#diskOuter)"/>
-
-    <!-- 광자환 (중간 고리) -->
-    <circle cx="400" cy="160" r="80" fill="url(#photonRing)"/>
-
-    <!-- 블랙홀 중심부 (완전한 검은 원) -->
-    <circle cx="400" cy="160" r="64" fill="url(#bhCenter)"/>
-    <circle cx="400" cy="160" r="58" fill="#000"/>
-
-    <!-- 빛 왜곡 호 (렌즈링) -->
-    <ellipse cx="400" cy="160" rx="72" ry="72" fill="none" stroke="rgba(255,200,80,0.4)" stroke-width="2"/>
-    <ellipse cx="400" cy="160" rx="68" ry="68" fill="none" stroke="rgba(255,200,80,0.2)" stroke-width="1"/>
-
-    <!-- 배경별이 렌즈 효과로 호를 그리는 표현 -->
-    <path d="M 320,105 Q 370,80 400,100" fill="none" stroke="rgba(196,181,253,0.5)" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M 480,105 Q 430,80 400,100" fill="none" stroke="rgba(196,181,253,0.3)" stroke-width="1" stroke-linecap="round"/>
-
-    <!-- 사건의 지평선 라벨 -->
-    <line x1="400" y1="96" x2="310" y2="60" stroke="rgba(196,181,253,0.3)" stroke-width="1" stroke-dasharray="3,3"/>
-    <text x="305" y="56" text-anchor="end" font-family="Inter, sans-serif" font-size="11" fill="rgba(196,181,253,0.65)">사건의 지평선</text>
-
-    <!-- 강착원반 라벨 -->
-    <line x1="555" y1="145" x2="610" y2="120" stroke="rgba(255,200,80,0.3)" stroke-width="1" stroke-dasharray="3,3"/>
-    <text x="615" y="117" font-family="Inter, sans-serif" font-size="11" fill="rgba(255,200,80,0.65)">강착원반</text>
-
-    <!-- 제트 (위아래) -->
-    <line x1="400" y1="94" x2="400" y2="28" stroke="rgba(196,181,253,0.4)" stroke-width="2" stroke-linecap="round"/>
-    <line x1="400" y1="226" x2="400" y2="292" stroke="rgba(196,181,253,0.4)" stroke-width="2" stroke-linecap="round"/>
-    <text x="415" y="24" font-family="Inter, sans-serif" font-size="11" fill="rgba(196,181,253,0.50)">상대론적 제트</text>
-  </svg>
+<!-- 히어로: EHT M87 블랙홀 실사 -->
+<div class="hero" aria-label="EHT가 촬영한 M87 블랙홀 사진">
+  <img
+    src="/articles/black-hole-nasa.jpg"
+    alt="블랙홀과 강착원반 시뮬레이션 — 중력에 의해 빛이 왜곡되는 모습을 NASA 고다드 센터가 물리적으로 정확하게 시각화"
+  />
+  <div class="hero-overlay"></div>
+  <p class="hero-credit">© NASA's Goddard Space Flight Center/Jeremy Schnittman — Public Domain</p>
 </div>
 
 <!-- 아티클 본문 -->
@@ -604,24 +568,36 @@
   </div>
 
   <!-- 관련 아티클 -->
+
+  <!-- 관련 아티클 -->
   <div class="related">
     <h2>관련 아티클</h2>
-    <div class="related-links">
-      <a href="/articles/what-is-light-year.html">→ 광년이란 무엇인가? 빛이 1년에 가는 거리</a>
-      <a href="/articles/pale-blue-dot.html">→ 창백한 푸른 점 — 60억 km 밖에서 본 지구</a>
-      <a href="/articles/what-is-birth-star.html">→ 탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별</a>
+    <div class="related-list">
+      <a class="related-link" href="/articles/what-is-light-year.html">
+        <div class="related-dot dot-science"></div>
+        <span class="related-text">광년이란? 빛이 1년 동안 이동하는 거리</span>
+        <span class="related-arrow">›</span>
+      </a>
+      <a class="related-link" href="/articles/pale-blue-dot.html">
+        <div class="related-dot dot-story"></div>
+        <span class="related-text">창백한 푸른 점 — 60억 km 밖에서 본 지구</span>
+        <span class="related-arrow">›</span>
+      </a>
+      <a class="related-link" href="/articles/what-is-birth-star.html">
+        <div class="related-dot dot-tips"></div>
+        <span class="related-text">탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별</span>
+        <span class="related-arrow">›</span>
+      </a>
     </div>
   </div>
 
-</article>
-
-<footer class="page-footer">
-  <span>© 2026 Unibirth</span>
-  <span class="page-footer-sep">·</span>
-  <a href="/privacy.html">개인정보처리방침</a>
-  <span class="page-footer-sep">·</span>
-  <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
-</footer>
+  <footer class="page-footer">
+    <span>© 2026 Unibirth</span>
+    <span class="page-footer-sep">·</span>
+    <a href="/privacy.html">개인정보처리방침</a>
+    <span class="page-footer-sep">·</span>
+    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+  </footer>
 
 </body>
 </html>

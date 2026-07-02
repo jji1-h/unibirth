@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://unibirth.pages.dev/sitemap.xml
