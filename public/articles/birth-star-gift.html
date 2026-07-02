@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>탄생별 선물하기 — 생일 선물로 별 이야기를 전하는 법 — Unibirth</title>
+  <meta name="description" content="소중한 사람의 탄생별을 찾아 선물하는 방법을 알려드립니다. 생일 선물, 기념일 선물로 별 이야기를 전하는 따뜻한 방법." />
+  <link rel="canonical" href="https://unibirth.pages.dev/articles/birth-star-gift.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article" />
+  <meta property="og:url"         content="https://unibirth.pages.dev/articles/birth-star-gift.html" />
+  <meta property="og:title"       content="탄생별 선물하기 — 생일 선물로 별 이야기를 전하는 법" />
+  <meta property="og:description" content="소중한 사람의 탄생별을 찾아 선물하는 방법을 알려드립니다. 생일 선물, 기념일 선물로 별 이야기를 전하는 따뜻한 방법." />
+  <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
+  <meta property="og:site_name"   content="Unibirth" />
+  <meta property="og:locale"      content="ko_KR" />
+  <meta property="article:published_time" content="2026-07-02T00:00:00Z" />
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "탄생별 선물하기 — 생일 선물로 별 이야기를 전하는 법",
+    "description": "소중한 사람의 탄생별을 찾아 선물하는 방법을 알려드립니다. 생일 선물, 기념일 선물로 별 이야기를 전하는 따뜻한 방법.",
+    "url": "https://unibirth.pages.dev/articles/birth-star-gift.html",
+    "datePublished": "2026-07-02",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Unibirth",
+      "url": "https://unibirth.pages.dev"
+    },
+    "mainEntityOfPage": "https://unibirth.pages.dev/articles/birth-star-gift.html"
+  }
+  </script>
+
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "탄생별 선물은 어떻게 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unibirth에서 상대방의 생년월일을 입력해 탄생별을 찾은 뒤, 결과 화면을 캡처하거나 인쇄해 선물하면 됩니다. 별 이름, 거리, 간단한 설명을 담은 메시지 카드와 함께 전달하면 더욱 특별해집니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별 선물이 어울리는 상황은 언제인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "생일 선물, 기념일 선물, 졸업 선물, 결혼 선물 등 모든 특별한 날에 어울립니다. 특히 '별이 보낸 빛이 당신이 태어난 날 지구에 닿았다'는 이야기는 누구에게나 감동을 줄 수 있는 메시지입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별 결과에서 어떤 정보를 확인할 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "탄생별의 이름, 지구에서의 거리(광년), 속한 별자리, 그리고 그 별이 빛을 출발시킨 시점에 대한 설명을 확인할 수 있습니다. 각 별마다 고유한 이야기가 담겨 있어 선물 메시지로 활용하기 좋습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "탄생별이 없는 경우도 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "매우 드물지만, 해당 나이(광년)에 해당하는 거리에 알려진 별이 없는 경우가 있을 수 있습니다. 이 경우 가장 가까운 거리의 별을 안내해 드립니다. 우주는 충분히 넓어 대부분의 경우 고유한 탄생별을 찾을 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #07090f;
+      color: rgba(255,255,255,0.72);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    a { color: #b0c4ff; text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { opacity: 0.8; }
+
+    /* ── 네비 ── */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.9); text-decoration: none; letter-spacing: 0;
+    }
+    .nav-logo img { width: 20px; height: 20px; display: block; }
+    .nav-logo-text { letter-spacing: 0.01em; }
+    .hamburger {
+      background: none; border: none; cursor: pointer; padding: 6px;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .hamburger span {
+      display: block; width: 20px; height: 1.5px;
+      background: rgba(255,255,255,0.7); border-radius: 2px;
+    }
+    .nav-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 20;
+    }
+    .nav-backdrop.open { display: block; }
+    .nav-sidebar {
+      position: fixed; top: 0; right: -240px; width: 240px; height: 100%;
+      background: #0d1120; border-left: 1px solid rgba(255,255,255,0.08);
+      z-index: 30; padding: 72px 24px 24px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: right 0.25s ease;
+    }
+    .nav-sidebar.open { right: 0; }
+    .nav-sidebar a {
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-size: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-sidebar a:hover { color: #fff; }
+
+    /* ── 히어로 ── */
+    .hero {
+      width: 100%; height: 320px; overflow: hidden;
+      background: #07090f;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero svg { width: 100%; height: 100%; }
+
+    /* ── 아티클 ── */
+    .article-wrap {
+      max-width: 720px; margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .article-meta {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .tag {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 100px; border: 1px solid transparent;
+      text-decoration: none;
+    }
+    .tag-tips { color: #b0c4ff; background: rgba(176,196,255,0.10); border-color: rgba(176,196,255,0.18); }
+    .article-date { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+    .article-title {
+      font-family: Georgia, 'Noto Serif KR', serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: normal; line-height: 1.3;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 24px;
+    }
+    .article-lead {
+      font-size: 17px; line-height: 1.8;
+      color: rgba(255,255,255,0.78);
+      border-left: 3px solid rgba(176,196,255,0.3);
+      padding-left: 20px; margin-bottom: 48px;
+    }
+
+    h2 {
+      font-size: 22px; font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      margin: 48px 0 16px;
+    }
+    h3 {
+      font-size: 17px; font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin: 32px 0 10px;
+    }
+    p { margin-bottom: 16px; }
+
+    /* ── 단계 카드 ── */
+    .steps { margin: 32px 0; }
+    .step {
+      display: flex; gap: 20px; margin-bottom: 28px;
+      padding: 24px; background: rgba(176,196,255,0.03);
+      border: 1px solid rgba(176,196,255,0.08);
+      border-radius: 14px;
+    }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(176,196,255,0.12);
+      border: 1.5px solid rgba(176,196,255,0.3);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 600; color: #b0c4ff;
+    }
+    .step-body {}
+    .step-title {
+      font-size: 15px; font-weight: 600;
+      color: rgba(255,255,255,0.88); margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7;
+    }
+
+    /* ── 선물 아이디어 카드 ── */
+    .idea-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px; margin: 32px 0;
+    }
+    .idea-card {
+      background: rgba(176,196,255,0.04);
+      border: 1px solid rgba(176,196,255,0.10);
+      border-radius: 14px; padding: 20px;
+    }
+    .idea-icon { font-size: 26px; margin-bottom: 10px; }
+    .idea-title {
+      font-size: 14px; font-weight: 600;
+      color: #b0c4ff; margin-bottom: 8px;
+    }
+    .idea-desc {
+      font-size: 13px; line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ── 메시지 예시 박스 ── */
+    .message-example {
+      background: rgba(176,196,255,0.04);
+      border: 1px solid rgba(176,196,255,0.12);
+      border-radius: 14px; padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .message-example .label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #b0c4ff; margin-bottom: 12px;
+    }
+    .message-example p {
+      font-size: 15px; line-height: 1.8;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 0;
+      font-style: italic;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin: 64px 0 0;
+      background: rgba(176,196,255,0.04);
+      border: 1px solid rgba(176,196,255,0.12);
+      border-radius: 20px; padding: 40px 32px; text-align: center;
+    }
+    .cta-section h2 { margin: 0 0 10px; font-size: 22px; }
+    .cta-section p { color: rgba(255,255,255,0.55); margin-bottom: 24px; font-size: 15px; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #b0c4ff; color: #07090f;
+      font-size: 15px; font-weight: 600;
+      padding: 14px 32px; border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); text-decoration: none; color: #07090f; }
+
+    /* ── FAQ ── */
+    .faq { margin-top: 64px; }
+    .faq h2 { margin-bottom: 24px; }
+    .faq-item { margin-bottom: 24px; }
+    .faq-q {
+      font-weight: 600; font-size: 16px;
+      color: rgba(255,255,255,0.88); margin-bottom: 8px;
+    }
+    .faq-a { color: rgba(255,255,255,0.62); font-size: 15px; }
+
+    /* ── 관련 아티클 ── */
+    .related { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .related h2 { font-size: 16px; color: rgba(255,255,255,0.45); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px; }
+    .related-links { display: flex; flex-direction: column; gap: 12px; }
+    .related-links a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 15px; }
+    .related-links a:hover { color: #fff; }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      padding: 20px 24px; text-align: center;
+      font-size: 11px; color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .page-footer a { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s; }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
+  </style>
+</head>
+<body>
+
+<!-- 네비게이션 -->
+<div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+<div class="nav-sidebar" id="navSidebar">
+  <a href="/articles/index.html">아티클</a>
+  <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+</div>
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/favicon.svg" alt="Unibirth 로고" />
+    <span class="nav-logo-text">Unibirth</span>
+  </a>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<script>
+  function toggleMenu() {
+    document.getElementById('navSidebar').classList.toggle('open')
+    document.getElementById('navBackdrop').classList.toggle('open')
+  }
+  function closeMenu() {
+    document.getElementById('navSidebar').classList.remove('open')
+    document.getElementById('navBackdrop').classList.remove('open')
+  }
+</script>
+
+<!-- 히어로 SVG: 선물 + 별 일러스트 -->
+<div class="hero" aria-label="별빛 선물 일러스트">
+  <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="320" fill="#07090f"/>
+
+    <!-- 배경 별 -->
+    <circle cx="40"  cy="25"  r="0.8" fill="rgba(255,255,255,0.5)"/>
+    <circle cx="110" cy="65"  r="0.6" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="200" cy="20"  r="1.0" fill="rgba(255,255,255,0.6)"/>
+    <circle cx="280" cy="55"  r="0.7" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="530" cy="30"  r="0.9" fill="rgba(255,255,255,0.5)"/>
+    <circle cx="620" cy="75"  r="0.6" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="710" cy="22"  r="1.0" fill="rgba(255,255,255,0.6)"/>
+    <circle cx="760" cy="60"  r="0.7" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="80"  cy="280" r="0.7" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="170" cy="260" r="0.6" fill="rgba(255,255,255,0.35)"/>
+    <circle cx="640" cy="250" r="0.7" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="720" cy="290" r="0.6" fill="rgba(255,255,255,0.35)"/>
+
+    <defs>
+      <!-- 별 광원 -->
+      <radialGradient id="starGlow1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="rgba(176,196,255,1)"/>
+        <stop offset="40%"  stop-color="rgba(176,196,255,0.3)"/>
+        <stop offset="100%" stop-color="rgba(176,196,255,0)"/>
+      </radialGradient>
+      <radialGradient id="starGlow2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="rgba(200,220,255,1)"/>
+        <stop offset="30%"  stop-color="rgba(176,196,255,0.4)"/>
+        <stop offset="100%" stop-color="rgba(176,196,255,0)"/>
+      </radialGradient>
+    </defs>
+
+    <!-- 빛줄기들 (별 → 지구/선물 방향) -->
+    <line x1="200" y1="80"  x2="390" y2="190" stroke="rgba(176,196,255,0.15)" stroke-width="1" stroke-dasharray="4,6"/>
+    <line x1="600" y1="70"  x2="420" y2="190" stroke="rgba(176,196,255,0.12)" stroke-width="1" stroke-dasharray="4,6"/>
+    <line x1="150" y1="200" x2="380" y2="210" stroke="rgba(176,196,255,0.10)" stroke-width="1" stroke-dasharray="4,6"/>
+
+    <!-- 별 #1 (왼쪽 위) -->
+    <circle cx="200" cy="80" r="32" fill="url(#starGlow1)"/>
+    <circle cx="200" cy="80" r="4"  fill="rgba(220,235,255,0.95)"/>
+    <text x="200" y="124" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="rgba(176,196,255,0.65)">알타이르 · 17광년</text>
+
+    <!-- 별 #2 (오른쪽 위) -->
+    <circle cx="600" cy="70" r="28" fill="url(#starGlow2)"/>
+    <circle cx="600" cy="70" r="3.5" fill="rgba(220,235,255,0.95)"/>
+    <text x="600" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="rgba(176,196,255,0.65)">시리우스 · 8.6광년</text>
+
+    <!-- 선물 박스 (중앙 하단) -->
+    <!-- 박스 몸통 -->
+    <rect x="350" y="175" width="100" height="80" rx="8" fill="rgba(176,196,255,0.06)" stroke="rgba(176,196,255,0.25)" stroke-width="1.5"/>
+    <!-- 뚜껑 -->
+    <rect x="344" y="163" width="112" height="20" rx="5" fill="rgba(176,196,255,0.10)" stroke="rgba(176,196,255,0.30)" stroke-width="1.5"/>
+    <!-- 리본 세로 -->
+    <line x1="400" y1="163" x2="400" y2="255" stroke="rgba(176,196,255,0.40)" stroke-width="2"/>
+    <!-- 리본 가로 -->
+    <line x1="350" y1="197" x2="450" y2="197" stroke="rgba(176,196,255,0.40)" stroke-width="2"/>
+    <!-- 리본 매듭 - 나비 모양 -->
+    <path d="M 388,157 Q 375,148 382,155 Q 390,162 400,157 Q 410,162 418,155 Q 425,148 412,157 Q 408,160 400,157 Z"
+          fill="none" stroke="rgba(176,196,255,0.55)" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- 선물 상자 안 별 아이콘 (장식) -->
+    <text x="400" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" fill="rgba(176,196,255,0.5)">✦</text>
+
+    <!-- 하단 라벨 -->
+    <text x="400" y="278" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="rgba(176,196,255,0.50)">탄생별 선물</text>
+  </svg>
+</div>
+
+<!-- 아티클 본문 -->
+<article class="article-wrap">
+
+  <div class="article-meta">
+    <span class="tag tag-tips">Unibirth 사용팁</span>
+    <span class="article-date">2026년 7월 2일</span>
+  </div>
+
+  <h1 class="article-title">탄생별 선물하기 — 생일 선물로 별 이야기를 전하는 법</h1>
+
+  <p class="article-lead">
+    누군가의 생일을 축하할 때, 평범한 선물 대신 우주의 이야기를 전해보는 건 어떨까요? 그 사람이 태어난 날, 저 멀리 있는 별에서 출발한 빛이 정확히 지구에 닿았습니다. 그 별이 바로 탄생별입니다.
+  </p>
+
+  <h2>탄생별이란 무엇인가요?</h2>
+  <p>
+    탄생별(誕生別)이란, 내가 태어난 날 지구를 향해 빛을 출발시킨 별입니다. 별빛은 우주 공간을 빛의 속도로 날아오는데, 1광년 거리에서 출발한 빛은 1년이 걸려 지구에 닿습니다. 즉, 내 나이(년)와 같은 거리(광년)에 있는 별에서 출발한 빛이 오늘 지구에 도달한 것입니다.
+  </p>
+  <p>
+    Unibirth는 생년월일을 입력하면 이 원리를 바탕으로 탄생별을 찾아줍니다. 별의 이름, 거리, 속한 별자리까지 알려주니, 이 정보를 그대로 선물 메시지로 활용할 수 있습니다.
+  </p>
+
+  <h2>탄생별 선물, 어떻게 하면 될까요?</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">상대방의 생년월일 준비하기</div>
+        <div class="step-desc">정확한 탄생별을 찾으려면 생년월일이 필요합니다. 생일을 기억하고 있다면 바로 시작할 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Unibirth에서 탄생별 검색하기</div>
+        <div class="step-desc">Unibirth 메인 페이지에서 상대방의 생년월일을 입력합니다. 잠깐의 계산 후 탄생별의 이름, 거리, 별자리 정보가 표시됩니다.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">결과 화면 저장하기</div>
+        <div class="step-desc">결과 화면을 캡처하거나, 별 이름과 설명을 메모해 둡니다. 이후 메시지 카드나 편지에 직접 써도 좋습니다.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">별 이야기와 함께 전달하기</div>
+        <div class="step-desc">탄생별의 이름과 함께, "당신이 태어난 날 이 별에서 출발한 빛이 지구에 닿았어요"라는 이야기를 전합니다. 아래의 메시지 예시를 참고해 보세요.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>메시지 예시</h2>
+  <p>탄생별 이야기를 전할 때 활용할 수 있는 메시지 예시입니다. 이름과 별 이름을 바꿔 쓰세요.</p>
+
+  <div class="message-example">
+    <div class="label">생일 메시지 예시</div>
+    <p>
+      "생일 축하해! 오늘 밤 하늘의 알타이르라는 별을 올려다봐. 네가 태어난 날, 저 별에서 출발한 빛이 17년을 날아서 지구에 닿았어. 그게 네 탄생별이야. 우주도 너의 탄생을 기억하고 있어 🌟"
+    </p>
+  </div>
+
+  <div class="message-example">
+    <div class="label">기념일 메시지 예시</div>
+    <p>
+      "오늘 네 생일에 맞춰 탄생별을 찾아봤어. 거문고자리의 베가, 지구에서 25광년 떨어진 별이야. 네가 세상에 온 날, 그 빛이 먼 우주에서 출발했다는 거 알아? 그 빛만큼이나 특별한 사람이야."
+    </p>
+  </div>
+
+  <h2>어떤 상황에 잘 어울릴까요?</h2>
+
+  <div class="idea-grid">
+    <div class="idea-card">
+      <div class="idea-icon">🎂</div>
+      <div class="idea-title">생일 선물</div>
+      <div class="idea-desc">나이와 광년이 연결된 탄생별은 생일에 가장 어울리는 이야기입니다. 매년 달라지는 탄생별을 해마다 선물할 수도 있습니다.</div>
+    </div>
+    <div class="idea-card">
+      <div class="idea-icon">💌</div>
+      <div class="idea-title">연인에게</div>
+      <div class="idea-desc">두 사람의 탄생별을 함께 찾아보는 것도 좋습니다. 각자의 별 이름을 알고 있는 것만으로도 특별한 추억이 됩니다.</div>
+    </div>
+    <div class="idea-card">
+      <div class="idea-icon">👶</div>
+      <div class="idea-title">신생아에게</div>
+      <div class="idea-desc">갓 태어난 아이의 탄생별을 찾아 기록해 두세요. 아이가 자라 스스로 읽을 수 있을 때 세상에서 가장 특별한 이야기가 됩니다.</div>
+    </div>
+    <div class="idea-card">
+      <div class="idea-icon">🎓</div>
+      <div class="idea-title">졸업·취업 선물</div>
+      <div class="idea-desc">새로운 출발을 앞둔 사람에게 탄생별 이야기는 "우주도 응원하고 있다"는 따뜻한 메시지가 될 수 있습니다.</div>
+    </div>
+  </div>
+
+  <h2>탄생별 결과에서 확인할 수 있는 정보</h2>
+  <p>Unibirth에서 탄생별을 찾으면 다음 정보를 확인할 수 있습니다:</p>
+  <p>
+    <strong>별 이름</strong> — 고유명(예: 알타이르, 베가, 시리우스 등)과 과학적 명칭을 함께 보여줍니다. <strong>거리</strong> — 지구에서 몇 광년 떨어져 있는지, 즉 그 빛이 몇 년을 날아왔는지 확인할 수 있습니다. <strong>별자리</strong> — 그 별이 어느 별자리에 속하는지도 알려줍니다.
+  </p>
+  <p>
+    이 세 가지 정보만 있어도 "당신의 탄생별은 XX별자리의 OO입니다. 지구에서 N광년 떨어진 이 별에서 출발한 빛이 당신이 태어난 날 지구에 닿았습니다"라는 완성된 이야기를 만들 수 있습니다.
+  </p>
+
+  <h2>탄생별이 선물로 특별한 이유</h2>
+  <p>
+    세상에는 수많은 선물이 있지만, 탄생별 이야기가 특별한 이유는 <strong>그 사람만을 위한 이야기</strong>이기 때문입니다. 생년월일이 같지 않은 한, 정확히 같은 탄생별을 가진 사람은 없습니다. 우주의 스케일로 그 사람을 기억한다는 것, 그 마음이 이미 특별한 선물입니다.
+  </p>
+  <p>
+    또한 탄생별 이야기는 <strong>돈으로 살 수 없는 것</strong>입니다. 별이름 등록 서비스처럼 인위적인 명명이 아닌, 실제 천문학 데이터를 기반으로 한 과학적 사실입니다. 그 사람이 태어난 날 실제로 빛을 출발시킨 별을 찾아준다는 것이 차이입니다.
+  </p>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>지금 바로 탄생별을 찾아보세요</h2>
+    <p>소중한 사람의 생년월일을 입력하면 탄생별을 찾아드립니다. 세상에서 하나뿐인 선물 이야기를 만들어보세요.</p>
+    <a href="/" class="cta-btn">탄생별 찾기 →</a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>자주 묻는 질문</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">탄생별 선물은 어떻게 하나요?</div>
+      <div class="faq-a">Unibirth에서 상대방의 생년월일을 입력해 탄생별을 찾은 뒤, 결과 화면을 캡처하거나 별 이름과 거리를 메모해 메시지와 함께 전달하면 됩니다. 별 이야기를 편지나 카드에 직접 적어도 특별한 선물이 됩니다.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">탄생별 선물이 어울리는 상황은 언제인가요?</div>
+      <div class="faq-a">생일 선물, 기념일, 졸업 선물, 결혼 선물, 신생아 선물 등 모든 특별한 날에 어울립니다. "당신이 태어난 날 이 별에서 빛이 출발했어요"라는 이야기는 누구에게나 감동을 줄 수 있습니다.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">탄생별 결과에서 어떤 정보를 확인할 수 있나요?</div>
+      <div class="faq-a">탄생별의 이름, 지구에서의 거리(광년), 속한 별자리 정보를 확인할 수 있습니다. 이 정보를 바탕으로 선물 메시지를 만들 수 있습니다.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">탄생별이 없는 경우도 있나요?</div>
+      <div class="faq-a">극히 드물지만, 해당 나이에 해당하는 광년 거리에 알려진 별이 없는 경우가 있을 수 있습니다. 이 경우 가장 가까운 거리의 별을 안내해 드립니다. 대부분의 경우 고유한 탄생별을 찾을 수 있습니다.</div>
+    </div>
+  </div>
+
+  <!-- 관련 아티클 -->
+  <div class="related">
+    <h2>관련 아티클</h2>
+    <div class="related-links">
+      <a href="/articles/what-is-birth-star.html">→ 탄생별이란? 내가 태어난 날 지구에 닿은 빛의 별</a>
+      <a href="/articles/what-is-light-year.html">→ 광년이란 무엇인가? 빛이 1년에 가는 거리</a>
+      <a href="/articles/vega-altair-tanabata.html">→ 견우와 직녀, 두 별은 얼마나 멀리 있을까?</a>
+    </div>
+  </div>
+
+</article>
+
+<footer class="page-footer">
+  <span>© 2026 Unibirth</span>
+  <span class="page-footer-sep">·</span>
+  <a href="/privacy.html">개인정보처리방침</a>
+  <span class="page-footer-sep">·</span>
+  <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
+</footer>
+
+</body>
+</html>
