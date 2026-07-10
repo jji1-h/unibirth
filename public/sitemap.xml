@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://unibirth.pages.dev/articles/</loc>
-    <lastmod>2025-06-01</lastmod>
+    <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -51,6 +51,24 @@
   <url>
     <loc>https://unibirth.pages.dev/articles/birth-star-gift.html</loc>
     <lastmod>2026-07-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://unibirth.pages.dev/articles/what-is-polaris.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://unibirth.pages.dev/articles/orion-constellation.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://unibirth.pages.dev/articles/birth-star-sns.html</loc>
+    <lastmod>2026-07-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
