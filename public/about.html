@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>소개 — Unibirth는 어떤 서비스인가요?</title>
+  <meta name="description" content="Unibirth는 생년월일을 입력하면 내가 태어난 날 지구에 닿은 별빛의 주인공, 나의 탄생별을 찾아주는 서비스입니다. 탄생별의 원리, 만든 이유, 만든 사람을 소개합니다." />
+  <link rel="canonical" href="https://unibirth.pages.dev/about.html" />
+  <meta name="author" content="Unibirth" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://unibirth.pages.dev/about.html" />
+  <meta property="og:title"       content="소개 — Unibirth는 어떤 서비스인가요?" />
+  <meta property="og:description" content="생년월일을 입력하면 내가 태어난 날 지구에 닿은 별빛의 주인공, 나의 탄생별을 찾아주는 서비스입니다." />
+  <meta property="og:image"       content="https://unibirth.pages.dev/og.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name"   content="Unibirth" />
+  <meta property="og:locale"      content="ko_KR" />
+
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="소개 — Unibirth는 어떤 서비스인가요?" />
+  <meta name="twitter:description" content="생년월일을 입력하면 내가 태어난 날 지구에 닿은 별빛의 주인공, 나의 탄생별을 찾아주는 서비스입니다." />
+  <meta name="twitter:image"       content="https://unibirth.pages.dev/og.png" />
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1780993033835889" crossorigin="anonymous"></script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W77PE6EXPM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W77PE6EXPM');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Unibirth 소개",
+    "description": "Unibirth는 생년월일을 입력하면 내가 태어난 날 지구에 닿은 별빛의 주인공, 나의 탄생별을 찾아주는 서비스입니다.",
+    "url": "https://unibirth.pages.dev/about.html",
+    "inLanguage": "ko",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Unibirth",
+      "url": "https://unibirth.pages.dev"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Unibirth", "item": "https://unibirth.pages.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "소개", "item": "https://unibirth.pages.dev/about.html" }
+      ]
+    }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #07090f;
+      color: rgba(255,255,255,0.78);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── 네비 ── */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.9); text-decoration: none;
+    }
+    .nav-logo img { width: 20px; height: 20px; display: block; }
+    .hamburger {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px;
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .hamburger span { display: block; width: 18px; height: 1.5px; background: rgba(255,255,255,0.60); border-radius: 2px; }
+    .nav-backdrop {
+      position: fixed; inset: 0; z-index: 49;
+      background: rgba(0,0,0,0.45);
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+    .nav-sidebar {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 220px; z-index: 50;
+      background: rgba(10,12,22,0.98);
+      backdrop-filter: blur(16px);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      padding-top: 64px;
+    }
+    .nav-sidebar.open { transform: translateX(0); }
+    .nav-sidebar a {
+      display: block; padding: 15px 24px;
+      font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.72); text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-sidebar a:last-child { border-bottom: none; }
+    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
+    .nav-sidebar a.active { color: #c4b5fd; }
+
+    /* ── 히어로 ── */
+    .about-hero {
+      position: relative;
+      padding: 80px 24px 72px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .about-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(196,181,253,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Georgia', serif;
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.48);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ── 별 장식 ── */
+    .star-divider {
+      text-align: center;
+      font-size: 18px;
+      color: rgba(196,181,253,0.35);
+      letter-spacing: 0.5em;
+      margin: 8px 0;
+    }
+
+    /* ── 본문 ── */
+    .about-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    /* ── 섹션 ── */
+    .section { margin-bottom: 72px; }
+    .section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(196,181,253,0.55);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Georgia', serif;
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.35;
+      margin-bottom: 24px;
+    }
+    .section p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .section p:last-child { margin-bottom: 0; }
+    .section p strong { color: rgba(255,255,255,0.88); font-weight: 600; }
+
+    /* ── 원리 카드 ── */
+    .principle-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 32px 0;
+    }
+    .p-card {
+      background: rgba(196,181,253,0.04);
+      border: 1px solid rgba(196,181,253,0.12);
+      border-radius: 14px;
+      padding: 22px 20px;
+    }
+    .p-card-num {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      color: rgba(196,181,253,0.55);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .p-card-title {
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .p-card-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+    }
+
+    /* ── 인용문 ── */
+    .pull-quote {
+      border-left: 3px solid rgba(196,181,253,0.35);
+      padding: 6px 0 6px 24px;
+      margin: 32px 0;
+    }
+    .pull-quote p {
+      font-family: 'Georgia', serif;
+      font-size: 17px !important;
+      color: rgba(255,255,255,0.75) !important;
+      font-style: italic;
+      line-height: 1.7 !important;
+    }
+
+    /* ── 크리에이터 카드 ── */
+    .creator-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-top: 28px;
+    }
+    .creator-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(196,181,253,0.12);
+      border: 1px solid rgba(196,181,253,0.20);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .creator-info { flex: 1; min-width: 0; }
+    .creator-name {
+      font-size: 15px; font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 4px;
+    }
+    .creator-role {
+      font-size: 13px;
+      color: rgba(255,255,255,0.40);
+      margin-bottom: 10px;
+    }
+    .creator-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .creator-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500;
+      color: rgba(196,181,253,0.75);
+      text-decoration: none;
+      padding: 4px 10px;
+      border: 1px solid rgba(196,181,253,0.20);
+      border-radius: 100px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .creator-link:hover { background: rgba(196,181,253,0.10); color: #c4b5fd; }
+
+    /* ── CTA ── */
+    .cta-block {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 72px;
+    }
+    .cta-text {
+      font-size: 14px;
+      color: rgba(255,255,255,0.40);
+      margin-bottom: 20px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: rgba(196,181,253,0.12);
+      border: 1px solid rgba(196,181,253,0.28);
+      color: #c4b5fd;
+      text-decoration: none;
+      font-size: 14px; font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 100px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cta-btn:hover { background: rgba(196,181,253,0.20); border-color: rgba(196,181,253,0.45); }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .page-footer a { color: rgba(255,255,255,0.40); text-decoration: none; transition: color 0.15s; }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
+  </style>
+</head>
+<body>
+
+<div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+<div class="nav-sidebar" id="navSidebar">
+  <a href="/">탄생별 찾기</a>
+  <a href="/articles/">아티클</a>
+  <a href="/about.html" class="active">소개</a>
+  <a href="/privacy.html">개인정보처리방침</a>
+</div>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/favicon.svg" alt="Unibirth 로고" />
+    <span>Unibirth</span>
+  </a>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- 히어로 -->
+<div class="about-hero">
+  <p class="hero-eyebrow">About Unibirth</p>
+  <h1 class="hero-title">당신이 태어난 날,<br>우주는 무언가를 보냈습니다</h1>
+  <p class="hero-sub">그날 지구를 향해 출발한 빛이 있습니다. 그 빛의 별이 당신의 탄생별입니다.</p>
+</div>
+
+<div class="about-wrap">
+
+  <!-- 서비스 소개 -->
+  <section class="section" aria-labelledby="sec-intro">
+    <p class="section-label">서비스 소개</p>
+    <h2 class="section-title" id="sec-intro">탄생별이란 무엇인가요?</h2>
+
+    <p>빛은 1년에 <strong>1광년</strong>을 이동합니다. 지금 이 순간 지구에 닿는 어떤 별의 빛은, 그 별이 얼마나 멀리 있느냐에 따라 수십 년 혹은 수백 년 전에 출발한 것입니다.</p>
+
+    <p>당신이 태어난 해, 그 빛이 지구를 향해 출발한 별이 있습니다. 나이가 30세라면 <strong>30광년</strong> 거리의 별에서 출발한 빛이 오늘 지구에 도착합니다. 그 별이 바로 <strong>당신의 탄생별</strong>입니다.</p>
+
+    <div class="principle-cards">
+      <div class="p-card">
+        <p class="p-card-num">Step 01</p>
+        <p class="p-card-title">생년월일 입력</p>
+        <p class="p-card-desc">나이(년)를 기준으로 탐색 거리를 계산합니다.</p>
+      </div>
+      <div class="p-card">
+        <p class="p-card-num">Step 02</p>
+        <p class="p-card-title">별 매칭</p>
+        <p class="p-card-desc">실제 항성 데이터베이스에서 해당 광년 거리의 별을 찾습니다.</p>
+      </div>
+      <div class="p-card">
+        <p class="p-card-num">Step 03</p>
+        <p class="p-card-title">탄생별 발견</p>
+        <p class="p-card-desc">별의 이름, 거리, 별자리, 밝기 정보를 확인합니다.</p>
+      </div>
+    </div>
+
+    <p>사용된 별 데이터는 <strong>HYG 항성 데이터베이스</strong>(Hipparcos, Yale, Gliese 카탈로그 통합)를 기반으로 하며, 실제 관측된 수만 개의 별 중 가장 가까운 별을 매칭합니다.</p>
+  </section>
+
+  <div class="star-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <!-- 만든 이유 -->
+  <section class="section" aria-labelledby="sec-story" style="margin-top: 64px;">
+    <p class="section-label">만든 이유</p>
+    <h2 class="section-title" id="sec-story">어느 밤, 별을 올려다보다가</h2>
+
+    <div class="pull-quote">
+      <p>"지금 저 별빛은 얼마 전에 출발했을까?"</p>
+    </div>
+
+    <p>어느 날 밤하늘을 보다가 문득 그 질문이 생겼습니다. 빛의 속도와 별까지의 거리를 알면, 지금 내 눈에 닿는 빛이 언제 출발했는지 계산할 수 있습니다.</p>
+
+    <p>계산을 해보니, 내가 태어난 해에 출발한 빛을 가진 별이 있었습니다. 하늘 어딘가에 있는 그 별이 내 탄생 순간과 연결되어 있다는 사실이 — 과학적으로도, 감정적으로도 — 아름다웠습니다.</p>
+
+    <p>Unibirth는 그 경험을 누구나 쉽게 할 수 있도록 만든 서비스입니다. 복잡한 천문학 계산 없이, 생년월일만 입력하면 <strong>우주와 나의 연결점</strong>을 발견할 수 있습니다.</p>
+  </section>
+
+  <div class="star-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <!-- 만든 사람 -->
+  <section class="section" aria-labelledby="sec-creator" style="margin-top: 64px;">
+    <p class="section-label">만든 사람</p>
+    <h2 class="section-title" id="sec-creator">개인 개발자가 만든 작은 우주</h2>
+
+    <p>Unibirth는 천문학과 개발을 좋아하는 1인 개발자가 만든 서비스입니다. 거대한 팀이나 기업이 아닌, 밤하늘에 관심 있는 한 사람의 호기심에서 시작됐습니다.</p>
+
+    <p>피드백이나 제안이 있으시면 언제든지 GitHub을 통해 연락해 주세요. 더 많은 별, 더 정확한 데이터, 더 아름다운 경험을 만들어가고 싶습니다.</p>
+
+    <div class="creator-card">
+      <div class="creator-avatar">✦</div>
+      <div class="creator-info">
+        <p class="creator-name">jji1-h</p>
+        <p class="creator-role">개발자 · 천문학 애호가</p>
+        <div class="creator-links">
+          <a class="creator-link" href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a class="creator-link" href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">
+            문의하기
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-block">
+  <p class="cta-text">나의 탄생별을 아직 찾지 못했나요?</p>
+  <a class="cta-btn" href="/">지금 탄생별 찾기 →</a>
+</div>
+
+<!-- 푸터 -->
+<footer class="page-footer">
+  <span>© 2026 Unibirth</span>
+  <span class="page-footer-sep">·</span>
+  <a href="/privacy.html">개인정보처리방침</a>
+  <span class="page-footer-sep">·</span>
+  <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">GitHub</a>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navSidebar').classList.toggle('open');
+    document.getElementById('navBackdrop').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('navSidebar').classList.remove('open');
+    document.getElementById('navBackdrop').classList.remove('open');
+  }
+</script>
+</body>
+</html>
