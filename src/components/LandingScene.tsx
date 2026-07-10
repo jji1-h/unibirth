@@ -301,9 +301,10 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         paddingTop: '64px',
       }}>
         {[
-          { label: '아티클', href: '/articles/index.html', external: false },
-          { label: '문의하기', href: 'https://github.com/jji1-h', external: true },
-        ].map(({ label, href, external }, i) => (
+          { label: '아티클', href: '/articles/', external: false },
+          { label: '소개', href: '/about.html', external: false },
+          { label: '개인정보처리방침', href: '/privacy.html', external: false },
+        ].map(({ label, href, external }, i, arr) => (
           <a
             key={label}
             href={href}
@@ -317,7 +318,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
               fontWeight: 500,
               color: 'rgba(255,255,255,0.72)',
               textDecoration: 'none',
-              borderBottom: i < 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+              borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
               transition: 'background 0.12s, color 0.12s',
             }}
             onMouseEnter={e => {
