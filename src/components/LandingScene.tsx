@@ -301,10 +301,13 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         paddingTop: '64px',
       }}>
         {[
+          { label: '탄생별 찾기', href: '/', external: false },
           { label: '아티클', href: '/articles/', external: false },
           { label: '소개', href: '/about.html', external: false },
-          { label: '개인정보처리방침', href: '/privacy.html', external: false },
-        ].map(({ label, href, external }, i, arr) => (
+          { label: '문의하기', href: '/contact.html', external: false },
+        ].map(({ label, href, external }, i, arr) => {
+          const isActive = href === '/'
+          return (
           <a
             key={label}
             href={href}
@@ -316,7 +319,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
               fontSize: '14px',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 500,
-              color: 'rgba(255,255,255,0.72)',
+              color: isActive ? '#c4b5fd' : 'rgba(255,255,255,0.72)',
               textDecoration: 'none',
               borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
               transition: 'background 0.12s, color 0.12s',
@@ -327,12 +330,12 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
             }}
             onMouseLeave={e => {
               e.currentTarget.style.background = 'transparent'
-              e.currentTarget.style.color = 'rgba(255,255,255,0.72)'
+              e.currentTarget.style.color = isActive ? '#c4b5fd' : 'rgba(255,255,255,0.72)'
             }}
           >
             {label}
           </a>
-        ))}
+        )})}
       </div>
 
       {/* 이탈 애니메이션 중 캡션 */}

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1780993033835889" crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
@@ -135,6 +136,7 @@
     .nav-sidebar.open { right: 0; }
     .nav-sidebar a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-sidebar a:hover { color: #fff; }
+    .nav-sidebar a.active { color: #c4b5fd; }
 
     .hero { width: 100%; height: 320px; overflow: hidden; background: #07090f; display: flex; align-items: center; justify-content: center; }
     .hero svg { width: 100%; height: 100%; }
@@ -189,10 +191,21 @@
     .related-text { font-size: 14px; color: rgba(255,255,255,0.72); }
     .related-arrow { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 18px; }
 
-    .page-footer { max-width: 720px; margin: 48px auto 0; padding: 24px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; gap: 12px; align-items: center; font-size: 13px; color: rgba(255,255,255,0.30); }
-    .page-footer a { color: rgba(255,255,255,0.35); text-decoration: none; }
-    .page-footer a:hover { color: rgba(255,255,255,0.6); }
-    .page-footer-sep { opacity: 0.3; }
+    .page-footer {
+      margin-top: 64px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.04em;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .page-footer a { color: rgba(255,255,255,0.40); text-decoration: none; transition: color 0.15s; }
+    .page-footer a:hover { color: rgba(255,255,255,0.70); }
+    .page-footer-sep { opacity: 0.35; }
   </style>
 </head>
 <body>
@@ -209,9 +222,9 @@
 <div class="nav-backdrop" id="navBackdrop" onclick="document.getElementById('navSidebar').classList.remove('open'); this.classList.remove('open')"></div>
 <div class="nav-sidebar" id="navSidebar">
   <a href="/">탄생별 찾기</a>
-  <a href="/articles/">아티클</a>
+  <a href="/articles/" class="active">아티클</a>
   <a href="/about.html">소개</a>
-  <a href="/privacy.html">개인정보처리방침</a>
+  <a href="/contact.html">문의하기</a>
 </div>
 
 <!-- 히어로: 오리온자리 별자리 차트 -->
@@ -523,14 +536,16 @@
     </div>
   </div>
 
-  <footer class="page-footer">
-    <span>© 2026 Unibirth</span>
-    <span class="page-footer-sep">·</span>
-    <a href="/privacy.html">개인정보처리방침</a>
-    <span class="page-footer-sep">·</span>
-    <a href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">문의하기</a>
-  </footer>
 </article>
+<footer class="page-footer">
+  <span>© 2026 Unibirth</span>
+  <span class="page-footer-sep">·</span>
+  <a href="/about.html">서비스 소개</a>
+  <span class="page-footer-sep">·</span>
+  <a href="/privacy.html">개인정보처리방침</a>
+  <span class="page-footer-sep">·</span>
+  <a href="/contact.html">문의하기</a>
+</footer>
 
 </body>
 </html>

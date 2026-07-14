@@ -22,6 +22,15 @@ export default function Footer() {
       <span>© 2026 Unibirth</span>
       <span style={{ opacity: 0.35 }}>·</span>
       <a
+        href="/about.html"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
+      >
+        서비스 소개
+      </a>
+      <span style={{ opacity: 0.35 }}>·</span>
+      <a
         href="/privacy.html"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
@@ -31,9 +40,7 @@ export default function Footer() {
       </a>
       <span style={{ opacity: 0.35 }}>·</span>
       <a
-        href="https://github.com/jji1-h"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/contact.html"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
