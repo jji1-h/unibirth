@@ -303,8 +303,8 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         {[
           { label: '탄생별 찾기', href: '/', external: false },
           { label: '아티클', href: '/articles/', external: false },
-          { label: '소개', href: '/about.html', external: false },
-          { label: '문의하기', href: '/contact.html', external: false },
+          { label: '소개', href: '/about', external: false },
+          { label: '문의하기', href: '/contact', external: false },
         ].map(({ label, href, external }, i, arr) => {
           const isActive = href === '/'
           return (

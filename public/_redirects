@@ -1,8 +1,4 @@
 # Cloudflare Pages - SPA + static HTML 혼용 라우팅
-# 정적 파일(articles, about, contact, privacy)은 그대로 서빙
+# 정적 파일은 Cloudflare pretty URL로 자동 서빙 (.html 제거)
 # 나머지 경로는 React SPA로 폴백
-/articles/*  /articles/:splat  200
-/about.html  /about.html       200
-/contact.html /contact.html    200
-/privacy.html /privacy.html    200
-/*           /index.html       200
+/*  /index.html  200

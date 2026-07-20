@@ -22,7 +22,7 @@ export default function Footer() {
       <span>© 2026 Unibirth</span>
       <span style={{ opacity: 0.35 }}>·</span>
       <a
-        href="/about.html"
+        href="/about"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
@@ -31,7 +31,7 @@ export default function Footer() {
       </a>
       <span style={{ opacity: 0.35 }}>·</span>
       <a
-        href="/privacy.html"
+        href="/privacy"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}
@@ -40,7 +40,7 @@ export default function Footer() {
       </a>
       <span style={{ opacity: 0.35 }}>·</span>
       <a
-        href="/contact.html"
+        href="/contact"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.70)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.42)')}

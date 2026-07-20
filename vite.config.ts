@@ -23,8 +23,12 @@ export default defineConfig({
             filePath = join(publicDir, 'articles', 'index.html')
           } else if (url.startsWith('/articles/') && url.endsWith('.html')) {
             filePath = join(publicDir, url)
+          } else if (url.startsWith('/articles/') && !url.includes('.')) {
+            filePath = join(publicDir, url + '.html')
           } else if (['/about.html', '/contact.html', '/privacy.html'].includes(url)) {
             filePath = join(publicDir, url)
+          } else if (['/about', '/contact', '/privacy'].includes(url)) {
+            filePath = join(publicDir, url + '.html')
           }
 
           if (filePath && existsSync(filePath)) {
