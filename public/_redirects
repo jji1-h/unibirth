@@ -1,4 +1,4 @@
 # Cloudflare Pages - SPA + static HTML 혼용 라우팅
 # 정적 파일은 Cloudflare pretty URL로 자동 서빙 (.html 제거)
-# 나머지 경로는 React SPA로 폴백
-/*  /index.html  200
+# SPA는 단일 경로(/) 기반이므로 catch-all rewrite 불필요
+# 존재하지 않는 URL은 404.html이 처리함
