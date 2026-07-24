@@ -21,6 +21,9 @@ interface Star {
 interface CFContext {
   request:  Request
   next:     () => Promise<Response>
+  env: {
+    ASSETS: { fetch: (req: Request) => Promise<Response> }
+  }
 }
 
 // ── 상수 (starMatcher.ts 동일) ────────────────────────
@@ -115,19 +118,30 @@ function escapeHtml(str: string): string {
     .replace(/>/g, '&gt;')
 }
 
+// ── /find → SPA index.html 서빙 헬퍼 ─────────────────
+function fetchRoot(context: CFContext): Promise<Response> {
+  const rootUrl = new URL(context.request.url)
+  rootUrl.pathname = '/'
+  rootUrl.search   = ''
+  return context.env.ASSETS.fetch(new Request(rootUrl.toString(), context.request))
+}
+
 // ── 미들웨어 엔트리포인트 ─────────────────────────────
 export const onRequest = async (context: CFContext): Promise<Response> => {
   const url   = new URL(context.request.url)
   const bdate = url.searchParams.get('bdate')
+  const isFindRoute = url.pathname === '/find'
 
-  // ?bdate 없으면 그냥 통과
-  if (!bdate) return context.next()
+  // ?bdate 없으면 그냥 통과 (/find는 SPA index.html 직접 서빙)
+  if (!bdate) {
+    return isFindRoute ? fetchRoot(context) : context.next()
+  }
 
   // 나이 계산
   const ageLy = calcAgeLy(bdate)
 
-  // 원본 응답 가져오기
-  const response = await context.next()
+  // 원본 응답 가져오기 (/find는 SPA 경로이므로 root에서 서빙)
+  const response = isFindRoute ? await fetchRoot(context) : await context.next()
 
   // HTML 응답이 아니면 통과 (JS, CSS, 이미지 등)
   const ct = response.headers.get('content-type') ?? ''
