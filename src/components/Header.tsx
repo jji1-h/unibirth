@@ -5,7 +5,7 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { label: '탄생별 찾기', href: '/?find' },
+  { label: '탄생별 찾기', href: '/find' },
   { label: '소개',        href: '/'     },
   { label: '아티클',      href: '/articles/' },
 ]

@@ -1,10 +1,18 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { readFileSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        find: resolve(__dirname, 'find.html'),
+      },
+    },
+  },
   plugins: [
     react(),
     {
@@ -19,7 +27,9 @@ export default defineConfig({
 
           let filePath: string | null = null
 
-          if (url === '/articles' || url === '/articles/') {
+          if (url === '/find') {
+            filePath = join(process.cwd(), 'find.html')
+          } else if (url === '/articles' || url === '/articles/') {
             filePath = join(publicDir, 'articles', 'index.html')
           } else if (url.startsWith('/articles/') && url.endsWith('.html')) {
             filePath = join(publicDir, url)

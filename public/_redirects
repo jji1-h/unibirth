@@ -1,4 +1,4 @@
 # Cloudflare Pages - SPA + static HTML 혼용 라우팅
-# /find → /?find 로 302 리다이렉트 (북마크/공유 링크 호환)
-# React App에서 ?find 파라미터 감지 → LandingScene 표시 → replaceState('/find')
-/find /?find 302
+# /find 는 find.html (Vite 멀티페이지 빌드)이 직접 서빙
+# /?find 쿼리 파라미터 진입도 App.tsx에서 처리 (하위호환)
+# 존재하지 않는 URL은 404.html이 처리함
