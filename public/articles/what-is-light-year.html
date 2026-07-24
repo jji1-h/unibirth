@@ -101,74 +101,36 @@
       line-height: 1.85;
     }
 
-    /* ── 네비 ── */
+            /* ── 네비 ── */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(7, 9, 15, 0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
       height: 52px;
+      box-sizing: border-box;
     }
     .nav-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      letter-spacing: 0;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.85); text-decoration: none;
     }
     .nav-logo img { width: 20px; height: 20px; display: block; }
-    .nav-logo-text { letter-spacing: 0.01em; }
-    .hamburger {
-      display: flex; flex-direction: column; justify-content: center;
-      align-items: center; gap: 5px;
-      width: 40px; height: 40px;
-      background: none; border: none; cursor: pointer; padding: 0;
-      flex-shrink: 0;
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
     }
-    .hamburger span {
-      display: block; width: 18px; height: 1.5px;
-      background: rgba(255,255,255,0.60); border-radius: 2px;
+    .nav-links a {
+      padding: 5px 11px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.55); text-decoration: none;
+      border-radius: 6px; letter-spacing: 0.01em;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
     }
-    .nav-backdrop {
-      position: fixed; inset: 0; z-index: 49;
-      background: rgba(0,0,0,0.45);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.25s;
-    }
-    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
-    .nav-sidebar {
-      position: fixed; top: 0; right: 0; bottom: 0;
-      width: 220px; z-index: 50;
-      background: rgba(10,12,22,0.98);
-      backdrop-filter: blur(16px);
-      border-left: 1px solid rgba(255,255,255,0.08);
-      transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
-      padding-top: 64px;
-    }
-    .nav-sidebar.open { transform: translateX(0); }
-    .nav-sidebar a {
-      display: block;
-      padding: 15px 24px;
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.72);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      transition: background 0.12s, color 0.12s;
-    }
-    .nav-sidebar a:last-child { border-bottom: none; }
-    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
-    .nav-sidebar a.active { color: #c4b5fd; }
+    .nav-links a:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: rgba(196,181,253,0.92); }
 
     /* ── 히어로 ── */
     .hero {
@@ -450,34 +412,18 @@
 <body>
 
   <!-- 네비게이션 -->
-  <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
-  <div class="nav-sidebar" id="navSidebar">
-    <a href="/">탄생별 찾기</a>
-    <a href="/articles/" class="active">아티클</a>
-    <a href="/about">소개</a>
-    <a href="/contact">문의하기</a>
-  </div>
   <nav class="nav">
-    <a href="/" class="nav-logo">
-      <img src="/favicon.svg" alt="Unibirth 로고" />
-      <span class="nav-logo-text">Unibirth</span>
-    </a>
-    <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-  <script>
-    function toggleMenu() {
-      document.getElementById('navSidebar').classList.toggle('open')
-      document.getElementById('navBackdrop').classList.toggle('open')
-    }
-    function closeMenu() {
-      document.getElementById('navSidebar').classList.remove('open')
-      document.getElementById('navBackdrop').classList.remove('open')
-    }
-  </script>
-
-  <!-- 히어로 이미지 -->
+  <a href="/" class="nav-logo">
+    <img src="/favicon.svg" alt="Unibirth" />
+    <span>Unibirth</span>
+  </a>
+  <div class="nav-links">
+    <a href="/find">탄생별 찾기</a>
+    <a href="/">소개</a>
+    <a href="/articles/" class="active">아티클</a>
+  </div>
+</nav>
+<!-- 히어로 이미지 -->
   <!-- 이미지 파일: /public/articles/milky-way-artemis2.jpg
        원본: https://images-assets.nasa.gov/image/art002e012588/art002e012588~large.jpg
        아직 파일이 없다면 위 URL에서 직접 다운로드 후 저장해주세요. -->

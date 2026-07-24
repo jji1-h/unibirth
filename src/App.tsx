@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import HomePage from './components/HomePage'
 import LandingScene from './components/LandingScene'
 import TransitScene from './components/TransitScene'
 import ResultScene from './components/ResultScene'
@@ -75,6 +76,14 @@ export default function App() {
     setResult(null)
     setInput('')
     setStage('landing')
+  }
+
+  const pathname = window.location.pathname
+  const hasBdate = !!new URLSearchParams(window.location.search).get('bdate')
+
+  // / 경로이고 공유 링크가 아닌 경우 → 소개(홈) 페이지
+  if (pathname === '/' && !hasBdate) {
+    return <HomePage />
   }
 
   return (

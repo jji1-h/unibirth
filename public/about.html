@@ -76,56 +76,36 @@
       min-height: 100vh;
     }
 
-    /* ── 네비 ── */
+            /* ── 네비 ── */
     .nav {
       position: sticky; top: 0; z-index: 10;
       background: rgba(7,9,15,0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px;
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between;
       height: 52px;
+      box-sizing: border-box;
     }
     .nav-logo {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 14px; font-weight: 600;
-      color: rgba(255,255,255,0.9); text-decoration: none;
+      color: rgba(255,255,255,0.85); text-decoration: none;
     }
     .nav-logo img { width: 20px; height: 20px; display: block; }
-    .hamburger {
-      display: flex; flex-direction: column; justify-content: center;
-      align-items: center; gap: 5px;
-      width: 40px; height: 40px;
-      background: none; border: none; cursor: pointer; padding: 0;
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
     }
-    .hamburger span { display: block; width: 18px; height: 1.5px; background: rgba(255,255,255,0.60); border-radius: 2px; }
-    .nav-backdrop {
-      position: fixed; inset: 0; z-index: 49;
-      background: rgba(0,0,0,0.45);
-      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    .nav-links a {
+      padding: 5px 11px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.55); text-decoration: none;
+      border-radius: 6px; letter-spacing: 0.01em;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
     }
-    .nav-backdrop.open { opacity: 1; pointer-events: auto; }
-    .nav-sidebar {
-      position: fixed; top: 0; right: 0; bottom: 0;
-      width: 220px; z-index: 50;
-      background: rgba(10,12,22,0.98);
-      backdrop-filter: blur(16px);
-      border-left: 1px solid rgba(255,255,255,0.08);
-      transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
-      padding-top: 64px;
-    }
-    .nav-sidebar.open { transform: translateX(0); }
-    .nav-sidebar a {
-      display: block; padding: 15px 24px;
-      font-size: 14px; font-weight: 500;
-      color: rgba(255,255,255,0.72); text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      transition: background 0.12s, color 0.12s;
-    }
-    .nav-sidebar a:last-child { border-bottom: none; }
-    .nav-sidebar a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.95); }
-    .nav-sidebar a.active { color: #c4b5fd; }
+    .nav-links a:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: rgba(196,181,253,0.92); }
 
     /* ── 히어로 ── */
     .about-hero {
@@ -337,22 +317,16 @@
 </head>
 <body>
 
-<div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
-<div class="nav-sidebar" id="navSidebar">
-  <a href="/">탄생별 찾기</a>
-  <a href="/articles/">아티클</a>
-  <a href="/about" class="active">소개</a>
-  <a href="/contact">문의하기</a>
-</div>
-
 <nav class="nav">
   <a href="/" class="nav-logo">
-    <img src="/favicon.svg" alt="Unibirth 로고" />
+    <img src="/favicon.svg" alt="Unibirth" />
     <span>Unibirth</span>
   </a>
-  <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-links">
+    <a href="/find">탄생별 찾기</a>
+    <a href="/" class="active">소개</a>
+    <a href="/articles/">아티클</a>
+  </div>
 </nav>
 
 <!-- 히어로 -->
@@ -407,7 +381,7 @@
 
     <p>어느 날 밤하늘을 보다가 문득 그 질문이 생겼습니다. 빛의 속도와 별까지의 거리를 알면, 지금 내 눈에 닿는 빛이 언제 출발했는지 계산할 수 있습니다.</p>
 
-    <p>계산을 해보니, 내가 태어난 해에 출발한 빛을 가진 별이 있었습니다. 하늘 어딘가에 있는 그 별이 내 탄생 순간과 연결되어 있다는 사실이 — 과학적으로도, 감정적으로도 — 아름다웠습니다.</p>
+    <p>계산을 해보니, 내가 태어난 해에 출발한 빛을 가진 별이 있었습니다. 하늘 어딘가에 있는 그 별이 내 탄생 순간과 연결되어 있다는 사실이 과학적으로도, 감정적으로도 아름다웠습니다.</p>
 
     <p>Unibirth는 그 경험을 누구나 쉽게 할 수 있도록 만든 서비스입니다. 복잡한 천문학 계산 없이, 생년월일만 입력하면 <strong>우주와 나의 연결점</strong>을 발견할 수 있습니다.</p>
   </section>
@@ -424,7 +398,7 @@
     <p>피드백이나 제안이 있으시면 언제든지 GitHub을 통해 연락해 주세요. 더 많은 별, 더 정확한 데이터, 더 아름다운 경험을 만들어가고 싶습니다.</p>
 
     <div class="creator-card">
-      <div class="creator-avatar">✦</div>
+      <div class="creator-avatar">J</div>
       <div class="creator-info">
         <p class="creator-name">jji1-h</p>
         <p class="creator-role">디자이너 · 천문학 애호가</p>
@@ -445,7 +419,7 @@
 <!-- CTA -->
 <div class="cta-block">
   <p class="cta-text">나의 탄생별을 아직 찾지 못했나요?</p>
-  <a class="cta-btn" href="/">지금 탄생별 찾기 →</a>
+  <a class="cta-btn" href="/find">지금 탄생별 찾기</a>
 </div>
 
 <!-- 푸터 -->
@@ -458,16 +432,5 @@
   <span class="page-footer-sep">·</span>
   <a href="/contact">문의하기</a>
 </footer>
-
-<script>
-  function toggleMenu() {
-    document.getElementById('navSidebar').classList.toggle('open');
-    document.getElementById('navBackdrop').classList.toggle('open');
-  }
-  function closeMenu() {
-    document.getElementById('navSidebar').classList.remove('open');
-    document.getElementById('navBackdrop').classList.remove('open');
-  }
-</script>
 </body>
 </html>

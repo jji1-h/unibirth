@@ -107,30 +107,36 @@
       font-size: 16px; line-height: 1.85;
     }
     a { color: #b0c4ff; text-decoration: underline; text-underline-offset: 3px; }
-    a:hover { opacity: 0.8; }
-
+    a:hover { opacity: 0.8; }        /* ── 네비 ── */
     .nav {
       position: sticky; top: 0; z-index: 10;
-      background: rgba(7,9,15,0.88); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 52px;
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+      box-sizing: border-box;
     }
-    .nav-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); text-decoration: none; }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.85); text-decoration: none;
+    }
     .nav-logo img { width: 20px; height: 20px; display: block; }
-    .nav-logo-text { letter-spacing: 0.01em; }
-    .hamburger { background: none; border: none; cursor: pointer; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
-    .hamburger span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); border-radius: 2px; }
-    .nav-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 20; }
-    .nav-backdrop.open { display: block; }
-    .nav-sidebar {
-      position: fixed; top: 0; right: -240px; width: 240px; height: 100%;
-      background: #0d1120; border-left: 1px solid rgba(255,255,255,0.08);
-      z-index: 30; padding: 72px 24px 24px; display: flex; flex-direction: column; gap: 8px; transition: right 0.25s ease;
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
     }
-    .nav-sidebar.open { right: 0; }
-    .nav-sidebar a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-sidebar a:hover { color: #fff; }
-    .nav-sidebar a.active { color: #c4b5fd; }
+    .nav-links a {
+      padding: 5px 11px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.55); text-decoration: none;
+      border-radius: 6px; letter-spacing: 0.01em;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: rgba(196,181,253,0.92); }
 
     .hero { width: 100%; height: 320px; overflow: hidden; background: #07090f; display: flex; align-items: center; justify-content: center; }
     .hero svg { width: 100%; height: 100%; }
@@ -208,21 +214,16 @@
 <body>
 
 <nav class="nav">
-  <a class="nav-logo" href="/">
-    <img src="/favicon.svg" alt="Unibirth 로고" />
-    <span class="nav-logo-text">Unibirth</span>
+  <a href="/" class="nav-logo">
+    <img src="/favicon.svg" alt="Unibirth" />
+    <span>Unibirth</span>
   </a>
-  <button class="hamburger" onclick="document.getElementById('navSidebar').classList.toggle('open'); document.getElementById('navBackdrop').classList.toggle('open')" aria-label="메뉴">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-links">
+    <a href="/find">탄생별 찾기</a>
+    <a href="/">소개</a>
+    <a href="/articles/" class="active">아티클</a>
+  </div>
 </nav>
-<div class="nav-backdrop" id="navBackdrop" onclick="document.getElementById('navSidebar').classList.remove('open'); this.classList.remove('open')"></div>
-<div class="nav-sidebar" id="navSidebar">
-  <a href="/">탄생별 찾기</a>
-  <a href="/articles/" class="active">아티클</a>
-  <a href="/about">소개</a>
-  <a href="/contact">문의하기</a>
-</div>
 
 <!-- 히어로 -->
 <div class="hero" aria-label="인스타그램 목업 스마트폰과 탄생별 공유 일러스트">
