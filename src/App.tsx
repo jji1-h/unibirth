@@ -81,15 +81,15 @@ export default function App() {
   const pathname = window.location.pathname
   const params   = new URLSearchParams(window.location.search)
   const hasBdate = !!params.get('bdate')
-  const isFindEntry = params.get('_find') === '1'
+  const isFindRoute = params.has('find')
 
-  // /find 진입 시 URL을 /?_find=1 → /find 로 복원
-  if (isFindEntry) {
+  // /?find 진입 시 URL을 /find 로 복원 (서버 라우팅 없이 클라이언트에서 처리)
+  if (isFindRoute) {
     window.history.replaceState({}, '', '/find')
   }
 
-  // / 경로이고 find 진입도 공유 링크도 아닌 경우 → 소개(홈) 페이지
-  if (pathname === '/' && !hasBdate && !isFindEntry) {
+  // / 경로이고 find도 bdate도 없으면 → 소개 홈페이지
+  if (pathname === '/' && !hasBdate && !isFindRoute) {
     return <HomePage />
   }
 

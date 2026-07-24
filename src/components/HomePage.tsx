@@ -137,7 +137,7 @@ export default function HomePage() {
           당신이 태어난 순간 빛을 보낸 별을 찾아드립니다
         </p>
 
-        <CTAButton href="/find">탄생별 찾기 →</CTAButton>
+        <CTAButton href="/?find">탄생별 찾기 →</CTAButton>
       </section>
 
       {/* ── 서비스 소개 ──────────────────────────────────── */}
@@ -287,7 +287,7 @@ export default function HomePage() {
         }}>
           생년월일 8자리로 찾는 나만의 우주 이야기
         </p>
-        <CTAButton href="/find">탄생별 찾기 →</CTAButton>
+        <CTAButton href="/?find">탄생별 찾기 →</CTAButton>
       </section>
 
       <Footer />

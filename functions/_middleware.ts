@@ -120,17 +120,6 @@ export const onRequest = async (context: CFContext): Promise<Response> => {
   const url   = new URL(context.request.url)
   const bdate = url.searchParams.get('bdate')
 
-  // /find 경로 처리: root(/)로 리다이렉트하면서 파라미터 보존
-  if (url.pathname === '/find') {
-    const redirectUrl = new URL(context.request.url)
-    redirectUrl.pathname = '/'
-    if (!bdate) {
-      // bdate 없으면 ?_find=1 로 진입 표시
-      redirectUrl.searchParams.set('_find', '1')
-    }
-    return Response.redirect(redirectUrl.toString(), 302)
-  }
-
   // ?bdate 없으면 그냥 통과
   if (!bdate) return context.next()
 
