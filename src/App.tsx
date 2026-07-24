@@ -79,10 +79,17 @@ export default function App() {
   }
 
   const pathname = window.location.pathname
-  const hasBdate = !!new URLSearchParams(window.location.search).get('bdate')
+  const params   = new URLSearchParams(window.location.search)
+  const hasBdate = !!params.get('bdate')
+  const isFindEntry = params.get('_find') === '1'
 
-  // / 경로이고 공유 링크가 아닌 경우 → 소개(홈) 페이지
-  if (pathname === '/' && !hasBdate) {
+  // /find 진입 시 URL을 /?_find=1 → /find 로 복원
+  if (isFindEntry) {
+    window.history.replaceState({}, '', '/find')
+  }
+
+  // / 경로이고 find 진입도 공유 링크도 아닌 경우 → 소개(홈) 페이지
+  if (pathname === '/' && !hasBdate && !isFindEntry) {
     return <HomePage />
   }
 

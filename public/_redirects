@@ -1,5 +1,5 @@
 # Cloudflare Pages - SPA + static HTML 혼용 라우팅
 # 정적 파일은 Cloudflare pretty URL로 자동 서빙 (.html 제거)
 # /find 는 탄생별 찾기 SPA 진입점
-/find  /  200
+# /find는 _middleware.ts에서 처리 (Response.redirect)
 # 존재하지 않는 URL은 404.html이 처리함
