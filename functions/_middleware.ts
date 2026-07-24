@@ -120,6 +120,13 @@ export const onRequest = async (context: CFContext): Promise<Response> => {
   const url   = new URL(context.request.url)
   const bdate = url.searchParams.get('bdate')
 
+  // pages.dev → 커스텀 도메인 301 리다이렉트 (SEO 중복 방지)
+  if (url.hostname === 'unibirth.pages.dev') {
+    const redirectUrl = new URL(context.request.url)
+    redirectUrl.hostname = 'unibirths.com'
+    return Response.redirect(redirectUrl.toString(), 301)
+  }
+
   // ?bdate 없으면 그냥 통과
   if (!bdate) return context.next()
 
