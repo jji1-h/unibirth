@@ -348,21 +348,6 @@
     .related-arrow { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 18px; }
 
     /* ── 푸터 ── */
-    .page-footer {
-      margin-top: 64px;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      font-size: 11px;
-      color: rgba(255,255,255,0.22);
-      letter-spacing: 0.04em;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-    .page-footer a { color: rgba(255,255,255,0.40); text-decoration: none; transition: color 0.15s; }
-    .page-footer a:hover { color: rgba(255,255,255,0.70); }
-    .page-footer-sep { opacity: 0.35; }
 
     @media (max-width: 600px) {
       h1.article-title { font-size: 24px; }
@@ -370,7 +355,17 @@
       .cta-section { padding: 28px 20px; }
       .quote { padding: 20px; }
     }
-  </style>
+  
+    /* ── 풀 푸터 링크 ── */
+    .fl {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      line-height: 1.5;
+      transition: color 0.15s;
+    }
+    .fl:hover { color: rgba(255,255,255,0.82); }
+</style>
 </head>
 <body>
 
@@ -597,16 +592,50 @@
     </div>
 
 </article>
-<footer class="page-footer">
-  <span>© 2026 Unibirth</span>
-  <span class="page-footer-sep">·</span>
-  <a href="/about">서비스 소개</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/terms">서비스 이용약관</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/privacy">개인정보처리방침</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/contact">문의하기</a>
+<footer style="width:100%;background:rgba(255,255,255,0.018);border-top:1px solid rgba(255,255,255,0.07);font-family:'Inter',sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:56px 24px;padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));display:flex;gap:48px;flex-wrap:wrap;">
+
+    <!-- 좌측: 브랜드 -->
+    <div style="flex:0 0 200px;min-width:160px;">
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-bottom:14px;">
+        <img src="/favicon.svg" alt="Unibirth" style="width:20px;height:20px;" />
+        <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.01em;">Unibirth</span>
+      </a>
+      <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.7;">생년월일로 찾는<br>나만의 탄생별</p>
+      <p style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.18);letter-spacing:0.03em;">© 2026 Unibirth</p>
+    </div>
+
+    <!-- 우측: 3컬럼 -->
+    <div style="margin-left:auto;display:grid;grid-template-columns:repeat(3,140px);gap:32px;">
+      <!-- Unibirth -->
+      <div>
+        <p style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;">Unibirth</p>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="/find"      class="fl">탄생별 찾기</a></li>
+          <li><a href="/about"     class="fl">Unibirth 소개</a></li>
+          <li><a href="/articles/" class="fl">아티클</a></li>
+        </ul>
+      </div>
+      <!-- 읽을거리 -->
+      <div>
+        <p style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;">읽을거리</p>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="/articles/?category=tips"    class="fl">Unibirth 사용팁</a></li>
+          <li><a href="/articles/?category=science" class="fl">우주 과학</a></li>
+          <li><a href="/articles/?category=story"   class="fl">별별 이야기</a></li>
+        </ul>
+      </div>
+      <!-- 서비스 -->
+      <div>
+        <p style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;">서비스</p>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="/terms"   class="fl">서비스 이용약관</a></li>
+          <li><a href="/privacy" class="fl">개인정보처리방침</a></li>
+          <li><a href="/contact" class="fl">문의하기</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </footer>
 
 </body>

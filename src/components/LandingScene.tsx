@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Header from './Header'
-import Footer from './Footer'
+import ShortFooter from './ShortFooter'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { validateBirthdate } from '../lib'
@@ -302,7 +302,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         pointerEvents: showUI ? 'auto' : 'none',
         transition:    'opacity 0.35s ease',
       }}>
-        <Footer />
+        <ShortFooter />
       </div>
     </div>
   )

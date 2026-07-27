@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
-import Footer from './Footer'
+import ShortFooter from './ShortFooter'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
 import { makeGlowTex, makeCircleTex } from '../lib/textures'
 
@@ -354,7 +354,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
 
       {/* 푸터 */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, pointerEvents: 'none' }}>
-        <Footer />
+        <ShortFooter />
       </div>
     </div>
   )
