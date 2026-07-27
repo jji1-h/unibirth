@@ -279,19 +279,31 @@
 
     /* ── 푸터 ── */
     .page-footer {
-      padding: 20px 24px;
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 16px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
       font-size: 11px;
-      color: rgba(255,255,255,0.22);
-      letter-spacing: 0.04em;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      letter-spacing: 0.03em;
     }
-    .page-footer a { color: rgba(255,255,255,0.40); text-decoration: none; transition: color 0.15s; }
-    .page-footer a:hover { color: rgba(255,255,255,0.70); }
-    .page-footer-sep { opacity: 0.35; }
+    .page-footer-copy { color: rgba(255,255,255,0.18); }
+    .page-footer-links { display: flex; gap: 16px; }
+    .page-footer-links a {
+      color: rgba(255,255,255,0.28);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .page-footer-links a:hover { color: rgba(255,255,255,0.60); }
   </style>
 </head>
 <body>
@@ -373,15 +385,14 @@
 
 <!-- 푸터 -->
 <footer class="page-footer">
-  <span>© 2026 Unibirth</span>
-  <span class="page-footer-sep">·</span>
-  <a href="/about">서비스 소개</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/terms">서비스 이용약관</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/privacy">개인정보처리방침</a>
-  <span class="page-footer-sep">·</span>
-  <a href="/contact">문의하기</a>
+  <div class="page-footer-inner">
+    <span class="page-footer-copy">© 2026 Unibirth</span>
+    <div class="page-footer-links">
+      <a href="/terms">서비스 이용약관</a>
+      <a href="/privacy">개인정보처리방침</a>
+      <a href="/contact">문의하기</a>
+    </div>
+  </div>
 </footer>
 </body>
 </html>
