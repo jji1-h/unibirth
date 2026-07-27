@@ -39,9 +39,16 @@
       background: rgba(7,9,15,0.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
+            height: 52px;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 100%;
       padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       box-sizing: border-box;
     }
     .nav-logo {
@@ -82,6 +89,42 @@
       font-size: 14px;
       color: rgba(255,255,255,0.38);
     }
+
+    /* ── 카테고리 필터 탭 ── */
+    .filter-bar {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 28px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .filter-btn:hover {
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.80);
+    }
+    .filter-btn.active {
+      background: rgba(196,181,253,0.12);
+      border-color: rgba(196,181,253,0.35);
+      color: rgba(196,181,253,0.95);
+    }
+    .filter-btn[data-filter="tips"].active    { background: rgba(176,196,255,0.12); border-color: rgba(176,196,255,0.35); color: #b0c4ff; }
+    .filter-btn[data-filter="science"].active { background: rgba(196,181,253,0.12); border-color: rgba(196,181,253,0.35); color: #c4b5fd; }
+    .filter-btn[data-filter="story"].active   { background: rgba(255,213,128,0.12); border-color: rgba(255,213,128,0.35); color: #ffd580; }
+    .card.hidden { display: none; }
 
     /* ── 그리드 ── */
     .grid {
@@ -204,6 +247,7 @@
 <body>
 
   <nav class="nav">
+  <div class="nav-inner">
   <a href="/" class="nav-logo">
     <img src="/favicon.svg" alt="Unibirth" />
     <span>Unibirth</span>
@@ -213,16 +257,24 @@
     <a href="/">소개</a>
     <a href="/articles/" class="active">아티클</a>
   </div>
+  </div>
 </nav>
 <header class="page-header">
     <h1>아티클</h1>
     <p>별, 우주, 천문학에 관한 이야기</p>
   </header>
 
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">전체</button>
+    <button class="filter-btn" data-filter="tips">Unibirth 사용팁</button>
+    <button class="filter-btn" data-filter="science">우주 과학</button>
+    <button class="filter-btn" data-filter="story">별별 이야기</button>
+  </div>
+
   <main class="grid">
 
     <!-- 아티클: 탄생별 SNS 프로필 (2026.07.08) -->
-    <a class="card" href="/articles/birth-star-sns">
+    <a class="card" data-category="tips" href="/articles/birth-star-sns">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
           <defs>
@@ -328,7 +380,7 @@
     </a>
 
     <!-- 아티클: 북극성이란? (2026.07.08) -->
-    <a class="card" href="/articles/what-is-polaris">
+    <a class="card" data-category="science" href="/articles/what-is-polaris">
       <div class="card-thumb">
                 <img src="/articles/polaris-nav.jpg.png" alt="밤바다 갑판에서 북극성을 향해 손을 뻗는 항해사" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
 
@@ -342,7 +394,7 @@
     </a>
 
     <!-- 아티클: 오리온자리 (2026.07.08) -->
-    <a class="card" href="/articles/orion-constellation">
+    <a class="card" data-category="story" href="/articles/orion-constellation">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
           <defs>
@@ -430,7 +482,7 @@
     </a>
 
     <!-- 아티클: 탄생별 선물하기 (2026.07.02) -->
-    <a class="card" href="/articles/birth-star-gift">
+    <a class="card" data-category="tips" href="/articles/birth-star-gift">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
           <rect width="480" height="270" fill="#07090f"/>
@@ -466,7 +518,7 @@
     </a>
 
     <!-- 아티클: 블랙홀이란? (2026.07.02) -->
-    <a class="card" href="/articles/what-is-black-hole">
+    <a class="card" data-category="science" href="/articles/what-is-black-hole">
       <div class="card-thumb">
         <img
           src="/articles/black-hole-nasa.jpg"
@@ -493,7 +545,7 @@
     </a>
 
     <!-- 아티클: 견우와 직녀 (2026.07.02) -->
-    <a class="card" href="/articles/vega-altair-tanabata">
+    <a class="card" data-category="story" href="/articles/vega-altair-tanabata">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
           <defs>
@@ -649,7 +701,7 @@
     </a>
 
     <!-- 아티클: 창백한 푸른 점 (최신순) -->
-    <a class="card" href="/articles/pale-blue-dot">
+    <a class="card" data-category="story" href="/articles/pale-blue-dot">
       <div class="card-thumb">
         <img
           src="/articles/pale-blue-dot.jpg"
@@ -672,7 +724,7 @@
     </a>
 
     <!-- 아티클: 탄생별이란? (최신순) -->
-    <a class="card" href="/articles/what-is-birth-star">
+    <a class="card" data-category="tips" href="/articles/what-is-birth-star">
       <div class="card-thumb">
         <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
           <rect width="480" height="270" fill="#07090f"/>
@@ -713,7 +765,7 @@
     </a>
 
     <!-- 아티클: 광년이란? -->
-    <a class="card" href="/articles/what-is-light-year">
+    <a class="card" data-category="science" href="/articles/what-is-light-year">
       <div class="card-thumb">
         <img
           src="/articles/milky-way-artemis2.jpg"
@@ -746,10 +798,41 @@
   <span class="page-footer-sep">·</span>
   <a href="/about">서비스 소개</a>
   <span class="page-footer-sep">·</span>
+  <a href="/terms">서비스 이용약관</a>
+  <span class="page-footer-sep">·</span>
   <a href="/privacy">개인정보처리방침</a>
   <span class="page-footer-sep">·</span>
   <a href="/contact">문의하기</a>
 </footer>
 
+
+<script>
+  (function () {
+    const buttons = document.querySelectorAll('.filter-btn')
+    const cards   = document.querySelectorAll('.card[data-category]')
+
+    function applyFilter(filter) {
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter))
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter
+        card.classList.toggle('hidden', !match)
+      })
+      // URL 업데이트 (새로고침 없이)
+      const url = new URL(window.location)
+      if (filter === 'all') url.searchParams.delete('category')
+      else url.searchParams.set('category', filter)
+      history.replaceState(null, '', url)
+    }
+
+    // 버튼 클릭
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => applyFilter(btn.dataset.filter))
+    })
+
+    // 페이지 진입 시 ?category= 파라미터 반영
+    const initial = new URLSearchParams(window.location.search).get('category') || 'all'
+    applyFilter(initial)
+  })()
+</script>
 </body>
 </html>

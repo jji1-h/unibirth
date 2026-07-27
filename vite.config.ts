@@ -35,9 +35,9 @@ export default defineConfig({
             filePath = join(publicDir, url)
           } else if (url.startsWith('/articles/') && !url.includes('.')) {
             filePath = join(publicDir, url + '.html')
-          } else if (['/about.html', '/contact.html', '/privacy.html'].includes(url)) {
+          } else if (['/about.html', '/contact.html', '/privacy.html', '/terms.html'].includes(url)) {
             filePath = join(publicDir, url)
-          } else if (['/about', '/contact', '/privacy'].includes(url)) {
+          } else if (['/about', '/contact', '/privacy', '/terms'].includes(url)) {
             filePath = join(publicDir, url + '.html')
           }
 
