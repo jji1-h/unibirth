@@ -3,31 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" /></noscript>
   <title>문의하기 — Unibirth</title>
-  <meta name="description" content="Unibirth에 궁금한 점, 피드백, 오류 제보는 GitHub를 통해 남겨주세요. 별과 우주에 관한 이야기도 환영합니다." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="canonical" href="https://unibirths.com/contact" />
-  <meta name="author" content="Unibirth" />
-
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://unibirths.com/contact" />
-  <meta property="og:title"       content="문의하기 — Unibirth" />
-  <meta property="og:description" content="Unibirth에 궁금한 점, 피드백, 오류 제보는 GitHub를 통해 남겨주세요." />
-  <meta property="og:image"       content="https://unibirths.com/og.png" />
-  <meta property="og:image:width"  content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name"   content="Unibirth" />
-  <meta property="og:locale"      content="ko_KR" />
-
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="문의하기 — Unibirth" />
-  <meta name="twitter:description" content="Unibirth에 궁금한 점, 피드백, 오류 제보는 GitHub를 통해 남겨주세요." />
-  <meta name="twitter:image"       content="https://unibirths.com/og.png" />
+  <meta name="robots" content="index, follow" />
+  <meta name="description" content="Unibirth에 궁금한 점, 피드백, 오류 제보를 남겨주세요." />
 
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1780993033835889" crossorigin="anonymous"></script>
@@ -41,48 +22,30 @@
     gtag('config', 'G-W77PE6EXPM');
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "Unibirth 문의하기",
-    "description": "Unibirth에 궁금한 점, 피드백, 오류 제보를 남겨주세요.",
-    "url": "https://unibirths.com/contact",
-    "inLanguage": "ko",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Unibirth",
-      "url": "https://unibirths.com"
-    },
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Unibirth", "item": "https://unibirths.com/" },
-        { "@type": "ListItem", "position": 2, "name": "문의하기", "item": "https://unibirths.com/contact" }
-      ]
-    }
-  }
-  </script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: #07090f;
-      color: rgba(255,255,255,0.78);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+      color: rgba(255, 255, 255, 0.75);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 15px;
-      line-height: 1.7;
-      min-height: 100vh;
+      line-height: 1.8;
     }
 
-            /* ── 네비 ── */
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    /* ── 네비 ── */
     .nav {
       position: sticky; top: 0; z-index: 10;
       background: rgba(7,9,15,0.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
-            height: 52px;
+      height: 52px;
     }
     .nav-inner {
       max-width: 1200px;
@@ -100,9 +63,7 @@
       color: rgba(255,255,255,0.85); text-decoration: none;
     }
     .nav-logo img { width: 20px; height: 20px; display: block; }
-    .nav-links {
-      display: flex; align-items: center; gap: 2px;
-    }
+    .nav-links { display: flex; align-items: center; gap: 2px; }
     .nav-links a {
       padding: 5px 11px;
       font-size: 13px; font-weight: 500;
@@ -112,176 +73,182 @@
       white-space: nowrap;
     }
     .nav-links a:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.07); }
-    .nav-links a.active { color: rgba(196,181,253,0.92); }
 
-    /* ── 히어로 ── */
-    .about-hero {
-      position: relative;
-      padding: 80px 24px 72px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .about-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(196,181,253,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #c4b5fd;
-      margin-bottom: 20px;
-    }
-    .hero-title {
-      font-family: 'Georgia', serif;
-      font-size: clamp(32px, 6vw, 52px);
-      font-weight: 400;
-      color: rgba(255,255,255,0.95);
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-    }
-    .hero-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.48);
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.75;
-    }
-
-    /* ── 본문 ── */
-    .contact-wrap {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 24px 96px;
-    }
-
-    /* ── 섹션 ── */
-    .section { margin-bottom: 64px; }
-    .section-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(196,181,253,0.55);
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Georgia', serif;
-      font-size: clamp(22px, 4vw, 30px);
-      font-weight: 400;
-      color: rgba(255,255,255,0.92);
-      line-height: 1.35;
-      margin-bottom: 24px;
-    }
-    .section p {
-      font-size: 15px;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.85;
-      margin-bottom: 16px;
-    }
-    .section p:last-child { margin-bottom: 0; }
-    .section p strong { color: rgba(255,255,255,0.88); font-weight: 600; }
-
-    /* ── 문의 카드 ── */
-    .contact-card {
-      display: flex;
+    .back {
+      display: inline-flex;
       align-items: center;
-      gap: 20px;
-      background: rgba(196,181,253,0.04);
-      border: 1px solid rgba(196,181,253,0.14);
-      border-radius: 16px;
-      padding: 28px 24px;
-      margin-top: 32px;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.35);
       text-decoration: none;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .contact-card:hover {
-      background: rgba(196,181,253,0.08);
-      border-color: rgba(196,181,253,0.28);
-    }
-    .contact-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: rgba(196,181,253,0.10);
-      border: 1px solid rgba(196,181,253,0.18);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .contact-info { flex: 1; min-width: 0; }
-    .contact-name {
-      font-size: 15px; font-weight: 600;
-      color: rgba(255,255,255,0.92);
-      margin-bottom: 4px;
-    }
-    .contact-desc {
       font-size: 13px;
-      color: rgba(255,255,255,0.42);
-      line-height: 1.55;
+      letter-spacing: 0.04em;
+      margin: 48px 0;
+      transition: color 0.15s;
     }
-    .contact-arrow {
-      font-size: 16px;
-      color: rgba(196,181,253,0.50);
-      flex-shrink: 0;
-    }
+    .back:hover { color: rgba(255, 255, 255, 0.7); }
 
-    /* ── FAQ ── */
-    .faq-list { margin-top: 32px; }
-    .faq-item {
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 20px 0;
-    }
-    .faq-item:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
-    .faq-q {
-      font-size: 14px; font-weight: 600;
-      color: rgba(255,255,255,0.85);
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: #ffffff;
       margin-bottom: 8px;
     }
-    .faq-a {
+
+    .subtitle {
       font-size: 14px;
-      color: rgba(255,255,255,0.48);
-      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.38);
+      margin-bottom: 48px;
+      line-height: 1.7;
     }
 
-    /* ── 별 장식 ── */
-    .star-divider {
-      text-align: center;
-      font-size: 18px;
-      color: rgba(196,181,253,0.35);
-      letter-spacing: 0.5em;
-      margin: 8px 0;
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      margin: 40px 0 12px;
     }
 
-    /* ── CTA ── */
-    .cta-block {
-      text-align: center;
-      padding: 0 24px 120px;
-      margin-top: -40px;
+    p { margin-bottom: 12px; }
+
+    a { color: #b0c4ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      margin: 48px 0;
     }
-    .cta-text {
+
+    /* ── FAQ 아코디언 ── */
+    .faq-list { margin-top: 4px; }
+
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .faq-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+
+    .faq-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 18px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      text-align: left;
+    }
+    .faq-q {
       font-size: 14px;
-      color: rgba(255,255,255,0.40);
+      font-weight: 500;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.55;
+    }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      color: rgba(255,255,255,0.28);
+      transition: transform 0.2s ease;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-body { display: none; padding-bottom: 18px; }
+    .faq-item.open .faq-body { display: block; }
+    .faq-a { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.8; }
+    .faq-a a { font-size: 14px; }
+
+    /* ── 문의 폼 ── */
+    .form-group {
       margin-bottom: 20px;
     }
-    .cta-btn {
-      display: inline-block;
-      background: rgba(196,181,253,0.12);
-      border: 1px solid rgba(196,181,253,0.28);
-      color: #c4b5fd;
-      text-decoration: none;
-      font-size: 14px; font-weight: 600;
-      padding: 12px 28px;
-      border-radius: 100px;
-      transition: background 0.2s, border-color 0.2s;
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.40);
+      margin-bottom: 8px;
     }
-    .cta-btn:hover { background: rgba(196,181,253,0.20); border-color: rgba(196,181,253,0.45); }
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: rgba(255,255,255,0.82);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: rgba(255,255,255,0.22); }
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+    .form-textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(255,255,255,0.3)' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .form-select option { background: #111318; color: rgba(255,255,255,0.82); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .submit-btn {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      margin-top: 8px;
+    }
+    .submit-btn:hover {
+      background: rgba(255,255,255,0.11);
+      border-color: rgba(255,255,255,0.20);
+    }
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── 제출 완료 메시지 ── */
+    .success-msg {
+      display: none;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+    .success-msg strong { color: rgba(255,255,255,0.82); display: block; margin-bottom: 4px; }
 
     /* ── 푸터 ── */
-    .page-footer {
-      width: 100%;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
+    .page-footer { width: 100%; border-top: 1px solid rgba(255,255,255,0.06); }
     .page-footer-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -308,91 +275,194 @@
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-  <a href="/" class="nav-logo">
-    <img src="/favicon.svg" alt="Unibirth" />
-    <span>Unibirth</span>
-  </a>
-  <div class="nav-links">
-    <a href="/find">탄생별 찾기</a>
-    <a href="/">소개</a>
-    <a href="/articles/">아티클</a>
-  </div>
-  </div>
-</nav>
-
-<!-- 히어로 -->
-<div class="about-hero">
-  <p class="hero-eyebrow">Contact</p>
-  <h1 class="hero-title">궁금한 점이 있으신가요?</h1>
-  <p class="hero-sub">피드백, 오류 제보, 별에 관한 이야기라면 무엇이든 환영합니다.</p>
-</div>
-
-<div class="contact-wrap">
-
-  <!-- 문의 방법 -->
-  <section class="section" aria-labelledby="sec-contact">
-    <p class="section-label">문의 방법</p>
-    <h2 class="section-title" id="sec-contact">GitHub로 편하게 연락하세요</h2>
-
-    <p>Unibirth는 1인 디자이너가 운영하는 서비스입니다. 빠른 응답을 드리기 위해 GitHub를 통해 문의를 받고 있습니다. Issues에 남겨주시면 확인 후 답변드립니다.</p>
-
-    <a class="contact-card" href="https://github.com/jji1-h" target="_blank" rel="noopener noreferrer">
-      <div class="contact-icon">⌥</div>
-      <div class="contact-info">
-        <p class="contact-name">GitHub / jji1-h</p>
-        <p class="contact-desc">문의, 피드백, 오류 제보<br>Issues 탭에 남겨주세요</p>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/favicon.svg" alt="Unibirth" />
+        <span>Unibirth</span>
+      </a>
+      <div class="nav-links">
+        <a href="/find">탄생별 찾기</a>
+        <a href="/">소개</a>
+        <a href="/articles/">아티클</a>
       </div>
-      <span class="contact-arrow">→</span>
-    </a>
-  </section>
+    </div>
+  </nav>
 
-  <div class="star-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+  <div class="wrap">
+    <a href="/" class="back">← 홈으로</a>
 
-  <!-- 자주 묻는 질문 -->
-  <section class="section" aria-labelledby="sec-faq" style="margin-top: 64px;">
-    <p class="section-label">자주 묻는 질문</p>
-    <h2 class="section-title" id="sec-faq">이런 질문이 많이 들어와요</h2>
+    <h1>문의하기</h1>
+    <p class="subtitle">피드백, 오류 제보, 아티클 제안 모두 환영합니다.</p>
+
+    <!-- 자주 묻는 질문 -->
+    <h2>자주 묻는 질문</h2>
 
     <div class="faq-list">
+
       <div class="faq-item">
-        <p class="faq-q">탄생별 결과가 이상해요. 오류인가요?</p>
-        <p class="faq-a">탄생별은 생년월일 기준 나이(년)와 같은 거리(광년)에 있는 별 중 가장 밝은 별을 찾는 방식입니다. 동일한 거리에 여러 별이 있을 수 있어 결과가 다르게 나오는 경우가 있습니다. GitHub Issues에 날짜와 함께 제보해 주세요.</p>
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">탄생별 결과가 이상한 것 같아요.</span>
+          <svg class="faq-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+        </button>
+        <div class="faq-body">
+          <p class="faq-a">탄생별은 생년월일 기준 나이(년)와 동일한 거리(광년)에 있는 별 중 가장 밝은 별을 찾는 방식입니다. 동일한 거리에 여러 별이 있을 수 있어 결과가 다르게 느껴질 수 있습니다. 아래 문의 폼으로 날짜와 함께 제보해 주세요.</p>
+        </div>
       </div>
+
       <div class="faq-item">
-        <p class="faq-q">사용한 별 데이터는 어디서 왔나요?</p>
-        <p class="faq-a">Yale Bright Star Catalogue(예일 밝은별 목록)와 Hipparcos 성표 데이터를 기반으로 합니다. 거리 데이터는 시차(parallax) 측정값에서 추출했습니다.</p>
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">별 데이터는 어디서 가져오나요?</span>
+          <svg class="faq-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+        </button>
+        <div class="faq-body">
+          <p class="faq-a">오픈소스 HYG Database(25만 개 이상의 별 데이터)를 기반으로 합니다. 거리 데이터는 Hipparcos 성표의 시차(parallax) 측정값에서 추출했습니다.</p>
+        </div>
       </div>
+
       <div class="faq-item">
-        <p class="faq-q">아티클 주제 제안을 해도 되나요?</p>
-        <p class="faq-a">물론입니다. 별, 우주, 천문학에 관한 궁금한 주제가 있으시면 GitHub Issues에 남겨주세요. 다음 아티클 주제 선정에 반영하겠습니다.</p>
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">개인정보를 수집하나요?</span>
+          <svg class="faq-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+        </button>
+        <div class="faq-body">
+          <p class="faq-a">입력한 생년월일은 브라우저 안에서만 처리되며 서버로 전송되거나 저장되지 않습니다. 자세한 내용은 <a href="/privacy">개인정보처리방침</a>을 확인해 주세요.</p>
+        </div>
       </div>
+
       <div class="faq-item">
-        <p class="faq-q">광고나 협업 문의는 어떻게 하나요?</p>
-        <p class="faq-a">GitHub 프로필 페이지를 통해 연락 주시면 확인하겠습니다.</p>
+        <button class="faq-btn" aria-expanded="false">
+          <span class="faq-q">아티클 주제를 제안하고 싶어요.</span>
+          <svg class="faq-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+        </button>
+        <div class="faq-body">
+          <p class="faq-a">별, 우주, 천문학에 관한 궁금한 주제가 있다면 아래 폼으로 제안해 주세요. 다음 아티클 주제 선정에 반영하겠습니다.</p>
+        </div>
       </div>
+
     </div>
-  </section>
 
-</div>
+    <hr class="divider" />
 
-<!-- CTA -->
-<div class="cta-block">
-  <p class="cta-text">나의 탄생별을 아직 찾지 못했나요?</p>
-  <a class="cta-btn" href="/find">지금 탄생별 찾기</a>
-</div>
+    <!-- 문의 폼 -->
+    <h2>문의</h2>
 
-<!-- 푸터 -->
-<footer class="page-footer">
-  <div class="page-footer-inner">
-    <span class="page-footer-copy">© 2026 Unibirth</span>
-    <div class="page-footer-links">
-      <a href="/terms">서비스 이용약관</a>
-      <a href="/privacy">개인정보처리방침</a>
-      <a href="/contact">문의하기</a>
-    </div>
+    <form id="contact-form">
+      <!-- Web3Forms access key — 발급 후 아래 value 교체 -->
+      <input type="hidden" name="access_key" value="9b800e7a-4c58-4f20-b6eb-542d95a5277c" />
+      <input type="hidden" name="subject" id="form-subject-hidden" value="Unibirth 문의" />
+      <input type="checkbox" name="botcheck" style="display:none" />
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="name">이름</label>
+          <input class="form-input" type="text" id="name" name="name" placeholder="홍길동" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">이메일</label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="hello@example.com" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="category">문의 유형</label>
+        <select class="form-select" id="category" name="category" required>
+          <option value="" disabled selected>선택해 주세요</option>
+          <option value="오류 제보">오류 제보</option>
+          <option value="기능 제안">기능 제안</option>
+          <option value="아티클 제안">아티클 제안</option>
+          <option value="협업·광고 문의">협업·광고 문의</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">문의 내용</label>
+        <textarea class="form-textarea" id="message" name="message" placeholder="내용을 입력해 주세요." required></textarea>
+      </div>
+
+      <button class="submit-btn" type="submit" id="submit-btn">문의하기</button>
+      <div class="success-msg" id="success-msg">
+        <strong>문의가 접수되었습니다.</strong>
+        확인 후 입력하신 이메일로 답변드릴게요.
+      </div>
+    </form>
+
   </div>
-</footer>
+
+  <footer class="page-footer">
+    <div class="page-footer-inner">
+      <span class="page-footer-copy">© 2026 Unibirth</span>
+      <div class="page-footer-links">
+        <a href="/terms">서비스 이용약관</a>
+        <a href="/privacy">개인정보처리방침</a>
+        <a href="/contact">문의하기</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ 아코디언
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item')
+        const isOpen = item.classList.contains('open')
+        document.querySelectorAll('.faq-item.open').forEach(el => {
+          el.classList.remove('open')
+          el.querySelector('.faq-btn').setAttribute('aria-expanded', 'false')
+        })
+        if (!isOpen) {
+          item.classList.add('open')
+          btn.setAttribute('aria-expanded', 'true')
+        }
+      })
+    })
+
+    // 폼 제출 — Web3Forms API
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const btn = document.getElementById('submit-btn')
+      btn.disabled = true
+      btn.textContent = '전송 중...'
+
+      // subject에 카테고리 반영
+      const category = document.getElementById('category').value
+      document.getElementById('form-subject-hidden').value = `[Unibirth] ${category}`
+
+      const formData = new FormData(e.target)
+      const data = Object.fromEntries(formData)
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data),
+        })
+        const json = await res.json()
+
+        if (res.ok && json.success) {
+          document.getElementById('contact-form').style.display = 'none'
+          document.getElementById('success-msg').style.display = 'block'
+        } else {
+          alert('전송에 실패했습니다. 잠시 후 다시 시도해 주세요.')
+          btn.disabled = false
+          btn.textContent = '문의하기'
+        }
+      } catch {
+        alert('네트워크 오류가 발생했습니다.')
+        btn.disabled = false
+        btn.textContent = '문의하기'
+      }
+    })
+  </script>
+
 </body>
 </html>
