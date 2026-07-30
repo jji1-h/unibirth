@@ -232,20 +232,40 @@
       cursor: not-allowed;
     }
 
-    /* ── 제출 완료 메시지 ── */
-    .success-msg {
-      display: none;
-      padding: 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 8px;
-      text-align: center;
+    /* ── 토스트 ── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: rgba(30, 32, 40, 0.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 14px;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.7;
-      margin-top: 8px;
+      color: rgba(255,255,255,0.82);
+      white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 999;
     }
-    .success-msg strong { color: rgba(255,255,255,0.82); display: block; margin-bottom: 4px; }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(134,239,172,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+    }
 
     /* ── 푸터 ── */
     .page-footer { width: 100%; border-top: 1px solid rgba(255,255,255,0.06); }
@@ -390,11 +410,12 @@
       </div>
 
       <button class="submit-btn" type="submit" id="submit-btn">문의하기</button>
-      <div class="success-msg" id="success-msg">
-        <strong>문의가 접수되었습니다.</strong>
-        확인 후 입력하신 이메일로 답변드릴게요.
-      </div>
     </form>
+
+    <div class="toast" id="toast">
+      <span class="toast-icon">✓</span>
+      문의가 접수되었습니다. 이메일로 답변드릴게요.
+    </div>
 
   </div>
 
@@ -449,8 +470,14 @@
         const json = await res.json()
 
         if (res.ok && json.success) {
-          document.getElementById('contact-form').style.display = 'none'
-          document.getElementById('success-msg').style.display = 'block'
+          e.target.reset()
+          document.getElementById('category').value = ''
+          btn.disabled = false
+          btn.textContent = '문의하기'
+          // 토스트 표시
+          const toast = document.getElementById('toast')
+          toast.classList.add('show')
+          setTimeout(() => toast.classList.remove('show'), 3500)
         } else {
           alert('전송에 실패했습니다. 잠시 후 다시 시도해 주세요.')
           btn.disabled = false
