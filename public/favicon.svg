@@ -1,28 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <pattern id="stripe" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-      <rect width="10" height="10" fill="#7c3aed"/>
-      <rect width="5" height="10" fill="#a78bfa"/>
-    </pattern>
-    <clipPath id="hat-clip">
-      <polygon points="30,46 70,46 51,4"/>
-    </clipPath>
-  </defs>
-
-  <!-- Yellow irregular star -->
-  <polygon
-    points="50,31 60,51 83,53 64,70 70,93 50,77 30,92 37,69 18,54 41,51"
-    fill="#f5e642" stroke="#d4c200" stroke-width="1.5" stroke-linejoin="round"/>
-
-  <!-- Hat body with diagonal stripes -->
-  <polygon points="30,46 70,46 51,4" fill="url(#stripe)" clip-path="url(#hat-clip)"/>
-  <!-- Hat outline -->
-  <polygon points="30,46 70,46 51,4" fill="none" stroke="#5b21b6" stroke-width="1.2" stroke-linejoin="round"/>
-
-  <!-- Hat band (clean straight base, no fringe) -->
-  <rect x="28" y="41" width="44" height="9" rx="4.5" fill="#5b21b6"/>
-
-  <!-- Pom-pom -->
-  <circle cx="51" cy="3" r="5.5" fill="#c4b5fd"/>
-  <circle cx="51" cy="3" r="3.5" fill="#ede9fe"/>
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path d="M287.279 104.693C293.244 95.7686 306.756 95.7686 312.721 104.693L388.502 218.093C389.999 220.333 392.33 221.969 395.049 222.655L530.677 256.885C541.288 259.563 545.619 272.023 538.544 280.336L449.752 384.65C447.995 386.714 447.119 389.322 447.276 391.957L455.317 526.511C455.96 537.267 444.878 544.798 434.728 540.997L304.069 492.067C301.453 491.088 298.547 491.088 295.931 492.067L165.272 540.997C155.122 544.798 144.04 537.267 144.683 526.511L152.724 391.957C152.881 389.322 152.005 386.714 150.248 384.65L61.4561 280.336C54.3807 272.023 58.7123 259.563 69.3232 256.885L204.951 222.655C207.67 221.969 210.001 220.333 211.498 218.093L287.279 104.693Z" fill="#FFDA37" stroke="#C9B143" stroke-width="4"/>
+<path d="M300 44C301.169 44 302.217 44.6709 302.756 45.7373L390.038 216.636C391.057 218.632 389.607 221 387.366 221H212.634C210.392 221 208.943 218.632 209.962 216.636L297.244 45.7373C297.783 44.6709 298.831 44 300 44Z" fill="url(#pattern0_30_353)" stroke="#0E00CC" stroke-width="4"/>
+<ellipse cx="265" cy="294" rx="12" ry="14" fill="#1A1A1A"/>
+<ellipse cx="335" cy="294" rx="12" ry="14" fill="#1A1A1A"/>
+<circle cx="333" cy="285" r="4" fill="white"/>
+<circle cx="263" cy="285" r="4" fill="white"/>
+<path d="M291 310C291 310 292.8 316 300 316C307.2 316 309 310 309 310" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/>
+<defs>
+<pattern id="pattern0_30_353" patternUnits="userSpaceOnUse" patternTransform="matrix(300 0 0 300 211.403 45.7843)" preserveAspectRatio="none" viewBox="0 0 300 300" width="1" height="1">
+<g id="pattern0_30_353_inner">
+<g clip-path="url(#clip0_30_353)">
+<rect width="300" height="300" fill="#0E00CC"/>
+<rect x="-257.193" y="-139.914" width="20" height="1000" transform="rotate(-45 -257.193 -139.914)" fill="#1000F0"/>
+<rect x="-398.614" y="1.50757" width="20" height="1000" transform="rotate(-45 -398.614 1.50757)" fill="#1000F0"/>
+<rect x="-228.909" y="-168.198" width="20" height="1000" transform="rotate(-45 -228.909 -168.198)" fill="#1000F0"/>
+<rect x="-115.772" y="-281.335" width="20" height="1000" transform="rotate(-45 -115.772 -281.335)" fill="#1000F0"/>
+<rect x="-370.33" y="-26.7767" width="20" height="1000" transform="rotate(-45 -370.33 -26.7767)" fill="#1000F0"/>
+<rect x="-200.624" y="-196.482" width="20" height="1000" transform="rotate(-45 -200.624 -196.482)" fill="#1000F0"/>
+<rect x="-87.4874" y="-309.619" width="20" height="1000" transform="rotate(-45 -87.4874 -309.619)" fill="#1000F0"/>
+<rect x="-342.046" y="-55.0609" width="20" height="1000" transform="rotate(-45 -342.046 -55.0609)" fill="#1000F0"/>
+<rect x="-172.34" y="-224.767" width="20" height="1000" transform="rotate(-45 -172.34 -224.767)" fill="#1000F0"/>
+<rect x="-59.2031" y="-337.904" width="20" height="1000" transform="rotate(-45 -59.2031 -337.904)" fill="#1000F0"/>
+<rect x="-313.762" y="-83.3452" width="20" height="1000" transform="rotate(-45 -313.762 -83.3452)" fill="#1000F0"/>
+<rect x="-144.056" y="-253.051" width="20" height="1000" transform="rotate(-45 -144.056 -253.051)" fill="#1000F0"/>
+<rect x="-30.9189" y="-366.188" width="20" height="1000" transform="rotate(-45 -30.9189 -366.188)" fill="#1000F0"/>
+<rect x="-2.63459" y="-394.472" width="20" height="1000" transform="rotate(-45 -2.63459 -394.472)" fill="#1000F0"/>
+<rect x="-285.477" y="-111.63" width="20" height="1000" transform="rotate(-45 -285.477 -111.63)" fill="#1000F0"/>
+</g>
+</g>
+</pattern><clipPath id="clip0_30_353">
+<rect width="300" height="300" fill="white"/>
+</clipPath>
+</defs>
 </svg>
