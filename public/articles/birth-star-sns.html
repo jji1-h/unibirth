@@ -136,7 +136,7 @@
     }
     .nav-links a {
       padding: 5px 11px;
-      font-size: 13px; font-weight: 500;
+      font-size: clamp(11px, 1.8vw, 13px); font-weight: 500;
       color: rgba(255,255,255,0.55); text-decoration: none;
       border-radius: 6px; letter-spacing: 0.01em;
       transition: color 0.15s, background 0.15s;
@@ -211,6 +211,27 @@
     }
     .fl:hover { color: rgba(255,255,255,0.82); }
 </style>
+
+  <style>
+  @media (max-width: 767px) {
+    /* 헤더 nav 텍스트 크기 축소 */
+    .nav-links a { font-size: 12px !important; padding: 5px 8px !important; }
+    .nav-logo span { font-size: 13px !important; }
+    /* 풀 푸터 세로 스택 */
+    footer > div {
+      flex-direction: column !important;
+      padding: 32px 24px !important;
+      gap: 28px !important;
+    }
+    footer > div > div:first-child { flex: none !important; min-width: 0 !important; }
+    footer > div > div:last-child {
+      width: 100% !important;
+      margin-left: 0 !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 20px 12px !important;
+    }
+  }
+  </style>
 </head>
 <body>
 
@@ -499,7 +520,7 @@ The light that left this star on the year I was born reached Earth on my birthda
   <div style="max-width:1200px;margin:0 auto;padding:56px 24px;padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));display:flex;gap:48px;flex-wrap:wrap;">
 
     <!-- 좌측: 브랜드 -->
-    <div style="flex:0 0 200px;min-width:160px;">
+    <div style="flex:0 0 auto;min-width:0;max-width:200px;">
       <a href="/" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-bottom:14px;">
         <img src="/favicon.svg" alt="Unibirth" style="width:20px;height:20px;" />
         <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.01em;">Unibirth</span>
@@ -509,13 +530,13 @@ The light that left this star on the year I was born reached Earth on my birthda
     </div>
 
     <!-- 우측: 3컬럼 -->
-    <div style="margin-left:auto;display:grid;grid-template-columns:repeat(3,140px);gap:32px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;">
       <!-- Unibirth -->
       <div>
         <p style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;">Unibirth</p>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
           <li><a href="/find"      class="fl">탄생별 찾기</a></li>
-          <li><a href="/about"     class="fl">Unibirth 소개</a></li>
+          <li><a href="/"     class="fl">Unibirth 소개</a></li>
           <li><a href="/articles/" class="fl">아티클</a></li>
         </ul>
       </div>

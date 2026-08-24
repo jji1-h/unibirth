@@ -3,7 +3,7 @@ const RIGHT_COLUMNS = [
     heading: 'Unibirth',
     items: [
       { label: '탄생별 찾기',   href: '/find'      },
-      { label: 'Unibirth 소개', href: '/about'     },
+      { label: 'Unibirth 소개', href: '/'          },
       { label: '아티클',        href: '/articles/' },
     ],
   },
@@ -59,7 +59,16 @@ function ColHeading({ children }: { children: React.ReactNode }) {
   )
 }
 
+import { useState, useEffect } from 'react'
+
 export default function Footer() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+
   return (
     <footer style={{
       width:      '100%',
@@ -69,13 +78,13 @@ export default function Footer() {
     }}>
       {/* ── 메인 영역 ─────────────────────────────────── */}
       <div style={{
-        maxWidth: '1200px',
-        margin:   '0 auto',
-        padding:  '56px 24px',
+        maxWidth:      '1200px',
+        margin:        '0 auto',
+        padding:       isMobile ? '40px 24px' : '56px 24px',
         paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
-        display:  'flex',
-        gap:      '48px',
-        flexWrap: 'wrap',
+        display:       'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap:           isMobile ? '32px' : '48px',
       }}>
 
         {/* 좌측: 브랜드 */}
@@ -114,10 +123,10 @@ export default function Footer() {
 
         {/* 우측: 3컬럼 */}
         <div style={{
-          marginLeft:          'auto',
+          marginLeft:          isMobile ? 0 : 'auto',
           display:             'grid',
-          gridTemplateColumns: 'repeat(3, 140px)',
-          gap:                 '32px',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 140px)',
+          gap:                 isMobile ? '24px 16px' : '32px',
         }}>
           {RIGHT_COLUMNS.map(({ heading, items }) => (
             <div key={heading}>

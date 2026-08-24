@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="600" height="600">
+  <defs>
+    <pattern id="stripe" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="10" height="10" fill="#7c3aed"/>
+      <rect width="5" height="10" fill="#a78bfa"/>
+    </pattern>
+    <clipPath id="hat-clip">
+      <polygon points="30,46 70,46 51,4"/>
+    </clipPath>
+  </defs>
+
+  <!-- Yellow irregular star -->
+  <polygon
+    points="50,31 60,51 83,53 64,70 70,93 50,77 30,92 37,69 18,54 41,51"
+    fill="#f5e642" stroke="#d4c200" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Hat body with diagonal stripes -->
+  <polygon points="30,46 70,46 51,4" fill="url(#stripe)" clip-path="url(#hat-clip)"/>
+  <!-- Hat outline -->
+  <polygon points="30,46 70,46 51,4" fill="none" stroke="#5b21b6" stroke-width="1.2" stroke-linejoin="round"/>
+
+  <!-- Hat band (clean straight base, no fringe) -->
+  <rect x="28" y="41" width="44" height="9" rx="4.5" fill="#5b21b6"/>
+
+  <!-- Pom-pom -->
+  <circle cx="51" cy="3" r="5.5" fill="#c4b5fd"/>
+  <circle cx="51" cy="3" r="3.5" fill="#ede9fe"/>
+</svg>
