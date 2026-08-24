@@ -275,12 +275,13 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
 
 // ── 컴포넌트 ─────────────────────────────────────────
 export default function ResultScene({ result, onReset, birthdate }: Props) {
-  const [visible,       setVisible]       = useState(false)
-  const [modal,         setModal]         = useState<'mag' | 'spect' | null>(null)
-  const [expanded,      setExpanded]      = useState(false)
-  const [copied,        setCopied]        = useState(false)
-  // share menu 제거됨 (공유하기 버튼 직접 호출)
-  const [isClamped,     setIsClamped]     = useState(false)
+  const [visible,        setVisible]        = useState(false)
+  const [modal,          setModal]          = useState<'mag' | 'spect' | null>(null)
+  const [expanded,       setExpanded]       = useState(false)
+  const [copied,         setCopied]         = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
+  const [imgLoading,     setImgLoading]     = useState(false)
+  const [isClamped,      setIsClamped]      = useState(false)
   const textRef = useRef<HTMLParagraphElement>(null)
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
@@ -300,7 +301,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     return () => ro.disconnect()
   }, [result, expanded])
 
-  async function handleShareLink() {
+  function makeSharePayload() {
     const bdate = birthdate.replace(/\D/g, '')
     const base  = `${window.location.origin}${window.location.pathname}`
     const url   = bdate.length === 8 ? `${base}?bdate=${bdate}` : base
@@ -312,22 +313,30 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       : Math.round(Math.abs(result.gapDays ?? 0)) === 0
         ? '바로 오늘 지구에 도착합니다.'
         : `${gapText(result.gapDays ?? 0)} 후 지구에 도착합니다.`
-    const text  = result.type !== 'NO_STAR' && result.star
+    const text = result.type !== 'NO_STAR' && result.star
       ? `${dateLabel ? dateLabel + ', ' : ''}이 별에서 출발한 빛은\n${shareTail}\n\n당신의 별은 무엇인가요?`
       : `${dateLabel ? dateLabel + ', ' : ''}출발한 빛을 찾아보세요`
+    return { url, text }
+  }
 
+  async function handleShareLinkSNS() {
+    const { url, text } = makeSharePayload()
+    setShowShareModal(false)
     if (navigator.share) {
       try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
-    } else {
-      await navigator.clipboard.writeText(`${text}\n${url}`)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     }
   }
 
-  async function handleSave() {
-    if (!result.star) return
-    await document.fonts.ready   // 폰트 로드 완료 대기
+  async function handleCopyLink() {
+    const { url, text } = makeSharePayload()
+    await navigator.clipboard.writeText(`${text}\n${url}`)
+    setCopied(true)
+    setTimeout(() => { setCopied(false); setShowShareModal(false) }, 1500)
+  }
+
+  async function generateImageDataUrl(): Promise<string | null> {
+    if (!result.star) return null
+    await document.fonts.ready
 
     const IW = 1080, IH = 1920
     const out = document.createElement('canvas')
@@ -514,134 +523,59 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     ctx.lineWidth   = BAND
     ctx.strokeRect(BAND / 2, BAND / 2, IW - BAND, IH - BAND)
 
-    // ── 저장: Instagram WebView 감지 후 분기 ──
-    const dataUrl = out.toDataURL('image/png')
+    return out.toDataURL('image/png')
+  }
+
+  async function handleSaveImage() {
     const ua = navigator.userAgent
     const isInstagram = /Instagram/i.test(ua)
     const isKakao     = /KAKAOTALK/i.test(ua)
-    const isRestrictedInApp = isInstagram || isKakao
 
-    const overlay = document.createElement('div')
-    overlay.style.cssText = [
-      'position:fixed;inset:0;z-index:9999',
-      'background:rgba(0,0,0,0.90)',
-      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px',
-      'touch-action:manipulation;-webkit-tap-highlight-color:transparent',
-    ].join(';')
-
-    if (isRestrictedInApp) {
-      // Instagram / 카카오톡 인앱 브라우저: 이미지 저장 차단됨 → 외부 브라우저 안내
+    if (isInstagram || isKakao) {
       const appName = isKakao ? '카카오톡' : 'Instagram'
-      const icon = document.createElement('p')
-      icon.textContent = '🔒'
-      icon.style.cssText = 'font-size:36px;margin:0'
-
-      const title = document.createElement('p')
-      title.textContent = `${appName}에서는 이미지 저장이 제한돼요`
-      title.style.cssText = 'color:rgba(255,255,255,0.90);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
-
-      const desc = document.createElement('p')
-      desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'
-      desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
-
-      const closeBtn = document.createElement('button')
-      closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 18 18" fill="none"><line x1="2" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="2" x2="2" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/></svg>'
-      closeBtn.style.cssText = [
-        'position:absolute;top:20px;right:20px',
-        'width:40px;height:40px;border-radius:50%',
-        'background:none;border:none',
-        'display:flex;align-items:center;justify-content:center',
-        'cursor:pointer;touch-action:manipulation',
-      ].join(';')
-
+      const overlay = document.createElement('div')
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.90);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px'
+      const icon = document.createElement('p'); icon.textContent = '🔒'; icon.style.cssText = 'font-size:36px;margin:0'
+      const title = document.createElement('p'); title.textContent = `${appName}에서는 이미지 저장이 제한돼요`; title.style.cssText = 'color:rgba(255,255,255,0.90);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
+      const desc = document.createElement('p'); desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'; desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
+      const closeBtn = document.createElement('button'); closeBtn.innerHTML = '✕'; closeBtn.style.cssText = 'position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:none;border:none;color:rgba(255,255,255,0.55);font-size:18px;cursor:pointer'
       const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
       overlay.addEventListener('click', close)
-      closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
-      closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
-
-      overlay.appendChild(closeBtn)
-      overlay.appendChild(icon)
-      overlay.appendChild(title)
-      overlay.appendChild(desc)
-
-    } else {
-      // 일반 브라우저: 저장 버튼 + 이미지
-      const img = document.createElement('img')
-      img.src = dataUrl
-      img.alt = '탄생별 결과 이미지'
-      img.style.cssText = 'max-height:62vh;max-width:82vw;border-radius:8px;display:block;-webkit-touch-callout:default'
-      img.addEventListener('click', e => e.stopPropagation())
-
-      const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
-
-      // 버튼 행
-      const btnRow = document.createElement('div')
-      btnRow.style.cssText = 'display:flex;gap:10px;align-items:center'
-
-      const saveBtn = document.createElement('a')
-      saveBtn.href     = dataUrl
-      saveBtn.download = `unibirth-${starName}.png`
-      saveBtn.textContent = '저장하기'
-      saveBtn.style.cssText = [
-        'display:block;text-decoration:none;text-align:center',
-        'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:100px',
-        'color:rgba(255,255,255,0.80);font-size:14px;font-family:sans-serif',
-        'padding:12px 28px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
-      ].join(';')
-      saveBtn.addEventListener('click', e => e.stopPropagation())
-
-      // 이미지로 공유하기 (Web Share API Level 2)
-      const canShareFiles = typeof navigator.share === 'function' &&
-        typeof navigator.canShare === 'function'
-      if (canShareFiles) {
-        const shareBtn = document.createElement('button')
-        shareBtn.textContent = '공유하기'
-        shareBtn.style.cssText = [
-          'display:block;text-align:center',
-          'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:100px',
-          'color:rgba(255,255,255,0.80);font-size:14px;font-family:sans-serif',
-          'padding:12px 28px;cursor:pointer;touch-action:manipulation;letter-spacing:0.04em',
-        ].join(';')
-        shareBtn.addEventListener('click', async e => {
-          e.stopPropagation()
-          try {
-            const res  = await fetch(dataUrl)
-            const blob = await res.blob()
-            const file = new File([blob], `unibirth-${starName}.png`, { type: 'image/png' })
-            if (navigator.canShare({ files: [file] })) {
-              await navigator.share({ files: [file], title: '나의 탄생별' })
-            }
-          } catch (_err) { /* 사용자가 취소한 경우 등 무시 */ }
-        })
-        btnRow.appendChild(saveBtn)
-        btnRow.appendChild(shareBtn)
-      } else {
-        saveBtn.textContent = '이미지 저장하기'
-        saveBtn.style.padding = '12px 36px'
-        btnRow.appendChild(saveBtn)
-      }
-
-      const closeBtn = document.createElement('button')
-      closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 18 18" fill="none"><line x1="2" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="2" x2="2" y2="16" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/></svg>'
-      closeBtn.style.cssText = [
-        'position:absolute;top:20px;right:20px',
-        'width:40px;height:40px;border-radius:50%',
-        'background:none;border:none',
-        'display:flex;align-items:center;justify-content:center',
-        'cursor:pointer;touch-action:manipulation',
-      ].join(';')
-
-      const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
-      overlay.addEventListener('click', close)
-      closeBtn.addEventListener('click',    e => { e.stopPropagation(); close() })
-      closeBtn.addEventListener('touchend', e => { e.stopPropagation(); e.preventDefault(); close() })
-
-      overlay.appendChild(closeBtn)
-      overlay.appendChild(img)
-      overlay.appendChild(btnRow)
+      closeBtn.addEventListener('click', e => { e.stopPropagation(); close() })
+      overlay.appendChild(closeBtn); overlay.appendChild(icon); overlay.appendChild(title); overlay.appendChild(desc)
+      document.body.appendChild(overlay)
+      setShowShareModal(false)
+      return
     }
 
-    document.body.appendChild(overlay)
+    setImgLoading(true)
+    setShowShareModal(false)
+    try {
+      const dataUrl = await generateImageDataUrl()
+      if (!dataUrl) return
+      const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
+      const a = document.createElement('a')
+      a.href = dataUrl; a.download = `unibirth-${starName}.png`
+      document.body.appendChild(a); a.click(); document.body.removeChild(a)
+    } catch { }
+    finally { setImgLoading(false) }
+  }
+
+  async function handleShareImage() {
+    setImgLoading(true)
+    setShowShareModal(false)
+    try {
+      const dataUrl = await generateImageDataUrl()
+      if (!dataUrl) return
+      const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
+      const res  = await fetch(dataUrl)
+      const blob = await res.blob()
+      const file = new File([blob], `unibirth-${starName}.png`, { type: 'image/png' })
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: '나의 탄생별' })
+      }
+    } catch { }
+    finally { setImgLoading(false) }
   }
 
   if (result.type === 'NO_STAR') {
@@ -895,6 +829,67 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         </InfoModal>
       )}
 
+      {/* 공유 모달 */}
+      {showShareModal && (
+        <div
+          onClick={() => setShowShareModal(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 200,
+            background: 'rgba(0,0,0,0.60)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+            pointerEvents: 'auto',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: 'rgba(10,12,20,0.98)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: '20px 20px 0 0',
+              padding: `24px 24px calc(32px + env(safe-area-inset-bottom, 0px))`,
+              width: '100%',
+              maxWidth: '480px',
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            {/* 핸들 */}
+            <div style={{ width: '36px', height: '4px', background: 'rgba(255,255,255,0.15)', borderRadius: '2px', margin: '0 auto 20px' }} />
+            <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)', marginBottom: '20px', textAlign: 'center', letterSpacing: '0.01em' }}>공유하기</p>
+
+            {/* 링크 섹션 */}
+            <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)', marginBottom: '10px' }}>링크로 공유</p>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+              {navigator.share && (
+                <button onClick={handleShareLinkSNS} style={shareModalBtnStyle}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  SNS 공유
+                </button>
+              )}
+              <button onClick={handleCopyLink} style={shareModalBtnStyle}>
+                {copied ? '✓ 복사됨' : <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 링크 복사</>}
+              </button>
+            </div>
+
+            {/* 구분선 */}
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', marginBottom: '20px' }} />
+
+            {/* 이미지 섹션 */}
+            <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)', marginBottom: '10px' }}>이미지로 공유</p>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={handleSaveImage} style={shareModalBtnStyle} disabled={imgLoading}>
+                {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 이미지 저장</>}
+              </button>
+              {typeof navigator.share === 'function' && typeof navigator.canShare === 'function' && (
+                <button onClick={handleShareImage} style={shareModalBtnStyle} disabled={imgLoading}>
+                  {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> SNS 공유</>}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 좌측 상단 고정: 다시 탐색하기 */}
       <button
         onClick={onReset}
@@ -1036,21 +1031,20 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         </div>
 
         {/* 공유 버튼 - 하단 중앙 */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', pointerEvents: 'auto' }}>
-          {/* 공유하기 — navigator.share 직접 호출 */}
+        <div style={{ display: 'flex', justifyContent: 'center', pointerEvents: 'auto' }}>
           <button
-            onClick={handleShareLink}
+            onClick={() => setShowShareModal(true)}
             style={{
-              background: copied ? 'rgba(160,220,160,0.25)' : css,
+              background: css,
               border: 'none',
               borderRadius: '100px',
-              color: copied ? '#1a1a2e' : contrastColor(css),
+              color: contrastColor(css),
               fontSize: '13px',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 700,
               letterSpacing: '0.03em',
               cursor: 'pointer',
-              padding: '10px 24px',
+              padding: '10px 28px',
               transition: 'opacity 0.15s',
               display: 'flex',
               alignItems: 'center',
@@ -1063,38 +1057,32 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
               <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
             </svg>
-            {copied ? '✓ 복사됨' : '공유하기'}
-          </button>
-
-          {/* 이미지로 공유 — 아이콘 버튼 */}
-          <button
-            onClick={handleSave}
-            title="이미지로 공유"
-            style={{
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '100px',
-              color: 'rgba(255,255,255,0.65)',
-              cursor: 'pointer',
-              padding: '10px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              transition: 'opacity 0.15s',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.75' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
-              <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-              <polyline points="21,15 16,10 5,21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            결과 공유하기
           </button>
         </div>
 
       </div>
     </div>
   )
+}
+
+const shareModalBtnStyle: React.CSSProperties = {
+  display:        'inline-flex',
+  alignItems:     'center',
+  justifyContent: 'center',
+  gap:            '6px',
+  flex:           1,
+  padding:        '12px 16px',
+  background:     'rgba(255,255,255,0.06)',
+  border:         '1px solid rgba(255,255,255,0.12)',
+  borderRadius:   '10px',
+  color:          'rgba(255,255,255,0.75)',
+  fontSize:       '13px',
+  fontFamily:     "'Inter', sans-serif",
+  fontWeight:     500,
+  cursor:         'pointer',
+  letterSpacing:  '0.02em',
+  whiteSpace:     'nowrap',
 }
 
 const styles: Record<string, React.CSSProperties> = {
