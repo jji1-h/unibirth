@@ -28,7 +28,9 @@ export default defineConfig({
           let filePath: string | null = null
 
           if (url === '/find') {
-            filePath = join(process.cwd(), 'find.html')
+            // find.html은 Vite 엔트리 포인트 — raw 서빙 대신 URL 리라이트로 Vite가 처리하게 함
+            req.url = '/find.html'
+            return next()
           } else if (url === '/articles' || url === '/articles/') {
             filePath = join(publicDir, 'articles', 'index.html')
           } else if (url.startsWith('/articles/') && url.endsWith('.html')) {

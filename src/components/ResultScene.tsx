@@ -279,8 +279,8 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
   const [modal,          setModal]          = useState<'mag' | 'spect' | null>(null)
   const [expanded,       setExpanded]       = useState(false)
   const [copied,         setCopied]         = useState(false)
-  const [showShareModal, setShowShareModal] = useState(false)
-  const [imgLoading,     setImgLoading]     = useState(false)
+  const [shareStep,  setShareStep]  = useState<null | 'main' | 'link' | 'image'>(null)
+  const [imgLoading, setImgLoading] = useState(false)
   const [isClamped,      setIsClamped]      = useState(false)
   const textRef = useRef<HTMLParagraphElement>(null)
 
@@ -321,7 +321,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
   async function handleShareLinkSNS() {
     const { url, text } = makeSharePayload()
-    setShowShareModal(false)
+    setShareStep(null)
     if (navigator.share) {
       try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
     }
@@ -331,7 +331,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
     const { url, text } = makeSharePayload()
     await navigator.clipboard.writeText(`${text}\n${url}`)
     setCopied(true)
-    setTimeout(() => { setCopied(false); setShowShareModal(false) }, 1500)
+    setTimeout(() => { setCopied(false); setShareStep(null) }, 1500)
   }
 
   async function generateImageDataUrl(): Promise<string | null> {
@@ -544,12 +544,12 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       closeBtn.addEventListener('click', e => { e.stopPropagation(); close() })
       overlay.appendChild(closeBtn); overlay.appendChild(icon); overlay.appendChild(title); overlay.appendChild(desc)
       document.body.appendChild(overlay)
-      setShowShareModal(false)
+      setShareStep(null)
       return
     }
 
     setImgLoading(true)
-    setShowShareModal(false)
+    setShareStep(null)
     try {
       const dataUrl = await generateImageDataUrl()
       if (!dataUrl) return
@@ -563,7 +563,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
   async function handleShareImage() {
     setImgLoading(true)
-    setShowShareModal(false)
+    setShareStep(null)
     try {
       const dataUrl = await generateImageDataUrl()
       if (!dataUrl) return
@@ -829,10 +829,10 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         </InfoModal>
       )}
 
-      {/* 공유 모달 */}
-      {showShareModal && (
+      {/* 공유 모달 — 1단계 or 2단계 */}
+      {shareStep !== null && (
         <div
-          onClick={() => setShowShareModal(false)}
+          onClick={() => setShareStep(null)}
           style={{
             position: 'fixed', inset: 0, zIndex: 200,
             background: 'rgba(0,0,0,0.60)',
@@ -853,39 +853,56 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
               fontFamily: "'Inter', sans-serif",
             }}
           >
-            {/* 핸들 */}
             <div style={{ width: '36px', height: '4px', background: 'rgba(255,255,255,0.15)', borderRadius: '2px', margin: '0 auto 20px' }} />
-            <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)', marginBottom: '20px', textAlign: 'center', letterSpacing: '0.01em' }}>공유하기</p>
 
-            {/* 링크 섹션 */}
-            <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)', marginBottom: '10px' }}>링크로 공유</p>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-              {'share' in navigator && (
-                <button onClick={handleShareLinkSNS} style={shareModalBtnStyle}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                  SNS 공유
+            {shareStep === 'main' && (<>
+              <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)', marginBottom: '20px', textAlign: 'center' }}>결과 공유하기</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button onClick={() => setShareStep('link')} style={{ ...shareModalBtnStyle, padding: '16px', fontSize: '14px', justifyContent: 'flex-start', gap: '12px' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  링크로 공유
                 </button>
-              )}
-              <button onClick={handleCopyLink} style={shareModalBtnStyle}>
-                {copied ? '✓ 복사됨' : <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 링크 복사</>}
-              </button>
-            </div>
-
-            {/* 구분선 */}
-            <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', marginBottom: '20px' }} />
-
-            {/* 이미지 섹션 */}
-            <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)', marginBottom: '10px' }}>이미지로 공유</p>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {'canShare' in navigator && (
-                <button onClick={handleShareImage} style={shareModalBtnStyle} disabled={imgLoading}>
-                  {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> SNS 공유</>}
+                <button onClick={() => setShareStep('image')} style={{ ...shareModalBtnStyle, padding: '16px', fontSize: '14px', justifyContent: 'flex-start', gap: '12px' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21,15 16,10 5,21"/></svg>
+                  이미지로 공유
                 </button>
-              )}
-              <button onClick={handleSaveImage} style={shareModalBtnStyle} disabled={imgLoading}>
-                {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 이미지 저장</>}
-              </button>
-            </div>
+              </div>
+            </>)}
+
+            {shareStep === 'link' && (<>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                <button onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', padding: '0', fontSize: '20px', lineHeight: 1 }}>‹</button>
+                <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>링크로 공유</p>
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {'share' in navigator && (
+                  <button onClick={handleShareLinkSNS} style={shareModalBtnStyle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    SNS 공유
+                  </button>
+                )}
+                <button onClick={handleCopyLink} style={shareModalBtnStyle}>
+                  {copied ? '✓ 복사됨' : <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 링크 복사</>}
+                </button>
+              </div>
+            </>)}
+
+            {shareStep === 'image' && (<>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                <button onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', padding: '0', fontSize: '20px', lineHeight: 1 }}>‹</button>
+                <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>이미지로 공유</p>
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {'canShare' in navigator && (
+                  <button onClick={handleShareImage} style={shareModalBtnStyle} disabled={imgLoading}>
+                    {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> SNS 공유</>}
+                  </button>
+                )}
+                <button onClick={handleSaveImage} style={shareModalBtnStyle} disabled={imgLoading}>
+                  {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 다운로드</>}
+                </button>
+              </div>
+            </>)}
           </div>
         </div>
       )}
@@ -1033,7 +1050,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         {/* 공유 버튼 - 하단 중앙 */}
         <div style={{ display: 'flex', justifyContent: 'center', pointerEvents: 'auto' }}>
           <button
-            onClick={() => setShowShareModal(true)}
+            onClick={() => setShareStep('main')}
             style={{
               background: css,
               border: 'none',
