@@ -877,14 +877,14 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
             {/* 이미지 섹션 */}
             <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)', marginBottom: '10px' }}>이미지로 공유</p>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <button onClick={handleSaveImage} style={shareModalBtnStyle} disabled={imgLoading}>
-                {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 이미지 저장</>}
-              </button>
               {'canShare' in navigator && (
                 <button onClick={handleShareImage} style={shareModalBtnStyle} disabled={imgLoading}>
                   {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> SNS 공유</>}
                 </button>
               )}
+              <button onClick={handleSaveImage} style={shareModalBtnStyle} disabled={imgLoading}>
+                {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 이미지 저장</>}
+              </button>
             </div>
           </div>
         </div>
