@@ -2,6 +2,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
+import { saveBase64Data, Share } from '@apps-in-toss/web-framework'
+
+const isTossWebView = () => typeof window !== 'undefined' && 'ReactNativeWebView' in window
 
 interface Props {
   result:    MatchResult
@@ -322,9 +325,13 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
   async function handleShareLinkSNS() {
     const { url, text } = makeSharePayload()
     setShareStep(null)
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Unibirth', text, url }) } catch { /* 취소 */ }
-    }
+    try {
+      if (isTossWebView()) {
+        await Share.sendMessage({ message: `${text}\n${url}` })
+      } else if (navigator.share) {
+        await navigator.share({ title: 'Unibirth', text, url })
+      }
+    } catch { /* 취소 */ }
   }
 
   async function handleCopyLink() {
@@ -554,9 +561,14 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       const dataUrl = await generateImageDataUrl()
       if (!dataUrl) return
       const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
-      const a = document.createElement('a')
-      a.href = dataUrl; a.download = `unibirth-${starName}.png`
-      document.body.appendChild(a); a.click(); document.body.removeChild(a)
+      const fileName = `unibirth-${starName}.png`
+      if (isTossWebView() && saveBase64Data.isSupported()) {
+        await saveBase64Data({ data: dataUrl.split(',')[1], fileName, mimeType: 'image/png' })
+      } else {
+        const a = document.createElement('a')
+        a.href = dataUrl; a.download = fileName
+        document.body.appendChild(a); a.click(); document.body.removeChild(a)
+      }
     } catch { }
     finally { setImgLoading(false) }
   }
@@ -568,11 +580,16 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       const dataUrl = await generateImageDataUrl()
       if (!dataUrl) return
       const starName = result.star ? starDisplayName(result.star).replace(/\s+/g, '-') : 'star'
-      const res  = await fetch(dataUrl)
-      const blob = await res.blob()
-      const file = new File([blob], `unibirth-${starName}.png`, { type: 'image/png' })
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: '나의 탄생별' })
+      const fileName = `unibirth-${starName}.png`
+      if (isTossWebView() && saveBase64Data.isSupported()) {
+        await saveBase64Data({ data: dataUrl.split(',')[1], fileName, mimeType: 'image/png' })
+      } else {
+        const res  = await fetch(dataUrl)
+        const blob = await res.blob()
+        const file = new File([blob], fileName, { type: 'image/png' })
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({ files: [file], title: '나의 탄생별' })
+        }
       }
     } catch { }
     finally { setImgLoading(false) }
@@ -875,7 +892,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                 <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>링크로 공유</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {'share' in navigator && (
+                {(isTossWebView() || 'share' in navigator) && (
                   <button onClick={handleShareLinkSNS} style={shareModalBtnStyle}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                     SNS 공유
@@ -893,7 +910,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                 <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>이미지로 공유</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {'canShare' in navigator && (
+                {((isTossWebView() && saveBase64Data.isSupported()) || 'canShare' in navigator) && (
                   <button onClick={handleShareImage} style={shareModalBtnStyle} disabled={imgLoading}>
                     {imgLoading ? '생성 중...' : <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> SNS 공유</>}
                   </button>

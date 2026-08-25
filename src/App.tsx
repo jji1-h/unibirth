@@ -96,8 +96,8 @@ export default function App() {
   // /articles 경로 → 정적 HTML로 리다이렉트 (.html 없는 경로만)
   if (pathname.startsWith('/articles') && !pathname.endsWith('.html')) {
     const target = (pathname === '/articles' || pathname === '/articles/')
-      ? '/articles/index.html'
-      : pathname + '.html'
+      ? '/articles/index.html' + window.location.search
+      : pathname + '.html' + window.location.search
     window.location.replace(target)
     return null
   }
