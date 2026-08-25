@@ -1,0 +1,90 @@
+.site-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 10;
+  height: 52px;
+  transition: opacity 0.35s ease;
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: none;
+  line-height: normal;
+}
+
+.site-header--fixed {
+  position: fixed;
+  background: rgba(7,9,15,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.site-header--sticky {
+  position: sticky;
+  top: 0;
+  background: rgba(7,9,15,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.hdr-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.hdr-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.hdr-logo img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.hdr-logo-name {
+  font-size: clamp(13px, 2vw, 14px);
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.01em;
+  font-family: 'Inter', sans-serif;
+}
+
+.hdr-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.hdr-link {
+  padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 12px);
+  font-size: clamp(11px, 1.8vw, 13px);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.hdr-link:hover {
+  color: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.07);
+}
+
+.hdr-link--active {
+  color: rgba(196,181,253,0.92);
+}
+
+.hdr-link--active:hover {
+  color: rgba(196,181,253,0.92);
+}

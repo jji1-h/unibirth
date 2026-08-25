@@ -98,6 +98,8 @@
   }
   </script>
 
+  <link rel="stylesheet" href="/header.css" />
+  <link rel="stylesheet" href="/footer.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -111,44 +113,14 @@
     }
 
             /* ── 네비 ── */
-    .nav {
-      position: sticky; top: 0; z-index: 10;
-      background: rgba(7,9,15,0.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-            height: 52px;
-    }
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      height: 100%;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-sizing: border-box;
-    }
-    .nav-logo {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 14px; font-weight: 600;
-      color: rgba(255,255,255,0.85); text-decoration: none;
-    }
-    .nav-logo img { width: 20px; height: 20px; display: block; }
-    .nav-links {
-      display: flex; align-items: center; gap: 2px;
-    }
-    .nav-links a {
-      padding: 5px 11px;
-      font-size: clamp(11px, 1.8vw, 13px); font-weight: 500;
-      color: rgba(255,255,255,0.55); text-decoration: none;
-      border-radius: 6px; letter-spacing: 0.01em;
-      transition: color 0.15s, background 0.15s;
-      white-space: nowrap;
-    }
-    .nav-links a:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.07); }
-    .nav-links a.active { color: rgba(196,181,253,0.92); }
 
-    /* ── 히어로 SVG ── */
+
+
+
+
+
+
+/* ── 히어로 SVG ── */
     .hero {
       width: 100%; height: 300px;
       background: #07090f;
@@ -390,31 +362,29 @@
     }
     @media(max-width:767px){
     }
-    .ft-link{font-size:13px;font-weight:300;font-family:'Inter',sans-serif;color:rgba(255,255,255,0.45);text-decoration:none;line-height:1.5;transition:color 0.15s;}
-    .ft-link:hover{color:rgba(255,255,255,0.82);}
-    .ft-inner{display:flex;flex-direction:row;gap:48px;}
-    @media(max-width:767px){
-      .ft-inner{flex-direction:column!important;gap:32px!important;}
-      .ft-brand{flex:none!important;min-width:0!important;}
-      .ft-nav{margin-left:0!important;grid-template-columns:repeat(2,1fr)!important;gap:24px 16px!important;}
-    }
+
+
+@media(max-width:767px){
+
+
+}
   </style>
 </head>
 <body>
 
-  <nav class="nav">
-  <div class="nav-inner">
-  <a href="/" class="nav-logo">
-    <img src="/favicon.svg" alt="Unibirth" />
-    <span>Unibirth</span>
-  </a>
-  <div class="nav-links">
-    <a href="/find">탄생별 찾기</a>
-    <a href="/">소개</a>
-    <a href="/articles/" class="active">아티클</a>
+  <header class="site-header site-header--sticky">
+  <div class="hdr-inner">
+    <a href="/" class="hdr-logo">
+      <img src="/favicon.svg" alt="Unibirth" />
+      <span class="hdr-logo-name">Unibirth</span>
+    </a>
+    <nav class="hdr-nav">
+      <a href="/find" class="hdr-link">탄생별 찾기</a>
+      <a href="/" class="hdr-link">소개</a>
+      <a href="/articles/" class="hdr-link hdr-link--active">아티클</a>
+    </nav>
   </div>
-  </div>
-</nav>
+</header>
 <!-- 히어로 SVG 일러스트 -->
   <div class="hero">
     <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
@@ -702,36 +672,36 @@
     </div>
 
 </article>
-<footer style="width:100%;background:rgba(255,255,255,0.018);border-top:1px solid rgba(255,255,255,0.07);font-family:'Inter',sans-serif;">
-  <div class="ft-inner" style="max-width:1200px;margin:0 auto;padding:56px 24px;padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:row;gap:48px;">
-    <div class="ft-brand" style="flex:0 0 200px;min-width:160px;">
-      <a href="/" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-bottom:14px;">
-        <img src="/favicon.svg" alt="Unibirth" style="width:20px;height:20px;" />
-        <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.01em;line-height:normal;">Unibirth</span>
+<footer class="site-footer">
+  <div class="ft-inner">
+    <div class="ft-brand">
+      <a href="/" class="ft-brand-logo">
+        <img src="/favicon.svg" alt="Unibirth" />
+        <span class="ft-brand-name">Unibirth</span>
       </a>
-      <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.7;font-weight:300;">생년월일로 찾는<br>나만의 탄생별</p>
-      <p style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.18);letter-spacing:0.03em;line-height:normal;font-weight:300;">© 2026 Unibirth</p>
+      <p class="ft-brand-tagline">생년월일로 찾는<br>나만의 탄생별</p>
+      <p class="ft-brand-copy">© 2026 Unibirth</p>
     </div>
-    <div class="ft-nav" style="margin-left:auto;display:grid;grid-template-columns:repeat(3,140px);gap:32px;">
+    <div class="ft-nav">
       <div>
-        <p style="font-size:10px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;line-height:normal;">Unibirth</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+        <p class="ft-heading">Unibirth</p>
+        <ul class="ft-list">
           <li><a href="/find" class="ft-link">탄생별 찾기</a></li>
           <li><a href="/" class="ft-link">Unibirth 소개</a></li>
           <li><a href="/articles/" class="ft-link">아티클</a></li>
         </ul>
       </div>
       <div>
-        <p style="font-size:10px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;line-height:normal;">읽을거리</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+        <p class="ft-heading">읽을거리</p>
+        <ul class="ft-list">
           <li><a href="/articles/?category=tips" class="ft-link">Unibirth 사용팁</a></li>
           <li><a href="/articles/?category=science" class="ft-link">우주 과학</a></li>
           <li><a href="/articles/?category=story" class="ft-link">별별 이야기</a></li>
         </ul>
       </div>
       <div>
-        <p style="font-size:10px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:14px;line-height:normal;">서비스</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+        <p class="ft-heading">서비스</p>
+        <ul class="ft-list">
           <li><a href="/terms" class="ft-link">서비스 이용약관</a></li>
           <li><a href="/privacy" class="ft-link">개인정보처리방침</a></li>
           <li><a href="/contact" class="ft-link">문의하기</a></li>

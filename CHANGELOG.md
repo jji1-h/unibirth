@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3] - 2026-08-25
+
+### fix: 헤더/푸터 CSS 통일 및 아티클 필터 쿼리 파라미터 유지
+
+- `public/header.css`, `public/footer.css` — 헤더/푸터 CSS를 단일 파일로 분리
+- `Header.tsx`, `Footer.tsx` — inline style 제거, className 기반으로 리팩토링
+- 아티클 HTML 10개 모두 동일한 CSS 참조 (`<link href="/header.css">`, `<link href="/footer.css">`)
+- `line-height` 상속 문제 수정 → 소개/전체아티클/개별아티클 헤더·푸터 디자인 통일
+- 아티클 필터 쿼리 파라미터 유지 (`App.tsx` 리다이렉트에 `window.location.search` 추가)
+
+---
+
 ## [0.1.2] - 2026-08-25
 
 ### fix: 토스 웹뷰 공유/이미지 저장 연동

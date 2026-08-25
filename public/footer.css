@@ -1,0 +1,119 @@
+.site-footer {
+  width: 100%;
+  background: rgba(255,255,255,0.018);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+.ft-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 24px;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+}
+
+.ft-brand {
+  flex: 0 0 200px;
+  min-width: 160px;
+}
+
+.ft-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 14px;
+}
+
+.ft-brand-logo img {
+  width: 20px;
+  height: 20px;
+}
+
+.ft-brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.01em;
+  line-height: normal;
+}
+
+.ft-brand-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.ft-brand-copy {
+  margin-top: 14px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.03em;
+  line-height: normal;
+  font-weight: 300;
+}
+
+.ft-nav {
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 140px);
+  gap: 32px;
+}
+
+.ft-heading {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.30);
+  margin-bottom: 14px;
+  line-height: normal;
+}
+
+.ft-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ft-link {
+  font-size: 13px;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color 0.15s;
+  display: block;
+}
+
+.ft-link:hover {
+  color: rgba(255,255,255,0.82);
+}
+
+@media (max-width: 767px) {
+  .ft-inner {
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 24px;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+  .ft-brand {
+    flex: none;
+    min-width: 0;
+  }
+  .ft-nav {
+    margin-left: 0;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+  }
+}
