@@ -278,9 +278,9 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
         right: 0,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'stretch',
       }}>
-        <div style={{ textAlign: 'center', maxWidth: '360px', width: '100%', padding: '0 32px 28px' }}>
+        <div style={{ textAlign: 'center', padding: '0 32px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
           {/* 별 이름 */}
           <h1 style={{
