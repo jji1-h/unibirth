@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
-import { saveBase64Data, Share } from '@apps-in-toss/web-framework'
+import { saveBase64Data, share, getTossShareLink } from '@apps-in-toss/web-framework'
 
 const isTossWebView = () => typeof window !== 'undefined' && 'ReactNativeWebView' in window
 
@@ -323,12 +323,18 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
   }
 
   async function handleShareLinkSNS() {
-    const { url, text } = makeSharePayload()
     setShareStep(null)
     try {
       if (isTossWebView()) {
-        await Share.sendMessage({ message: `${text}\n${url}` })
+        const { text } = makeSharePayload()
+        const bdate = birthdate.replace(/\D/g, '')
+        const deepLink = bdate.length === 8
+          ? `intoss://unibirth?bdate=${bdate}`
+          : 'intoss://unibirth'
+        const tossLink = await getTossShareLink(deepLink, 'https://unibirths.com/og.png')
+        await share({ message: `${text}\n${tossLink}` })
       } else if (navigator.share) {
+        const { url, text } = makeSharePayload()
         await navigator.share({ title: 'Unibirth', text, url })
       }
     } catch { /* 취소 */ }

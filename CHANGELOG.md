@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.4] - 2026-08-27
+
+### fix: 토스 링크 공유 딥링크로 전환
+
+- `ResultScene.tsx` — `Share.sendMessage`(외부 URL) → `getTossShareLink` + `share` API로 교체
+- 공유 링크가 `https://unibirths.com` 대신 `intoss://unibirth?bdate=YYYYMMDD` 딥링크로 생성됨
+- 토스 앱에서 공유 링크 클릭 시 미니앱 내에서 바로 열림 (외부 웹뷰 로드 오류 해결)
+- OG 이미지 URL `https://unibirths.com/og.png` 포함 (1200×600)
+
+---
+
 ## [0.1.3] - 2026-08-25
 
 ### fix: 헤더/푸터 CSS 통일 및 아티클 필터 쿼리 파라미터 유지
