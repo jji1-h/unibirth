@@ -270,20 +270,17 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
       {/* 풀스크린 Three.js 캔버스 */}
       <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0 }} />
 
-      {/* 텍스트 — 화면 하단 40% 영역에 고정, 별 그래픽과 겹치지 않음 */}
+      {/* 텍스트 + 푸터 — 하단에 순서대로 배치 (겹침 없음) */}
       <div style={{
         position: 'absolute',
-        top: '58%',
-        bottom: '60px',
+        bottom: 0,
         left: 0,
         right: 0,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '0 32px',
       }}>
-        <div style={{ textAlign: 'center', maxWidth: '360px', width: '100%' }}>
+        <div style={{ textAlign: 'center', maxWidth: '360px', width: '100%', padding: '0 32px 28px' }}>
 
           {/* 별 이름 */}
           <h1 style={{
@@ -350,10 +347,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
             </svg>
           </button>
         </div>
-      </div>
 
-      {/* 푸터 */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, pointerEvents: 'none' }}>
         <ShortFooter />
       </div>
     </div>
