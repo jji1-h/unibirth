@@ -343,7 +343,9 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
           </button>
         </div>
 
-        <ShortFooter />
+        <div style={{ marginTop: '60px' }}>
+          <ShortFooter />
+        </div>
       </div>
     </div>
   )
