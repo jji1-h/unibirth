@@ -265,17 +265,17 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
   }, [])
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#07090f', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'fixed', inset: 0, background: '#07090f', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
 
-      {/* 풀스크린 Three.js 캔버스 */}
-      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0 }} />
+      {/* 풀스크린 Three.js 캔버스 (스크롤해도 고정) */}
+      <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0 }} />
 
       {/* 상단 공간 (별이 여기 그려짐) */}
-      <div style={{ flex: 1 }} />
+      <div style={{ flex: 1, minHeight: '60vh' }} />
 
-      {/* 텍스트 + 푸터 — flex flow로 겹침 없이 배치 */}
+      {/* 텍스트 + 푸터 */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', padding: '0 32px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ textAlign: 'center', padding: '48px 32px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
           {/* 별 이름 */}
           <h1 style={{
@@ -343,7 +343,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
           </button>
         </div>
 
-        <div style={{ marginTop: '60px' }}>
+        <div style={{ marginTop: '160px' }}>
           <ShortFooter />
         </div>
       </div>

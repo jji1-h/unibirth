@@ -8,8 +8,8 @@ export default function ShortFooter() {
       <div style={{
         maxWidth:      '1200px',
         margin:        '0 auto',
-        padding:       '16px 24px',
-        paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+        padding:       '12px 24px',
+        paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))',
         display:       'flex',
         alignItems:    'center',
         justifyContent:'space-between',
