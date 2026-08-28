@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
 import { saveBase64Data, share, getTossShareLink } from '@apps-in-toss/web-framework'
+import TossBanner from './TossBanner'
 
 const isTossWebView = () => typeof window !== 'undefined' && 'ReactNativeWebView' in window
 
@@ -1100,6 +1101,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
             결과 공유하기
           </button>
         </div>
+
+        {/* 배너 광고 — 버튼 아래 배치 (의도치 않은 클릭 방지) */}
+        <TossBanner />
 
       </div>
     </div>

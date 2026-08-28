@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
 import ShortFooter from './ShortFooter'
+import TossBanner from './TossBanner'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
 import { makeGlowTex, makeCircleTex } from '../lib/textures'
 
@@ -265,17 +266,14 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
   }, [])
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#07090f', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+    <div style={{ background: '#07090f', minHeight: '100dvh', position: 'relative' }}>
 
-      {/* 풀스크린 Three.js 캔버스 (스크롤해도 고정) */}
-      <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0 }} />
+      {/* Three.js 캔버스 — 스크롤 시 별도 함께 이동 */}
+      <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh' }} />
 
-      {/* 상단 공간 (별이 여기 그려짐) */}
-      <div style={{ flex: 1, minHeight: '60vh' }} />
-
-      {/* 텍스트 + 푸터 */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', padding: '48px 32px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {/* 텍스트 + 푸터 — canvas 아래로 paddingTop으로 밀어냄 */}
+      <div style={{ position: 'relative', zIndex: 1, paddingTop: '62vh' }}>
+        <div style={{ textAlign: 'center', padding: '0 32px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
           {/* 별 이름 */}
           <h1 style={{
@@ -344,6 +342,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
         </div>
 
         <div style={{ marginTop: '160px' }}>
+          <TossBanner />
           <ShortFooter />
         </div>
       </div>

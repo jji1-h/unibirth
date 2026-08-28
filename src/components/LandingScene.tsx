@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import ShortFooter from './ShortFooter'
+import TossBanner from './TossBanner'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { validateBirthdate } from '../lib'
@@ -293,7 +294,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         </div>
       </div>
 
-      {/* 푸터 */}
+      {/* 배너 + 푸터 */}
       <div style={{
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
@@ -302,6 +303,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         pointerEvents: showUI ? 'auto' : 'none',
         transition:    'opacity 0.35s ease',
       }}>
+        <TossBanner />
         <ShortFooter />
       </div>
     </div>

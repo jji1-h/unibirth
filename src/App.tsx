@@ -8,6 +8,7 @@ import { validateBirthdate, calcAgeFromString, findNearestStar } from './lib'
 import type { MatchResult } from './lib'
 import starsData from './data/stars.json'
 import type { Star } from './lib'
+import { TossAds } from '@apps-in-toss/web-framework'
 import './index.css'
 
 type Stage = 'landing' | 'transit' | 'result' | 'shared'
@@ -16,6 +17,18 @@ const stars = starsData as Star[]
 
 export default function App() {
   const [stage,        setStage]        = useState<Stage>('landing')
+
+  // TossAds 초기화 (앱 최상위에서 한 번만)
+  useEffect(() => {
+    if (TossAds.initialize.isSupported()) {
+      TossAds.initialize({
+        callbacks: {
+          onInitialized: () => console.log('[TossAds] initialized'),
+          onInitializationFailed: (e) => console.error('[TossAds] init failed', e),
+        },
+      })
+    }
+  }, [])
   const [input,        setInput]        = useState('')
   const [result,       setResult]       = useState<MatchResult | null>(null)
   const [leaving,      setLeaving]      = useState(false)
