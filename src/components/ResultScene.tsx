@@ -1,9 +1,9 @@
+import { useModalFocus } from './useModalFocus'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
 import type { MatchResult, Star } from '../lib'
 import { STAR_VERT, STAR_FRAG, CHROMO_VERT, CHROMO_FRAG } from '../lib/starShaders'
 import { saveBase64Data, share, getTossShareLink } from '@apps-in-toss/web-framework'
-import TossBanner from './TossBanner'
 
 const isTossWebView = () => typeof window !== 'undefined' && 'ReactNativeWebView' in window
 
@@ -240,7 +240,10 @@ const INFO_SPECT = {
 }
 
 // ── 인포 모달 컴포넌트 ────────────────────────────────
-function InfoModal({ onClose, children }: { onClose: () => void; children: ReactNode }) {
+function InfoModal({ label, onClose, children }: { label: string; onClose: () => void; children: ReactNode }) {
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useModalFocus(dialogRef, true, onClose)
+
   return (
     <div
       onClick={onClose}
@@ -252,6 +255,11 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
       }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={label}
+        tabIndex={-1}
         onClick={e => e.stopPropagation()}
         style={{
           background: 'rgba(7,9,15,0.97)',
@@ -265,10 +273,11 @@ function InfoModal({ onClose, children }: { onClose: () => void; children: React
       >
         {children}
         <button
+          aria-label="닫기"
           onClick={onClose}
           style={{
-            position: 'absolute', top: '14px', right: '16px',
-            background: 'none', border: 'none', color: 'rgba(255,255,255,0.40)',
+            position: 'absolute', top: '8px', right: '8px', width: '32px', height: '32px',
+            background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)',
             fontSize: '18px', cursor: 'pointer', lineHeight: 1,
           }}
         >×</button>
@@ -287,6 +296,14 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
   const [imgLoading, setImgLoading] = useState(false)
   const [isClamped,      setIsClamped]      = useState(false)
   const textRef = useRef<HTMLParagraphElement>(null)
+  const shareRef = useRef<HTMLDivElement>(null)
+  const resultRef = useRef<HTMLParagraphElement>(null)
+  useModalFocus(shareRef, shareStep !== null, () => setShareStep(null))
+
+  // 결과가 나타나면 스크린리더가 바로 읽도록 포커스를 옮긴다
+  useEffect(() => {
+    if (visible) resultRef.current?.focus({ preventScroll: true })
+  }, [visible])
 
   // 마운트 직후 짧은 딜레이 후 카드 등장 (TransitScene 줌인이 막 완료된 시점)
   useEffect(() => {
@@ -551,7 +568,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.90);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px'
       const icon = document.createElement('p'); icon.textContent = '🔒'; icon.style.cssText = 'font-size:36px;margin:0'
       const title = document.createElement('p'); title.textContent = `${appName}에서는 이미지 저장이 제한돼요`; title.style.cssText = 'color:rgba(255,255,255,0.90);font-size:15px;font-family:sans-serif;margin:0;font-weight:500;text-align:center;padding:0 32px'
-      const desc = document.createElement('p'); desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'; desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:13px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
+      const desc = document.createElement('p'); desc.innerHTML = '앱 내 메뉴에서<br><strong>기본 브라우저로 열기</strong>를 선택하면<br>이미지를 저장할 수 있어요'; desc.style.cssText = 'color:rgba(255,255,255,0.55);font-size:14px;font-family:sans-serif;margin:0;line-height:1.8;text-align:center'
       const closeBtn = document.createElement('button'); closeBtn.innerHTML = '✕'; closeBtn.style.cssText = 'position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:none;border:none;color:rgba(255,255,255,0.55);font-size:18px;cursor:pointer'
       const close = () => { if (document.body.contains(overlay)) document.body.removeChild(overlay) }
       overlay.addEventListener('click', close)
@@ -659,15 +676,15 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           user-select: none;
         }
         .chip-label {
-          font-size: 10px;
-          letter-spacing: 0.12em;
+          font-size: 14px;
+          letter-spacing: 0.02em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.6);
           font-family: 'Inter', sans-serif;
           font-weight: 400;
         }
         .chip-value {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 600;
           font-family: 'Inter', sans-serif;
           letter-spacing: 0.01em;
@@ -676,13 +693,13 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 15px;
-          height: 15px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           border: 1px solid rgba(255,255,255,0.20);
           background: none;
-          color: rgba(255,255,255,0.40);
-          font-size: 9px;
+          color: rgba(255,255,255,0.6);
+          font-size: 12px;
           font-family: 'Inter', sans-serif;
           font-weight: 600;
           cursor: pointer;
@@ -696,7 +713,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           color: rgba(255,255,255,0.75);
         }
         .modal-body {
-          font-size: 13px;
+          font-size: 14px;
           color: rgba(255,255,255,0.55);
           line-height: 1.75;
           font-family: 'Inter', sans-serif;
@@ -712,11 +729,11 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 12px;
+          font-size: 14px;
           font-family: 'Inter', sans-serif;
         }
         .modal-table-label {
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.6);
         }
         .modal-table-value {
           color: rgba(255,255,255,0.75);
@@ -730,21 +747,21 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           gap: 8px;
         }
         .modal-row-label {
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 600;
           color: rgba(255,255,255,0.75);
           font-family: 'Inter', sans-serif;
           min-width: 72px;
         }
         .modal-row-value {
-          font-size: 12px;
+          font-size: 14px;
           color: rgba(255,255,255,0.55);
           font-family: 'Inter', sans-serif;
         }
         .modal-note {
           margin-top: 14px;
-          font-size: 11px;
-          color: rgba(255,255,255,0.25);
+          font-size: 14px;
+          color: rgba(255,255,255,0.6);
           font-family: 'Inter', sans-serif;
           line-height: 1.6;
         }
@@ -777,7 +794,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           background: none;
           border: none;
           color: rgba(255,255,255,0.70);
-          font-size: 13px;
+          font-size: 14px;
           font-family: 'Inter', sans-serif;
           cursor: pointer;
           text-align: left;
@@ -805,9 +822,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           display: inline;
           background: none;
           border: none;
-          padding: 0;
+          padding: 4px 0;
           color: var(--text-dim);
-          font-size: 12px;
+          font-size: 14px;
           font-family: 'Inter', sans-serif;
           font-weight: 400;
           line-height: 1.8;
@@ -826,7 +843,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
       {/* 인포 모달 */}
       {modal === 'mag' && (
-        <InfoModal onClose={() => setModal(null)}>
+        <InfoModal label="겉보기 등급 설명" onClose={() => setModal(null)}>
           <p className="modal-body">{INFO_MAG.body}</p>
           <div className="modal-table">
             {INFO_MAG.table.map(r => (
@@ -839,7 +856,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         </InfoModal>
       )}
       {modal === 'spect' && (
-        <InfoModal onClose={() => setModal(null)}>
+        <InfoModal label="분광형 설명" onClose={() => setModal(null)}>
           <p className="modal-body">{INFO_SPECT.body}</p>
           <div className="modal-rows">
             {INFO_SPECT.rows.map(r => (
@@ -866,6 +883,11 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
           }}
         >
           <div
+            ref={shareRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="결과 공유하기"
+            tabIndex={-1}
             onClick={e => e.stopPropagation()}
             style={{
               background: 'rgba(10,12,20,0.98)',
@@ -895,7 +917,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
             {shareStep === 'link' && (<>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-                <button onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', padding: '0', fontSize: '20px', lineHeight: 1 }}>‹</button>
+                <button aria-label="뒤로" onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: '4px 8px 4px 0', fontSize: '20px', lineHeight: 1 }}>‹</button>
                 <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>링크로 공유</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -913,7 +935,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
 
             {shareStep === 'image' && (<>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-                <button onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', padding: '0', fontSize: '20px', lineHeight: 1 }}>‹</button>
+                <button aria-label="뒤로" onClick={() => setShareStep('main')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: '4px 8px 4px 0', fontSize: '20px', lineHeight: 1 }}>‹</button>
                 <p style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255,255,255,0.88)' }}>이미지로 공유</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -949,19 +971,6 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         ← 다시 탐색하기
       </button>
 
-      {/* 광고 배너 — 헤더와 동일한 위치(52px) */}
-      <div style={{
-        position: 'absolute',
-        top: '52px',
-        left: 0, right: 0,
-        zIndex: 2,
-        pointerEvents: 'auto',
-        opacity: visible ? 1 : 0,
-        transition: 'opacity 0.9s ease',
-      }}>
-        <TossBanner />
-      </div>
-
       {/* 별 정보 카드 */}
       <div style={{
         ...styles.card,
@@ -974,11 +983,12 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
       }}>
 
         {/* 발견 문장 */}
-        <p style={{
-          fontSize: '13px',
+        <p ref={resultRef} tabIndex={-1} style={{
+          outline: 'none',
+          fontSize: '14px',
           fontFamily: "'Inter', sans-serif",
-          fontWeight: 300,
-          color: 'rgba(255,255,255,0.50)',
+          fontWeight: 400,
+          color: 'rgba(255,255,255,0.6)',
           margin: 0,
           lineHeight: 1.6,
         }}>
@@ -1013,7 +1023,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                 style={{
                   fontSize: '16px',
                   fontFamily: "'Inter', sans-serif",
-                  fontWeight: 300,
+                  fontWeight: 400,
                   color: 'rgba(255,255,255,0.75)',
                   lineHeight: 1.8,
                   margin: 0,
@@ -1054,7 +1064,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                 <span className="result-chip">
                   <span className="chip-label">겉보기 등급</span>
                   <span className="chip-value" style={{ color: css }}>{star.mag.toFixed(1)}</span>
-                  <button className="chip-info-btn" onClick={() => setModal('mag')}>i</button>
+                  <button className="chip-info-btn" aria-label="겉보기 등급 설명" onClick={() => setModal('mag')}>i</button>
                 </span>
               )}
               {star != null && (
@@ -1062,9 +1072,9 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                   <span className="chip-label">분광형</span>
                   {star.spect
                     ? <span className="chip-value" style={{ color: css }}>{star.spect.slice(0, 4)}</span>
-                    : <span className="chip-value" style={{ color: 'rgba(255,255,255,0.25)' }}>-</span>
+                    : <span className="chip-value" style={{ color: 'rgba(255,255,255,0.6)' }}>-</span>
                   }
-                  <button className="chip-info-btn" onClick={() => setModal('spect')}>i</button>
+                  <button className="chip-info-btn" aria-label="분광형 설명" onClick={() => setModal('spect')}>i</button>
                 </span>
               )}
               {star?.con && (
@@ -1093,7 +1103,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
               border: 'none',
               borderRadius: '100px',
               color: contrastColor(css),
-              fontSize: '13px',
+              fontSize: '14px',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 700,
               letterSpacing: '0.03em',
@@ -1131,7 +1141,7 @@ const shareModalBtnStyle: React.CSSProperties = {
   border:         '1px solid rgba(255,255,255,0.12)',
   borderRadius:   '10px',
   color:          'rgba(255,255,255,0.75)',
-  fontSize:       '13px',
+  fontSize:       '14px',
   fontFamily:     "'Inter', sans-serif",
   fontWeight:     500,
   cursor:         'pointer',
@@ -1176,9 +1186,9 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'transparent',
     border: 'none',
     color: 'var(--text-dim)',
-    fontSize: '11px',
+    fontSize: '14px',
     letterSpacing: '0.06em',
-    padding: '0',
+    padding: '8px 0',
     cursor: 'pointer',
   },
 }

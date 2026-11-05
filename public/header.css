@@ -65,7 +65,7 @@
 
 .hdr-link {
   padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 12px);
-  font-size: clamp(11px, 1.8vw, 13px);
+  font-size: 13px;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   color: rgba(255,255,255,0.55);

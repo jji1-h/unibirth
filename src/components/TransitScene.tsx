@@ -307,7 +307,7 @@ export default function TransitScene({ result, stars, onComplete }: Props) {
   return (
     <div style={{ position: 'fixed', inset: 0, animation: 'transit-fadein 0.3s ease forwards' }}>
       <style>{`@keyframes transit-fadein { from { opacity:0 } to { opacity:1 } }`}</style>
-      <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
+      <canvas ref={canvasRef} aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0 }} />
       <p ref={captionRef} style={{
         position: 'absolute',
         top: '50%', left: '50%',

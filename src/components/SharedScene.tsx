@@ -269,7 +269,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
     <div style={{ background: '#07090f', minHeight: '100dvh', position: 'relative' }}>
 
       {/* Three.js 캔버스 — 스크롤 시 별도 함께 이동 */}
-      <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh' }} />
+      <canvas ref={canvasRef} aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh' }} />
 
       {/* 텍스트 + 푸터 — canvas 아래로 paddingTop으로 밀어냄 */}
       <div style={{ position: 'relative', zIndex: 1, paddingTop: '62vh' }}>
@@ -290,11 +290,11 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
           {/* 거리 */}
           {distText && (
             <p style={{
-              fontSize: '13px',
-              color: 'rgba(255,255,255,0.38)',
+              fontSize: '14px',
+              color: 'rgba(255,255,255,0.6)',
               margin: '0 0 16px',
               letterSpacing: '0.04em',
-              fontWeight: 300,
+              fontWeight: 400,
             }}>
               {distText}
             </p>
@@ -306,7 +306,7 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
             color: 'rgba(255,255,255,0.55)',
             lineHeight: 1.75,
             margin: '0 0 28px',
-            fontWeight: 300,
+            fontWeight: 400,
           }}>
             {copyLine1}<br />{copyLine2}
           </p>
@@ -343,7 +343,9 @@ export default function SharedScene({ result, birthdate, onTryService }: Props) 
 
         <div style={{ marginTop: '160px' }}>
           <TossBanner />
-          <ShortFooter />
+          <div style={{ marginTop: '16px' }}>
+            <ShortFooter />
+          </div>
         </div>
       </div>
     </div>

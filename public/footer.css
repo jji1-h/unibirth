@@ -44,18 +44,18 @@
 
 .ft-brand-tagline {
   font-size: 13px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.6);
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .ft-brand-copy {
   margin-top: 14px;
-  font-size: 11px;
-  color: rgba(255,255,255,0.18);
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
   letter-spacing: 0.03em;
   line-height: normal;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .ft-nav {
@@ -66,12 +66,12 @@
 }
 
 .ft-heading {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.6);
   margin-bottom: 14px;
   line-height: normal;
 }
@@ -87,9 +87,9 @@
 
 .ft-link {
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 400;
   font-family: 'Inter', sans-serif;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.6);
   text-decoration: none;
   line-height: 1.5;
   transition: color 0.15s;

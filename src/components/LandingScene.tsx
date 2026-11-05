@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import ShortFooter from './ShortFooter'
-import TossBanner from './TossBanner'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { validateBirthdate } from '../lib'
@@ -235,7 +234,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
 
   return (
     <div style={styles.wrap} className="scene-wrap">
-      <canvas ref={canvasRef} style={styles.canvas} />
+      <canvas ref={canvasRef} aria-hidden="true" style={styles.canvas} />
 
       {/* 헤더 */}
       <Header
@@ -258,13 +257,14 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         pointerEvents: showUI ? 'auto' : 'none',
         transition:    'opacity 0.35s ease',
       }}>
-        <p style={styles.sub}>당신이 태어난 바로 그날<br />출발한 빛을 찾아보세요</p>
+        <h1 style={styles.sub}>당신이 태어난 바로 그날<br />출발한 빛을 찾아보세요</h1>
 
         <div style={styles.inputGroup}>
           <div style={{ ...styles.fieldWrap, ...(isReady ? styles.fieldFocused : focused ? styles.fieldActive : {}) }}>
             <div style={styles.inputWrapper}>
               <input
                 type="text" inputMode="numeric"
+                aria-label="생년월일 8자리"
                 placeholder=""
                 value={displayValue}
                 onChange={handleInput}
@@ -279,6 +279,7 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
               </div>
             </div>
             <button
+              aria-label="탄생별 찾기"
               onClick={onSearch} disabled={!isReady}
               style={{ ...(isReady ? styles.ctaActive : styles.ctaDisabled) }}
               onMouseEnter={e => { if (isReady) (e.currentTarget as HTMLButtonElement).style.opacity = '0.7' }}
@@ -290,20 +291,8 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
             </button>
           </div>
 
-          {error && <p style={styles.errorMsg}>{ERROR_MSG[error]}</p>}
+          {error && <p role="alert" style={styles.errorMsg}>{ERROR_MSG[error]}</p>}
         </div>
-      </div>
-
-      {/* 배너 — 헤더(52px) 바로 아래 */}
-      <div style={{
-        position: 'absolute',
-        top: '52px', left: 0, right: 0,
-        zIndex: 2,
-        opacity:       showUI && !focused ? 1 : 0,
-        pointerEvents: showUI && !focused ? 'auto' : 'none',
-        transition:    'opacity 0.35s ease',
-      }}>
-        <TossBanner />
       </div>
 
       {/* 푸터 */}
@@ -331,12 +320,12 @@ const styles: Record<string, React.CSSProperties> = {
   fieldActive:  { borderColor: 'rgba(255,255,255,0.32)' },
   fieldFocused: { borderColor: 'rgba(176,196,255,0.6)', boxShadow: '0 0 0 3px rgba(176,196,255,0.12)' },
   inputWrapper: { position: 'relative', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' },
-  maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 300, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
+  maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 400, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
   // iOS는 16px 미만 입력창에 포커스하면 화면을 확대하므로 16px 아래로 내리지 말 것
-  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 300, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },
-  errorMsg:     { fontSize: '12px', fontWeight: 400, color: '#ff8080', letterSpacing: '0.03em', textShadow: '0 1px 8px rgba(0,0,0,0.8)' },
+  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 400, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },
+  errorMsg:     { fontSize: '14px', fontWeight: 400, color: '#ff8080', letterSpacing: '0.03em', textShadow: '0 1px 8px rgba(0,0,0,0.8)' },
   ctaActive:    { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'var(--accent)', cursor: 'pointer', flexShrink: 0, transition: 'opacity 0.2s' },
-  ctaDisabled:  { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.20)', cursor: 'not-allowed', flexShrink: 0 },
+  ctaDisabled:  { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'not-allowed', flexShrink: 0 },
   caption: {
     position: 'absolute',
     top: '50%', left: '50%',

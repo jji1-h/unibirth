@@ -1,7 +1,6 @@
 import Header from './Header'
 import Footer from './Footer'
 import TossBanner from './TossBanner'
-import { isBannerSupported } from './isBannerSupported'
 
 const STEPS = [
   {
@@ -95,17 +94,6 @@ export default function HomePage() {
     <div style={{ background: '#07090f', minHeight: '100vh', color: 'rgba(255,255,255,0.82)', fontFamily: "'Inter', sans-serif" }}>
       <Header fixed />
 
-      {/* 광고 배너 — 헤더(52px) 바로 아래 */}
-      <div style={{
-        position: 'fixed',
-        top: '52px',
-        left: 0,
-        right: 0,
-        zIndex: 100,
-      }}>
-        <TossBanner />
-      </div>
-
       {/* ── Hero ─────────────────────────────────────────── */}
       <section style={{
         minHeight:      '100vh',
@@ -114,12 +102,12 @@ export default function HomePage() {
         alignItems:     'center',
         justifyContent: 'center',
         textAlign:      'center',
-        padding:        `${isBannerSupported() ? 148 : 52}px 24px 80px`,
+        padding:        '52px 24px 80px',
       }}>
         <p style={{
-          fontSize:      '11px',
+          fontSize:      '12px',
           fontWeight:    600,
-          color:         'rgba(196,181,253,0.60)',
+          color:         'rgba(196,181,253,0.85)',
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
           marginBottom:  '28px',
@@ -142,7 +130,7 @@ export default function HomePage() {
 
         <p style={{
           fontSize:     'clamp(15px, 2vw, 18px)',
-          color:        'rgba(255,255,255,0.48)',
+          color:        'rgba(255,255,255,0.6)',
           lineHeight:   1.8,
           maxWidth:     '480px',
           marginBottom: '44px',
@@ -152,6 +140,9 @@ export default function HomePage() {
 
         <CTAButton href="/find">탄생별 찾기 →</CTAButton>
       </section>
+
+      {/* 광고 배너 — CTA 버튼과 떨어진 본문 흐름 안에 배치 */}
+      <TossBanner />
 
       {/* ── 서비스 소개 ──────────────────────────────────── */}
       <section style={{ maxWidth: '720px', margin: '0 auto', padding: '80px 24px 100px' }}>
@@ -201,9 +192,9 @@ export default function HomePage() {
             <div key={num} style={{ display: 'flex', gap: '28px', alignItems: 'flex-start' }}>
               <span style={{
                 fontFamily:    "'Inter', sans-serif",
-                fontSize:      '11px',
+                fontSize:      '12px',
                 fontWeight:    700,
-                color:         'rgba(196,181,253,0.40)',
+                color:         'rgba(196,181,253,0.80)',
                 letterSpacing: '0.1em',
                 paddingTop:    '3px',
                 flexShrink:    0,
@@ -221,7 +212,7 @@ export default function HomePage() {
                 }}>
                   {title}
                 </h3>
-                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
                   {desc}
                 </p>
               </div>
@@ -257,7 +248,7 @@ export default function HomePage() {
               border:       '1px solid rgba(255,255,255,0.07)',
               borderRadius: '12px',
             }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(196,181,253,0.40)', letterSpacing: '0.1em', marginBottom: '14px' }}>{num}</div>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(196,181,253,0.80)', letterSpacing: '0.1em', marginBottom: '14px' }}>{num}</div>
               <h3 style={{
                 fontSize:     '14px',
                 fontWeight:   600,
@@ -267,7 +258,7 @@ export default function HomePage() {
               }}>
                 {title}
               </h3>
-              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.42)', lineHeight: 1.75 }}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.75 }}>
                 {desc}
               </p>
             </div>
@@ -294,7 +285,7 @@ export default function HomePage() {
         </h2>
         <p style={{
           fontSize:     '15px',
-          color:        'rgba(255,255,255,0.38)',
+          color:        'rgba(255,255,255,0.6)',
           marginBottom: '36px',
           lineHeight:   1.7,
         }}>

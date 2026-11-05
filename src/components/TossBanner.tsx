@@ -1,64 +1,50 @@
 import { useEffect, useRef, useState } from 'react'
 import { TossAds } from '@apps-in-toss/web-framework'
-import { isBannerSupported } from './isBannerSupported'
-
-// QR 테스트 빌드는 VITE_AD_GROUP_ID로 테스트 ID를 넣는다 (기본값은 실제 광고 ID)
-export const AD_GROUP_ID = import.meta.env.VITE_AD_GROUP_ID || 'ait.v2.live.266d08f50a584926'
+import { AD_GROUP_ID, initTossAds, isBannerSupported } from './tossAds'
 
 interface Props {
   adGroupId?: string
-  height?: number  // 기본 96px (고정형 권장)
 }
 
-export default function TossBanner({ adGroupId = AD_GROUP_ID, height = 96 }: Props) {
+// 스크롤 가능한 화면에서만 사용한다 (출시 체크리스트)
+export default function TossBanner({ adGroupId = AD_GROUP_ID }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isInitialized, setIsInitialized] = useState(false)
-  const [supported] = useState(isBannerSupported)
+  const [visible, setVisible] = useState(isBannerSupported)
 
-  // initialize 완료 대기
   useEffect(() => {
-    if (!TossAds.initialize.isSupported()) return
-    TossAds.initialize({
-      callbacks: {
-        onInitialized: () => setIsInitialized(true),
-        onInitializationFailed: () => setIsInitialized(true), // 이미 초기화된 경우도 attach 가능
-      },
-    })
-  }, [])
+    if (!isBannerSupported()) return
 
-  // initialize 완료 후 배너 부착
-  useEffect(() => {
-    if (!isInitialized) return
-    if (!TossAds.attachBanner.isSupported()) return
-    if (!containerRef.current) return
+    let cancelled = false
+    let attached: { destroy: () => void } | undefined
 
-    const attached = TossAds.attachBanner(adGroupId, containerRef.current, {
-      theme: 'dark',
-      tone: 'blackAndWhite',
-      variant: 'expanded',
-      callbacks: {
-        onNoFill: () => {
-          if (containerRef.current) containerRef.current.style.display = 'none'
-        },
-        onAdRendered: () => {
-          if (containerRef.current) containerRef.current.style.display = ''
-        },
-        onAdFailedToRender: () => {
-          if (containerRef.current) containerRef.current.style.display = 'none'
-        },
-      },
-    })
+    initTossAds()
+      .then(() => {
+        if (cancelled || !containerRef.current) return
+        attached = TossAds.attachBanner(adGroupId, containerRef.current, {
+          theme: 'dark',
+          tone: 'blackAndWhite',
+          variant: 'expanded',
+          callbacks: {
+            onNoFill: () => setVisible(false),
+            onAdRendered: () => setVisible(true),
+            onAdFailedToRender: () => setVisible(false),
+          },
+        })
+      })
+      .catch(() => setVisible(false))
 
-    return () => { attached?.destroy() }
-  }, [isInitialized, adGroupId])
+    return () => {
+      cancelled = true
+      attached?.destroy()
+    }
+  }, [adGroupId])
 
   // 광고를 그릴 수 없으면 빈 자리도 차지하지 않는다
-  if (!supported) return null
-
+  // 실제 높이는 광고에 따라 달라지므로 고정하지 않고 권장값 102px만 최소로 둔다
   return (
     <div
       ref={containerRef}
-      style={{ width: '100%', height: `${height}px`, background: '#07090f' }}
+      style={{ width: '100%', minHeight: '102px', display: visible ? 'block' : 'none' }}
     />
   )
 }

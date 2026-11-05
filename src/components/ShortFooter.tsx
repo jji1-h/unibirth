@@ -16,7 +16,7 @@ export default function ShortFooter() {
         flexWrap:      'wrap',
         gap:           '12px',
       }}>
-        <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.18)', letterSpacing: '0.03em' }}>
+        <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.03em' }}>
           © 2026 Unibirth
         </span>
         <div style={{ display: 'flex', gap: '16px' }}>
@@ -29,13 +29,14 @@ export default function ShortFooter() {
               key={href}
               href={href}
               style={{
-                fontSize:       '11px',
-                color:          'rgba(255,255,255,0.28)',
+                fontSize:       '12px',
+                color:          'rgba(255,255,255,0.6)',
                 textDecoration: 'none',
+                padding:        '4px 0',
                 letterSpacing:  '0.02em',
                 transition:     'color 0.15s',
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.60)')}
+              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.85)')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.28)')}
             >
               {label}
