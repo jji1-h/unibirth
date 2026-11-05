@@ -26,3 +26,6 @@ dist-ssr
 # 원본 CSV (용량 크므로 git 제외)
 scripts/*.csv
 scripts/*.csv.gz
+
+# 비공개 문서
+portfolio-brief.md
