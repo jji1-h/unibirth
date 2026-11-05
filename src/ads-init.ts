@@ -1,6 +1,7 @@
 import { TossAds } from '@apps-in-toss/web-framework'
 
-const AD_GROUP_ID = 'ait.v2.live.266d08f50a584926'
+// QR 테스트 빌드는 VITE_AD_GROUP_ID로 테스트 ID를 넣는다 (기본값은 실제 광고 ID)
+const AD_GROUP_ID = import.meta.env.VITE_AD_GROUP_ID || 'ait.v2.live.266d08f50a584926'
 
 function attachBanners() {
   const containers = document.querySelectorAll<HTMLElement>('.toss-banner-slot')
@@ -45,6 +46,19 @@ function attachBanners() {
 }
 
 function initAds() {
+  let supported = false
+  try {
+    supported = TossAds.initialize.isSupported() && TossAds.attachBanner.isSupported()
+  } catch { /* 미지원 환경 */ }
+
+  // 일반 웹에서는 광고를 그릴 수 없으므로 빈 슬롯을 치운다
+  if (!supported) {
+    document.querySelectorAll<HTMLElement>('.toss-banner-slot').forEach(slot => {
+      slot.style.display = 'none'
+    })
+    return
+  }
+
   try {
     TossAds.initialize({
       callbacks: {

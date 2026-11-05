@@ -1,6 +1,7 @@
 import Header from './Header'
 import Footer from './Footer'
 import TossBanner from './TossBanner'
+import { isBannerSupported } from './isBannerSupported'
 
 const STEPS = [
   {
@@ -113,7 +114,7 @@ export default function HomePage() {
         alignItems:     'center',
         justifyContent: 'center',
         textAlign:      'center',
-        padding:        '148px 24px 80px',
+        padding:        `${isBannerSupported() ? 148 : 52}px 24px 80px`,
       }}>
         <p style={{
           fontSize:      '11px',

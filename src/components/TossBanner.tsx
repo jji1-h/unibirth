@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { TossAds } from '@apps-in-toss/web-framework'
+import { isBannerSupported } from './isBannerSupported'
 
-export const AD_GROUP_ID = 'ait.v2.live.266d08f50a584926'
+// QR 테스트 빌드는 VITE_AD_GROUP_ID로 테스트 ID를 넣는다 (기본값은 실제 광고 ID)
+export const AD_GROUP_ID = import.meta.env.VITE_AD_GROUP_ID || 'ait.v2.live.266d08f50a584926'
 
 interface Props {
   adGroupId?: string
@@ -11,6 +13,7 @@ interface Props {
 export default function TossBanner({ adGroupId = AD_GROUP_ID, height = 96 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isInitialized, setIsInitialized] = useState(false)
+  const [supported] = useState(isBannerSupported)
 
   // initialize 완료 대기
   useEffect(() => {
@@ -48,6 +51,9 @@ export default function TossBanner({ adGroupId = AD_GROUP_ID, height = 96 }: Pro
 
     return () => { attached?.destroy() }
   }, [isInitialized, adGroupId])
+
+  // 광고를 그릴 수 없으면 빈 자리도 차지하지 않는다
+  if (!supported) return null
 
   return (
     <div

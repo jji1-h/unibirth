@@ -331,8 +331,9 @@ const styles: Record<string, React.CSSProperties> = {
   fieldActive:  { borderColor: 'rgba(255,255,255,0.32)' },
   fieldFocused: { borderColor: 'rgba(176,196,255,0.6)', boxShadow: '0 0 0 3px rgba(176,196,255,0.12)' },
   inputWrapper: { position: 'relative', flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' },
-  maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
-  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 300, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },
+  maskOverlay:  { position: 'absolute', left: 0, pointerEvents: 'none', userSelect: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 300, letterSpacing: '0.02em', whiteSpace: 'nowrap' as const },
+  // iOS는 16px 미만 입력창에 포커스하면 화면을 확대하므로 16px 아래로 내리지 말 것
+  dateInput:    { background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Inter', sans-serif", fontSize: '16px', fontWeight: 300, letterSpacing: '0.02em', width: '100%', caretColor: 'var(--accent)' },
   errorMsg:     { fontSize: '12px', fontWeight: 400, color: '#ff8080', letterSpacing: '0.03em', textShadow: '0 1px 8px rgba(0,0,0,0.8)' },
   ctaActive:    { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'var(--accent)', cursor: 'pointer', flexShrink: 0, transition: 'opacity 0.2s' },
   ctaDisabled:  { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '100px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.20)', cursor: 'not-allowed', flexShrink: 0 },
