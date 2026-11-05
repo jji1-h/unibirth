@@ -7,6 +7,7 @@
     "dev": "vite",
     "prebuild": "node scripts/gen-icons.mjs",
     "build": "tsc -b && vite build",
+    "build:toss": "node scripts/build-toss.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

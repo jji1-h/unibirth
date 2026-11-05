@@ -66,7 +66,7 @@
     .nav-links { display: flex; align-items: center; gap: 2px; }
     .nav-links a {
       padding: 5px 11px;
-      font-size: 13px; font-weight: 500;
+      font-size: 14px; font-weight: 500;
       color: rgba(255,255,255,0.55); text-decoration: none;
       border-radius: 6px; letter-spacing: 0.01em;
       transition: color 0.15s, background 0.15s;
@@ -78,9 +78,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.6);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.04em;
       margin: 48px 0;
       transition: color 0.15s;
@@ -97,17 +97,17 @@
 
     .subtitle {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.38);
+      color: rgba(255, 255, 255, 0.6);
       margin-bottom: 48px;
       line-height: 1.7;
     }
 
     h2 {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.45);
+      color: rgba(255, 255, 255, 0.6);
       margin: 40px 0 12px;
     }
 
@@ -149,14 +149,14 @@
     .faq-icon {
       flex-shrink: 0;
       width: 16px; height: 16px;
-      color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.6);
       transition: transform 0.2s ease;
     }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
 
     .faq-body { display: none; padding-bottom: 18px; }
     .faq-item.open .faq-body { display: block; }
-    .faq-a { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.8; }
+    .faq-a { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.8; }
     .faq-a a { font-size: 14px; }
 
     /* ── 문의 폼 ── */
@@ -165,10 +165,10 @@
     }
     .form-label {
       display: block;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.40);
+      color: rgba(255,255,255,0.6);
       margin-bottom: 8px;
     }
     .form-input,
@@ -180,6 +180,7 @@
       border-radius: 8px;
       padding: 12px 14px;
       font-size: 16px; /* iOS 포커스 확대 방지: 16px 미만 금지 */
+      box-sizing: border-box;
       font-family: inherit;
       color: rgba(255,255,255,0.82);
       outline: none;
@@ -188,7 +189,7 @@
       -webkit-appearance: none;
     }
     .form-input::placeholder,
-    .form-textarea::placeholder { color: rgba(255,255,255,0.22); }
+    .form-textarea::placeholder { color: rgba(255,255,255,0.6); }
     .form-input:focus,
     .form-textarea:focus,
     .form-select:focus {
@@ -264,7 +265,7 @@
       background: rgba(134,239,172,0.15);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      font-size: 11px;
+      font-size: 12px;
     }
 
     /* ── 푸터 ── */
@@ -279,18 +280,20 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 0.03em;
     }
-    .page-footer-copy { color: rgba(255,255,255,0.18); }
+    .page-footer-copy { color: rgba(255,255,255,0.6); }
     .page-footer-links { display: flex; gap: 16px; }
     .page-footer-links a {
-      color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.6);
       text-decoration: none;
       letter-spacing: 0.02em;
       transition: color 0.15s;
     }
     .page-footer-links a:hover { color: rgba(255,255,255,0.60); }
+    .form-consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.7); cursor: pointer; }
+    .form-consent input { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -308,7 +311,7 @@
       </div>
     </div>
   </nav>
-<div class="toss-banner-slot" style="width:100%;height:96px"></div>
+<div class="toss-banner-slot" style="width:100%;min-height:102px;display:none"></div>
 
   <div class="wrap">
     <a href="/" class="back">← 홈으로</a>
@@ -408,6 +411,13 @@
       <div class="form-group">
         <label class="form-label" for="message">문의 내용</label>
         <textarea class="form-textarea" id="message" name="message" placeholder="내용을 입력해 주세요." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-consent">
+          <input type="checkbox" name="privacy_consent" value="동의" required />
+          <span>(필수) 문의 답변을 위해 이름, 이메일, 문의 내용을 수집합니다. 해외 업체(Web3Forms)를 통해 전달되며, 자세한 내용은 <a href="/privacy">개인정보처리방침</a>을 확인해 주세요.</span>
+        </label>
       </div>
 
       <button class="submit-btn" type="submit" id="submit-btn">문의하기</button>
