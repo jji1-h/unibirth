@@ -1,6 +1,10 @@
 import Header from './Header'
 import Footer from './Footer'
 import TossBanner from './TossBanner'
+import { isBannerSupported } from './tossAds'
+
+const HEADER_HEIGHT = 52
+const BANNER_HEIGHT = 110  // 최소 높이 102px + 헤더와의 간격 8px
 
 const STEPS = [
   {
@@ -94,15 +98,22 @@ export default function HomePage() {
     <div style={{ background: '#07090f', minHeight: '100vh', color: 'rgba(255,255,255,0.82)', fontFamily: "'Inter', sans-serif" }}>
       <Header fixed />
 
+      {/* 고정 헤더 자리 */}
+      <div style={{ height: `${HEADER_HEIGHT}px` }} />
+
+      {/* 광고 배너 — 헤더 아래 고정 */}
+      <TossBanner stickyTop={HEADER_HEIGHT} />
+
       {/* ── Hero ─────────────────────────────────────────── */}
       <section style={{
-        minHeight:      '100vh',
+        // 첫 화면에 CTA까지 보이도록 헤더와 배너 높이를 뺀다
+        minHeight:      `calc(100vh - ${HEADER_HEIGHT + (isBannerSupported() ? BANNER_HEIGHT : 0)}px)`,
         display:        'flex',
         flexDirection:  'column',
         alignItems:     'center',
         justifyContent: 'center',
         textAlign:      'center',
-        padding:        '52px 24px 80px',
+        padding:        '24px 24px 56px',
       }}>
         <p style={{
           fontSize:      '12px',
@@ -140,9 +151,6 @@ export default function HomePage() {
 
         <CTAButton href="/find">탄생별 찾기 →</CTAButton>
       </section>
-
-      {/* 광고 배너 — CTA 버튼과 떨어진 본문 흐름 안에 배치 */}
-      <TossBanner />
 
       {/* ── 서비스 소개 ──────────────────────────────────── */}
       <section style={{ maxWidth: '720px', margin: '0 auto', padding: '80px 24px 100px' }}>
