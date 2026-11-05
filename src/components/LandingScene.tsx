@@ -294,7 +294,19 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         </div>
       </div>
 
-      {/* 배너 + 푸터 */}
+      {/* 배너 — 헤더(52px) 바로 아래 */}
+      <div style={{
+        position: 'absolute',
+        top: '52px', left: 0, right: 0,
+        zIndex: 2,
+        opacity:       showUI && !focused ? 1 : 0,
+        pointerEvents: showUI && !focused ? 'auto' : 'none',
+        transition:    'opacity 0.35s ease',
+      }}>
+        <TossBanner />
+      </div>
+
+      {/* 푸터 */}
       <div style={{
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
@@ -303,7 +315,6 @@ export default function LandingScene({ input, onInputChange, onSearch, stars, le
         pointerEvents: showUI ? 'auto' : 'none',
         transition:    'opacity 0.35s ease',
       }}>
-        <TossBanner />
         <ShortFooter />
       </div>
     </div>

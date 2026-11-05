@@ -949,6 +949,19 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
         ← 다시 탐색하기
       </button>
 
+      {/* 광고 배너 — 헤더와 동일한 위치(52px) */}
+      <div style={{
+        position: 'absolute',
+        top: '52px',
+        left: 0, right: 0,
+        zIndex: 2,
+        pointerEvents: 'auto',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 0.9s ease',
+      }}>
+        <TossBanner />
+      </div>
+
       {/* 별 정보 카드 */}
       <div style={{
         ...styles.card,
@@ -1024,7 +1037,7 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
-                  background: 'linear-gradient(to right, transparent, rgba(7,9,15,1) 60%)',
+                  background: 'linear-gradient(to right, transparent, rgba(7,9,15,0.95) 50%)',
                 }}>
                   <button className="more-btn" onClick={() => setExpanded(true)}>더보기</button>
                 </div>
@@ -1101,9 +1114,6 @@ export default function ResultScene({ result, onReset, birthdate }: Props) {
             결과 공유하기
           </button>
         </div>
-
-        {/* 배너 광고 — 버튼 아래 배치 (의도치 않은 클릭 방지) */}
-        <TossBanner />
 
       </div>
     </div>

@@ -10,6 +10,11 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         find: resolve(__dirname, 'find.html'),
+        'ads-init': resolve(__dirname, 'src/ads-init.ts'),
+      },
+      output: {
+        entryFileNames: (chunk) =>
+          chunk.name === 'ads-init' ? 'ads-init.js' : 'assets/[name]-[hash].js',
       },
     },
   },

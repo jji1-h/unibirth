@@ -1,5 +1,6 @@
 import Header from './Header'
 import Footer from './Footer'
+import TossBanner from './TossBanner'
 
 const STEPS = [
   {
@@ -93,6 +94,17 @@ export default function HomePage() {
     <div style={{ background: '#07090f', minHeight: '100vh', color: 'rgba(255,255,255,0.82)', fontFamily: "'Inter', sans-serif" }}>
       <Header fixed />
 
+      {/* 광고 배너 — 헤더(52px) 바로 아래 */}
+      <div style={{
+        position: 'fixed',
+        top: '52px',
+        left: 0,
+        right: 0,
+        zIndex: 100,
+      }}>
+        <TossBanner />
+      </div>
+
       {/* ── Hero ─────────────────────────────────────────── */}
       <section style={{
         minHeight:      '100vh',
@@ -101,7 +113,7 @@ export default function HomePage() {
         alignItems:     'center',
         justifyContent: 'center',
         textAlign:      'center',
-        padding:        '52px 24px 80px',
+        padding:        '148px 24px 80px',
       }}>
         <p style={{
           fontSize:      '11px',
