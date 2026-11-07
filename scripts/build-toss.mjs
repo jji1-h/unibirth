@@ -1,6 +1,7 @@
 // 토스 앱용 .ait 빌드. 웹 빌드(npm run build)에는 영향을 주지 않는다.
 //   npm run build:toss            실제 광고 ID로 빌드 (출시용)
 //   npm run build:toss -- --test  테스트 광고 ID로 빌드 (QR 테스트용)
+//   npm run build:toss -- --test --debug  화면 아래에 광고 진단 기록 표시 (테스트 빌드에서만)
 import { execSync } from 'node:child_process'
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -8,10 +9,14 @@ import { join } from 'node:path'
 const DIST = 'dist'
 const TEST_AD_GROUP_ID = 'ait-ad-test-banner-id'
 const isTest = process.argv.includes('--test')
+const isDebug = process.argv.includes('--debug')
+if (isDebug && !isTest) throw new Error('--debug는 --test와 함께만 쓸 수 있습니다')
 
 const env = { ...process.env }
 if (isTest) env.VITE_AD_GROUP_ID = TEST_AD_GROUP_ID
 else delete env.VITE_AD_GROUP_ID
+if (isDebug) env.VITE_AD_DEBUG = '1'
+else delete env.VITE_AD_DEBUG
 
 execSync('npm run build', { stdio: 'inherit', env })
 
@@ -78,7 +83,8 @@ function assertNotInDist(dir, needle) {
 assertNotInDist(DIST, 'adsbygoogle.js')
 assertNotInDist(DIST, 'AdSense')
 if (isTest) assertNotInDist(DIST, 'ait.v2.live')
+if (!isDebug) assertNotInDist(DIST, '[광고 진단]')
 
-console.log(`AdSense 제거: HTML ${stripped}개 / 광고 ID: ${isTest ? '테스트' : '실제'}`)
+console.log(`AdSense 제거: HTML ${stripped}개 / 광고 ID: ${isTest ? '테스트' : '실제'}${isDebug ? ' / 진단 표시 켬' : ''}`)
 
 execSync('npx ait build', { stdio: 'inherit', env })

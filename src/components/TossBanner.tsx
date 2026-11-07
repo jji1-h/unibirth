@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { TossAds } from '@apps-in-toss/web-framework'
-import { AD_GROUP_ID, initTossAds, isBannerSupported } from './tossAds'
+import { AD_GROUP_ID, adLog, initTossAds, isTossWebView, waitForBannerSupport } from './tossAds'
 
 interface Props {
   adGroupId?: string
@@ -10,25 +10,40 @@ interface Props {
 // 스크롤 가능한 화면에서만 사용한다 (출시 체크리스트)
 export default function TossBanner({ adGroupId = AD_GROUP_ID, stickyTop }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(isBannerSupported)
+  // 토스 앱 안이면 SDK 주입을 기다리는 동안에도 자리를 잡아 둔다
+  const [visible, setVisible] = useState(isTossWebView)
 
   useEffect(() => {
-    if (!isBannerSupported()) return
+    if (!isTossWebView()) return
 
     let cancelled = false
     let attached: { destroy: () => void } | undefined
 
-    initTossAds()
+    waitForBannerSupport()
+      .then(supported => {
+        if (!supported) throw new Error('unsupported')
+        return initTossAds()
+      })
       .then(() => {
         if (cancelled || !containerRef.current) return
+        adLog('배너 부착 요청')
         attached = TossAds.attachBanner(adGroupId, containerRef.current, {
           theme: 'dark',
           tone: 'blackAndWhite',
           variant: 'expanded',
           callbacks: {
-            onNoFill: () => setVisible(false),
-            onAdRendered: () => setVisible(true),
-            onAdFailedToRender: () => setVisible(false),
+            onNoFill: () => {
+              adLog('광고 없음 (no-fill)')
+              setVisible(false)
+            },
+            onAdRendered: () => {
+              adLog('광고 표시됨')
+              setVisible(true)
+            },
+            onAdFailedToRender: payload => {
+              adLog(`표시 실패: ${payload.error.code} ${payload.error.message}`)
+              setVisible(false)
+            },
           },
         })
       })

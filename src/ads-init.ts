@@ -1,6 +1,6 @@
 import './disable-toss-zoom'
 import { TossAds } from '@apps-in-toss/web-framework'
-import { AD_GROUP_ID, initTossAds, isBannerSupported } from './components/tossAds'
+import { AD_GROUP_ID, adLog, initTossAds, waitForBannerSupport } from './components/tossAds'
 
 const HEADER_HEIGHT = 52
 
@@ -22,31 +22,42 @@ function attachBanners() {
 
     const hide = () => { sticky.style.display = 'none' }
 
+    adLog('배너 부착 요청')
     try {
       TossAds.attachBanner(AD_GROUP_ID, slot, {
         theme: 'dark',
         tone: 'blackAndWhite',
         variant: 'expanded',
         callbacks: {
-          onNoFill: hide,
-          onAdRendered: () => { sticky.style.display = 'block' },
-          onAdFailedToRender: hide,
+          onNoFill: () => {
+            adLog('광고 없음 (no-fill)')
+            hide()
+          },
+          onAdRendered: () => {
+            adLog('광고 표시됨')
+            sticky.style.display = 'block'
+          },
+          onAdFailedToRender: payload => {
+            adLog(`표시 실패: ${payload.error.code} ${payload.error.message}`)
+            hide()
+          },
         },
       })
-    } catch {
+    } catch (error) {
+      adLog(`부착 예외: ${(error as Error)?.message ?? error}`)
       hide()
     }
   })
 }
 
-function initAds() {
-  if (!isBannerSupported()) return
-  initTossAds().then(attachBanners).catch(() => { /* 슬롯은 숨겨진 채로 둔다 */ })
-}
-
+// 토스 앱이 광고 SDK를 주입할 때까지 기다린 뒤 초기화한다
 function run() {
-  // TossAds 브릿지 준비 대기 후 실행
-  setTimeout(initAds, 300)
+  waitForBannerSupport()
+    .then(supported => {
+      if (!supported) return
+      return initTossAds().then(attachBanners)
+    })
+    .catch(() => { /* 슬롯은 숨겨진 채로 둔다 */ })
 }
 
 if (document.readyState === 'loading') {

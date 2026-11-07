@@ -1,7 +1,7 @@
 import Header from './Header'
 import Footer from './Footer'
 import TossBanner from './TossBanner'
-import { isBannerSupported } from './tossAds'
+import { isTossWebView } from './tossAds'
 
 const HEADER_HEIGHT = 52
 const BANNER_HEIGHT = 110  // 최소 높이 102px + 헤더와의 간격 8px
@@ -107,7 +107,7 @@ export default function HomePage() {
       {/* ── Hero ─────────────────────────────────────────── */}
       <section style={{
         // 첫 화면에 CTA까지 보이도록 헤더와 배너 높이를 뺀다
-        minHeight:      `calc(100vh - ${HEADER_HEIGHT + (isBannerSupported() ? BANNER_HEIGHT : 0)}px)`,
+        minHeight:      `calc(100vh - ${HEADER_HEIGHT + (isTossWebView() ? BANNER_HEIGHT : 0)}px)`,
         display:        'flex',
         flexDirection:  'column',
         alignItems:     'center',
